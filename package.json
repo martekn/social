@@ -1,0 +1,31 @@
+{
+  "name": "social",
+  "version": "0.0.1",
+  "description": "Social media site using noroff's api",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i src/css/styles.css -o dist/styles.css",
+    "watch": "tailwind --watch src/css:dist/css & live-server --port=54525"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martekn/social.git"
+  },
+  "keywords": [
+    "CSS",
+    "Frameworks",
+    "Tailwind",
+    "Web components"
+  ],
+  "author": "Marte Møllen Knutsen <marte.mk@hotmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martekn/social/issues"
+  },
+  "homepage": "https://github.com//martekn/social#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "tailwindcss": "^3.3.3"
+  }
+}
