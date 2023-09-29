@@ -9,6 +9,17 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    keyframes: {
+      slide: {
+        "0%": { transform: "translateX(130%)" },
+        "100%": {
+          transform: "translateX(0)",
+        },
+      },
+    },
+    animation: {
+      slide: "slide 0.3s ease-in-out",
+    },
     container: {
       center: true,
     },
