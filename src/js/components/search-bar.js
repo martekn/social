@@ -7,6 +7,23 @@ class SearchBar extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const input = this.querySelector("input");
+    const button = this.querySelector("button");
+
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        this.search(input.value);
+      }
+    });
+
+    button.addEventListener("click", (e) => {
+      this.search(input.value);
+    });
+  }
+
+  search(value) {
+    location.href = `/search/?search=${value}`;
   }
 
   render() {
