@@ -1,1 +1,1 @@
-console.log("hello");
+import "./components/search-bar.js";
