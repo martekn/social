@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-light-400 font-base;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-accent;
+  }
+
+  h1,
+  h2 {
+    @apply font-medium;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply text-lg;
+  }
+
+  h1 {
+    @apply text-xl;
+  }
+
+  label {
+    @apply font-medium;
+  }
+
+  dialog {
+    @apply w-full max-w-2xl rounded-xl p-10 backdrop:bg-dark-500 backdrop:opacity-75;
+  }
+
+  input,
+  textarea {
+    @apply block w-full rounded-md border border-dark-200 bg-light-200 px-3 py-3  text-dark-500 placeholder:text-dark-200 focus-visible:ring-1;
+  }
+
+  textarea {
+    @apply h-40;
+  }
+  * {
+    @apply focus-visible:rounded-md focus-visible:border-primary-300  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300;
+  }
+}
