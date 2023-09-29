@@ -1,17 +1,17 @@
 /**
  * Decodes a string containing html entities
- * @param {String} string - String to decode
+ * @param {String} input - String containing html entities to decode
  * @returns Decoded string
  * @example
  * ```js
  * const decoded = decode("&lt;p&gt;This is an encoded string.&lt;/p&gt;")
- * // Returns "<p>This is an encoded string.</p>"
+ * // Returns <p>This is an encoded string.</p>
  * ```
  */
-export const decode = (string) => {
-  if (string) {
+export const decode = (input) => {
+  if (input) {
     const elem = document.createElement("textarea");
-    elem.innerHTML = string;
+    elem.innerHTML = input;
     return elem.textContent;
   } else {
     return null;
