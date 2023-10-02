@@ -40,13 +40,14 @@
           class="flex items-center gap-3 border-b border-light-500 px-7 py-2 md:px-0 md:pt-0"
         >
           <a
-            href="#"
+            href="/feed/"
             class="mr-auto py-2 font-accent text-lg font-bold hover:text-dark-400 md:pt-0"
             >Social</a
           >
-          <!-- Navigation button -->
+
+          <!-- Search button -->
           <button
-            class="py-2 text-lg hover:text-dark-300 lg:hidden"
+            class="bottom-5 right-5 z-10 aspect-square w-12 py-2 text-lg hover:text-dark-300 md:absolute md:rounded-md md:bg-light-200 md:px-2 md:shadow-sm lg:hidden"
             aria-controls="sidebar"
             aria-expanded="false"
             aria-haspopup="true"
@@ -56,7 +57,7 @@
             <span class="sr-only">Open search menu</span>
           </button>
 
-          <!-- Search button -->
+          <!-- Navigation button -->
           <button
             class="py-2 text-2xl hover:text-dark-300 md:hidden"
             aria-controls="primary-navigation"
@@ -69,7 +70,7 @@
           </button>
         </div>
         <nav
-          class="data-[mobile-visible='true']:animate-slide inset-y-0 right-0 hidden w-full max-w-md flex-col bg-light-200 px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static"
+          class="inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static"
           id="primary-navigation"
           data-mobile-visible="false"
         >
@@ -109,7 +110,7 @@
       <!-- Sidebar -->
       <aside
         id="sidebar"
-        class="data-[mobile-visible='true']:animate-slide inset-y-0 right-0 order-2 hidden w-full max-w-md bg-light-200 p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static"
+        class="inset-y-0 right-0 z-50 order-2 hidden w-full max-w-md bg-light-200 p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static"
         data-mobile-visible="false"
       >
         <div class="container flex flex-col">
