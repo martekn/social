@@ -10,6 +10,7 @@ import { decode } from "./decode.js";
  * @example
  * ```js
  * const div = createHTML("div", ["bg-red", "border-radius"], "Hello world", {id: "uniqueId"})
+ * const div = createHTML("div", "bg-red border-radius", "Hello world", {id: "uniqueId"})
  * ```
  */
 export const createHTML = (tag, classes, text, attributes) => {
