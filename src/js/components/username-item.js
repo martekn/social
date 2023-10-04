@@ -21,7 +21,7 @@ class Username extends HTMLElement {
 
     const avatar = htmlUtilities.createHTML(
       "img",
-      "aspect-square w-10 rounded-full object-cover",
+      "aspect-square w-11 rounded-full object-cover",
       null,
       {
         src: this.getAttribute("src"),

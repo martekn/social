@@ -36,7 +36,7 @@ class PostArticle extends HTMLElement {
     // Avatar
     const imgWrapper = htmlUtilities.createHTML(
       "a",
-      "w-10 h-10 my-auto",
+      "w-11 h-11 my-auto",
       null,
       { href: `/profile/?u=${author.name}` },
     );
@@ -214,33 +214,23 @@ class PostArticle extends HTMLElement {
       "flex justify-evenly text-dark-400 border-t pt-1 font-medium border-light-500",
     );
 
-    const heartAction = htmlUtilities.createHTML(
-      "post-action",
-      "w-full",
-      "Heart",
-      {
-        icon: "bi bi-heart",
-        type: "button",
-      },
-    );
+    const heartAction = htmlUtilities.createHTML("post-action", null, "Heart", {
+      icon: "bi bi-heart",
+      type: "button",
+    });
 
     const commentAction = htmlUtilities.createHTML(
       "post-action",
-      "w-full",
-      "comment",
+      null,
+      "Comment",
       { icon: "bi bi-chat-square", type: "button" },
     );
 
-    const viewAction = htmlUtilities.createHTML(
-      "post-action",
-      "w-full",
-      "view",
-      {
-        icon: "bi bi-box-arrow-up-right",
-        type: "link",
-        href: `/post/?id=${id}`,
-      },
-    );
+    const viewAction = htmlUtilities.createHTML("post-action", null, "View", {
+      icon: "bi bi-box-arrow-up-right",
+      type: "link",
+      href: `/post/?id=${id}`,
+    });
 
     actions.append(...[heartAction, commentAction, viewAction]);
 

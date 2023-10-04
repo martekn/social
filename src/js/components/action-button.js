@@ -12,7 +12,7 @@ class PostAction extends HTMLElement {
   render() {
     let action;
     const actionClasses =
-      "p-1 hover:bg-light-450 w-full flex hover:text-dark-500 align-middle gap-2 justify-center";
+      "p-1 hover:bg-light-450 w-full flex hover:text-dark-500 align-middle gap-2 justify-center rounded-md transition-all duration-200 ease-in-out";
 
     if (this.getAttribute("type") === "link") {
       action = htmlUtilities.createHTML("a", actionClasses, null, {
@@ -30,6 +30,7 @@ class PostAction extends HTMLElement {
     this.textContent = "";
     action.append(...[icon, buttonText]);
 
+    this.classList.add("w-full");
     this.appendChild(action);
   }
 }

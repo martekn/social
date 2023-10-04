@@ -27,10 +27,9 @@ class SearchBar extends HTMLElement {
   }
 
   render() {
-    const searchBar = htmlUtilities.createHTML(
-      "div",
-      "relative mb-4 text-dark-200",
-    );
+    const searchBar = htmlUtilities.createHTML("div", "relative text-dark-200");
+    searchBar.classList.add(...this.classList);
+    this.className = "";
 
     const input = htmlUtilities.createHTML("input", null, null, {
       placeholder: "Search",
