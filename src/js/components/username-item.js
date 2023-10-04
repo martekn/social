@@ -1,6 +1,6 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
-class username extends HTMLElement {
+class Username extends HTMLElement {
   constructor() {
     super();
   }
@@ -12,7 +12,7 @@ class username extends HTMLElement {
   render() {
     const username = htmlUtilities.createHTML(
       "a",
-      "flex items-center hover:text-dark-400 gap-2 font-accent font-medium py-1",
+      "flex items-center link link-secondary gap-2 py-1",
       null,
       {
         href: `/profile/?u=${this.textContent}`,
@@ -21,7 +21,7 @@ class username extends HTMLElement {
 
     const avatar = htmlUtilities.createHTML(
       "img",
-      "aspect-square w-9 rounded-full object-cover",
+      "aspect-square w-10 rounded-full object-cover",
       null,
       {
         src: this.getAttribute("src"),
@@ -37,4 +37,4 @@ class username extends HTMLElement {
   }
 }
 
-customElements.define("username-item", username);
+customElements.define("username-item", Username);

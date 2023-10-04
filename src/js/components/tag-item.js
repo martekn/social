@@ -10,14 +10,15 @@ class TagItem extends HTMLElement {
   }
 
   render() {
-    const tag = htmlUtilities.createHTML(
-      "a",
-      ["font-accent", "hover:text-dark-400", "py-1", "block", "w-full"],
-      null,
-      {
-        href: this.getAttribute("href"),
-      },
-    );
+    const tag = htmlUtilities.createHTML("a", "py-1 w-full", null, {
+      href: this.getAttribute("href"),
+    });
+
+    if (this.dataset.style === "primary") {
+      tag.classList.add("link-primary");
+    } else {
+      tag.classList.add("link-secondary");
+    }
 
     const hashtag = htmlUtilities.createHTML(
       "span",

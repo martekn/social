@@ -51,3 +51,20 @@
     @apply focus-visible:rounded-md focus-visible:border-primary-300  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300;
   }
 }
+
+@layer components {
+  .button-primary {
+    @apply rounded-md bg-primary-400 px-6 py-2 font-accent font-medium text-light-200;
+  }
+
+  .link {
+    @apply inline-block py-2 font-accent font-medium;
+  }
+  .link-primary {
+    @apply text-primary-400 hover:text-primary-300 active:text-primary-500;
+  }
+
+  .link-secondary {
+    @apply text-dark-500 hover:text-dark-300 active:text-dark-200;
+  }
+}
