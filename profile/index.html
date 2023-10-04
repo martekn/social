@@ -47,7 +47,7 @@
 
           <!-- Search button -->
           <button
-            class="link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:absolute md:rounded-md md:bg-light-200 md:px-2 md:shadow-sm lg:hidden"
+            class="link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:fixed md:rounded-full md:bg-primary-400 md:px-2 md:text-light-200 md:shadow-sm md:hover:bg-primary-500 md:hover:text-light-200 lg:hidden"
             aria-controls="sidebar"
             aria-expanded="false"
             aria-haspopup="true"
@@ -129,7 +129,7 @@
             <span class="sr-only">Close</span>
           </button>
           <div class="divide-y divide-light-500">
-            <search-bar></search-bar>
+            <search-bar class="mb-4"></search-bar>
             <section class="py-4">
               <h2 class="font-light text-dark-300">Popular tags</h2>
               <ul id="sidebar_tags-list"></ul>
