@@ -125,19 +125,23 @@
             <i class="bi bi-x" aria-hidden="true"></i>
             <span class="sr-only">Close</span>
           </button>
-          <div class="divide-y divide-light-500">
-            <search-bar></search-bar>
-            <section class="py-4">
-              <h2 class="font-light text-dark-300">Popular tags</h2>
-              <ul id="sidebar_tags-list"></ul>
-            </section>
-            <section class="py-4">
-              <h2 class="font-light text-dark-300">Following</h2>
-              <ul id="sidebar_following-list"></ul>
-            </section>
-            <footer class="flex items-center gap-1 py-4 text-sm text-dark-300">
-              <i class="bi bi-c-circle"></i> <span>2023 Marte Knutsen</span>
-            </footer>
+          <div class="divide-y divide-light-500 lg:divide-y-0">
+            <search-bar class="mb-4 lg:hidden"></search-bar>
+            <div class="lg:divide-y lg:divide-light-500">
+              <section class="border-t-0 py-4">
+                <h2 class="font-light text-dark-300">Popular tags</h2>
+                <ul id="sidebar_tags-list"></ul>
+              </section>
+              <section class="py-4">
+                <h2 class="font-light text-dark-300">Following</h2>
+                <ul id="sidebar_following-list"></ul>
+              </section>
+              <footer
+                class="flex items-center gap-1 py-4 text-sm text-dark-300"
+              >
+                <i class="bi bi-c-circle"></i> <span>2023 Marte Knutsen</span>
+              </footer>
+            </div>
           </div>
         </div>
       </aside>
@@ -145,9 +149,18 @@
 
       <!-- Main -->
       <main
-        class="border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+        class="space-y-5 border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
       >
-        <h1 class="">Search - Social</h1>
+        <h1 class="sr-only">Search</h1>
+        <search-bar></search-bar>
+        <div class="flex justify-evenly">
+          <filter-button data-active="true">Latest</filter-button>
+          <filter-button>Popular</filter-button>
+          <filter-button>Tags</filter-button>
+          <filter-button>People</filter-button>
+          <filter-button>Media</filter-button>
+        </div>
+        <ul id="search-list" class="space-y-5"></ul>
       </main>
       <!-- Main end -->
     </div>
