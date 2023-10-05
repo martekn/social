@@ -8,7 +8,30 @@ module.exports = {
     "./index.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        transparent: "transparent",
+        primary: {
+          300: "#3F88A7",
+          400: "#126D94",
+          500: "#0D516E",
+          600: "#073649",
+        },
+        dark: {
+          200: "#808093",
+          300: "#5E5E6E",
+          400: "#4F5263",
+          500: "#0D1026",
+        },
+        light: {
+          200: "#fff",
+          300: "#fcfcfd",
+          400: "#F3F4F7",
+          450: "#E9EAED",
+          500: "#dce0ec",
+        },
+      },
+    },
     keyframes: {
       slide: {
         "0%": { transform: "translateX(130%)" },
@@ -23,28 +46,7 @@ module.exports = {
     container: {
       center: true,
     },
-    colors: {
-      transparent: "transparent",
-      primary: {
-        300: "#3F88A7",
-        400: "#126D94",
-        500: "#0D516E",
-        600: "#073649",
-      },
-      dark: {
-        200: "#808093",
-        300: "#5E5E6E",
-        400: "#4F5263",
-        500: "#0D1026",
-      },
-      light: {
-        200: "#fff",
-        300: "#fcfcfd",
-        400: "#F3F4F7",
-        450: "#E9EAED",
-        500: "#dce0ec",
-      },
-    },
+
     fontFamily: {
       base: [
         '"Open sans"',
