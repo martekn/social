@@ -30,7 +30,6 @@ export const handleFocusTrap = (
   e,
 ) => {
   if (focusContainer) {
-    console.log(focusContainer, focusableElements, exitFocusFunc);
     let firstFocusElement;
     let lastFocusElement;
     if ((focusContainer, focusableElements)) {

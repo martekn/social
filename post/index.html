@@ -36,76 +36,9 @@
     >
       <!-- Navigation -->
       <header class="self-start md:col-span-4 md:p-7 md:px-10 lg:col-span-3">
-        <div
-          class="flex items-center gap-3 border-b border-light-500 px-7 py-2 md:px-0 md:pt-0"
-        >
-          <a
-            href="/feed/"
-            class="link link-secondary mr-auto text-lg font-bold md:pt-0"
-            >Social</a
-          >
-
-          <!-- Search button -->
-          <button
-            class="link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:fixed md:rounded-full md:bg-primary-400 md:px-2 md:text-light-200 md:shadow-sm md:hover:bg-primary-500 md:hover:text-light-200 lg:hidden"
-            aria-controls="sidebar"
-            aria-expanded="false"
-            aria-haspopup="true"
-            id="sidebar-button"
-          >
-            <i class="bi bi-search" aria-hidden="true"></i>
-            <span class="sr-only">Open search menu</span>
-          </button>
-
-          <!-- Navigation button -->
-          <button
-            class="link link-secondary text-2xl md:hidden"
-            aria-controls="primary-navigation"
-            aria-expanded="false"
-            aria-haspopup="true"
-            id="nav-button"
-          >
-            <i class="bi bi-list" aria-hidden="true"></i>
-            <span class="sr-only">Open main menu</span>
-          </button>
-        </div>
-        <nav
-          class="inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static"
-          id="primary-navigation"
-          data-mobile-visible="false"
-        >
-          <button
-            class="link link-secondary ml-auto self-end text-2xl md:hidden"
-            aria-controls="primary-navigation"
-            aria-expanded="true"
-            id="nav-close"
-          >
-            <i class="bi bi-x" aria-hidden="true"></i>
-            <span class="sr-only">Close</span>
-          </button>
-          <ul>
-            <li>
-              <nav-item href="/feed/" icon="bi bi-house">Home</nav-item>
-            </li>
-            <li>
-              <nav-item href="/search/" icon="bi bi-search">Search</nav-item>
-            </li>
-            <li>
-              <nav-item icon="bi bi-plus-square" id="nav_create-post"
-                >Create post</nav-item
-              >
-            </li>
-            <li>
-              <nav-item href="/profile/" icon="bi bi-person">Profile</nav-item>
-            </li>
-            <li>
-              <nav-item icon="bi bi-box-arrow-right" id="nav_logout"
-                >Log out</nav-item
-              >
-            </li>
-          </ul>
-        </nav>
+        <navigation-component></navigation-component>
       </header>
+      <!-- Navigation end -->
 
       <!-- Sidebar -->
       <aside
