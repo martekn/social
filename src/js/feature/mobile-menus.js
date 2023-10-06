@@ -3,8 +3,6 @@ import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 
 const navButton = document.querySelector("#nav-button");
 const navClose = document.querySelector("#nav-close");
-const sidebarButton = document.querySelector("#sidebar-button");
-const sidebarClose = document.querySelector("#sidebar-close");
 
 const mobileMenuToggle = (button) => {
   const menuId = button.getAttribute("aria-controls");
@@ -29,19 +27,6 @@ const closeNav = (e) => {
   mobileMenuToggle(navButton);
 };
 
-const handleFocusSidebar = (e) => {
-  const sidebar = document.querySelector(
-    `#${sidebarButton.getAttribute("aria-controls")}`,
-  );
-
-  handleFocusTrap(sidebar, "button, a, input", closeSidebar, e);
-};
-
-const closeSidebar = (e) => {
-  mobileMenuToggle(sidebarButton);
-  document.removeEventListener("keydown", handleFocusSidebar);
-};
-
 export const setupMobileMenus = () => {
   navButton.addEventListener("click", (e) => {
     mobileMenuToggle(navButton);
@@ -49,11 +34,4 @@ export const setupMobileMenus = () => {
   });
 
   navClose.addEventListener("click", closeNav);
-
-  sidebarButton.addEventListener("click", (e) => {
-    mobileMenuToggle(sidebarButton);
-    document.addEventListener("keydown", handleFocusSidebar);
-  });
-
-  sidebarClose.addEventListener("click", closeSidebar);
 };

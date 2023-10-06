@@ -113,31 +113,7 @@
         class="inset-y-0 right-0 z-50 order-2 hidden w-full max-w-md bg-light-200 p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static"
         data-mobile-visible="false"
       >
-        <div class="container flex flex-col">
-          <button
-            class="link link-secondary ml-auto self-end text-2xl lg:hidden"
-            aria-controls="sidebar"
-            aria-expanded="true"
-            id="sidebar-close"
-          >
-            <i class="bi bi-x" aria-hidden="true"></i>
-            <span class="sr-only">Close</span>
-          </button>
-          <div class="divide-y divide-light-500">
-            <search-bar class="mb-4"></search-bar>
-            <section class="py-4">
-              <h2 class="font-light text-dark-300">Popular tags</h2>
-              <ul id="sidebar_tags-list"></ul>
-            </section>
-            <section class="py-4">
-              <h2 class="font-light text-dark-300">Following</h2>
-              <ul id="sidebar_following-list"></ul>
-            </section>
-            <footer class="flex items-center gap-1 py-4 text-sm text-dark-300">
-              <i class="bi bi-c-circle"></i> <span>2023 Marte Knutsen</span>
-            </footer>
-          </div>
-        </div>
+        <sidebar-component></sidebar-component>
       </aside>
       <!-- Sidebar end -->
 
