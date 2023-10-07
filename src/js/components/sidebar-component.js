@@ -50,13 +50,21 @@ class SidebarComponent extends HTMLElement {
    * Setup for focus trap
    * @param {MouseEvent} e - Event from click eventlistener
    */
-  handleFocusSidebar(e) {
+  // * The method has to be an arrow function, because of the context of the 'this' keyword in relation to class and eventlistener
+  // * In order to preserve the 'this' context the callback function also need to use .bind(this)
+  // * The reason being that the eventlistener callback has to be named in order to be removed at a later stage
+  handleFocusSidebar = (e) => {
     const sidebar = document.querySelector(
       `#${sidebarButton.getAttribute("aria-controls")}`,
     );
 
-    handleFocusTrap(sidebar, "button, a, input", this.closeSidebar, e);
-  }
+    handleFocusTrap(
+      sidebar,
+      "button, a, input",
+      this.closeSidebar.bind(this),
+      e,
+    );
+  };
 
   /**
    * Creates username element

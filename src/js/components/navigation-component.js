@@ -32,11 +32,6 @@ class NavigationComponent extends HTMLElement {
     });
 
     navClose.addEventListener("click", this.closeNav);
-    const button = this.querySelector("button");
-  }
-
-  connectedCallback() {
-    this.render();
   }
 
   openPostModal() {
@@ -61,13 +56,16 @@ class NavigationComponent extends HTMLElement {
    * Setup for focus trap
    * @param {MouseEvent} e - Event from click eventlistener
    */
-  handleFocusNav(e) {
+  // * The method has to be an arrow function, because of the context of the 'this' keyword in relation to class and eventlistener
+  // * In order to preserve the 'this' context the callback function also need to use .bind(this)
+  // * The reason being that the eventlistener callback has to be named in order to be removed at a later stage
+  handleFocusNav = (e) => {
     const nav = document.querySelector(
       `#${document.querySelector("#nav-button").getAttribute("aria-controls")}`,
     );
 
-    handleFocusTrap(nav, "button, a", this.closeNav, e);
-  }
+    handleFocusTrap(nav, "button, a", this.closeNav.bind(this), e);
+  };
 
   /**
    * Creates the topbar for the navigation
