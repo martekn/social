@@ -156,7 +156,10 @@ class SidebarComponent extends HTMLElement {
   }
 
   render() {
-    const sidebar = htmlUtilities.createHTML("div", "container flex flex-col");
+    const sidebar = htmlUtilities.createHTML(
+      "div",
+      "container flex flex-col overflow-y-auto h-full p-7 pt-2 md:pt-7 lg:px-10",
+    );
 
     const closeButton = htmlUtilities.createHTML(
       "button",
