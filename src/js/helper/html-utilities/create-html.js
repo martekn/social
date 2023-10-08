@@ -1,16 +1,20 @@
 import { decode } from "./decode.js";
 
 /**
- * Creates an html element
- * @param {String} tag html tag
- * @param {String|String[]} [classes] string or array of classes
- * @param {String} [text] Text to be set as innerText
- * @param {Object} [attributes] Key/value pair where the key is the attribute name and the value is the value of the attribute
- * @returns Returns an html element
+ * Creates an HTML element with optional classes, text, and attributes.
+ *
+ * @param {string} tag - The HTML element tag (e.g., "div", "a").
+ * @param {string|string[]|null} [classes] - CSS classes to add to the element (optional).
+ * @param {string} [text] - Text content to set for the element (optional).
+ * @param {Object|null} [attributes] - Object containing attributes to set on the element (optional).
+ *   The attributes object should have keys representing attribute names and values representing attribute values.
+ * @returns {HTMLElement} - The created HTML element.
+ *
  * @example
  * ```js
- * const div = createHTML("div", ["bg-red", "border-radius"], "Hello world", {id: "uniqueId"})
- * const div = createHTML("div", "bg-red border-radius", "Hello world", {id: "uniqueId"})
+// Create a div element with "example-class" and "custom-id" attributes, and text content.
+ * const divElement = createHTML("div", "example-class", "Hello, world!", { id: "custom-id" });
+ * // The resulting HTML element will be: <div class="example-class" id="custom-id">Hello, world!</div>
  * ```
  */
 export const createHTML = (tag, classes, text, attributes) => {
@@ -31,8 +35,8 @@ export const createHTML = (tag, classes, text, attributes) => {
   }
 
   if (attributes) {
-    const object = Object.entries(attributes);
-    for (const [key, value] of object) {
+    const array = Object.entries(attributes);
+    for (const [key, value] of array) {
       elem.setAttribute(key, value);
     }
   }

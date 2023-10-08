@@ -1,27 +1,26 @@
 /**
- * Traps the tab and shift+tab to inside the focusContainer until keys other than shift, tab or enter is pressed
- * @param {HTMLElement} focusContainer - Element which contains focusable elements
- * @param {String} focusableElements - String containing elements to focus in the format of css selectors
- * @param {Function} exitFocusFunc - Function thats called if keypress doesn't match shift, tab or enter
- * @param {KeyboardEvent} e - event passed from eventlistener
+ * Traps focus within a specified container until keys other than Shift, Tab, or Enter are pressed.
  *
- * @Example
- * ```js
- * // The eventlistener callback function needs to be named in order to remove it later
+ * @param {HTMLElement} focusContainer - The HTML element containing focusable elements.
+ * @param {string} focusableElements - A CSS selector for the focusable elements within the container.
+ * @param {Function} exitFocusFunc - The function to call if a keypress doesn't match Shift, Tab, or Enter.
+ * @param {KeyboardEvent} e - The keyboard event object passed from an event listener.
+ *
+ * @example
+ * // Event listener callback function (needs to be named for removal)
  * const setModalFocus = (e) => {
- *  handleFocusTrap(modal, "a, button, input", closeModal, e)
- * }
+ *   handleFocusTrap(modal, "a, button, input", closeModal, e);
+ * };
  *
- * // Add eventlistener when you open the modal
- * const openModal = (e) => {
- *  document.addEventListener("keydown", setModalFocus)
- * }
+ * // Add event listener when opening the modal
+ * const openModal = () => {
+ *   document.addEventListener("keydown", setModalFocus);
+ * };
  *
- * // Remove eventlistener when you close the modal
- * const closeModal = (e) => {
- *  document.removeEventlistener("keydown", setModalFocus)
- * }
- * ```
+ * // Remove event listener when closing the modal
+ * const closeModal = () => {
+ *   document.removeEventListener("keydown", setModalFocus);
+ * };
  */
 export const handleFocusTrap = (
   focusContainer,

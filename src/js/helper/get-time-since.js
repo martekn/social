@@ -14,13 +14,21 @@ const months = {
 };
 
 /**
- * Gets human readable time string
- * @param {Date} dateInput - Date you want to calculate from to now.
- * @returns String
+ * Get a human-readable time string representing the time elapsed since a given date.
+ *
+ * @param {string|Date} dateInput - The date to calculate the time difference from. Accepts a string in ISO 8601 format or a Date object.
+ * @returns {string} - A human-readable time string, such as a full date, days, hours, minutes, or "Just now."
+ *
  * @example
  * ```js
- * const string = getTimeSince("2023-10-03T12:40:04.628Z")
- * // Will return either date, days since, hours since, minutes since or just now
+ * // Usage with ISO 8601 string
+ * const string = getTimeSince("2023-10-03T12:40:04.628Z");
+ * // Possible return values: "October 3", "7 d", "5 t", "45 m", "Just now"
+ *
+ * // Usage with Date object
+ * const date = new Date("2023-10-03T12:40:04.628Z");
+ * const string = getTimeSince(date);
+ * // Possible return values: "October 3", "7 d", "5 t", "45 m", "Just now"
  * ```
  */
 export const getTimeSince = (dateInput) => {
