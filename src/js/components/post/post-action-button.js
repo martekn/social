@@ -1,8 +1,13 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
-class PostAction extends HTMLElement {
-  constructor() {
+export class PostActionButton extends HTMLElement {
+  constructor(text, iconClasses, type, href) {
     super();
+
+    this.text = text ?? "";
+    this.iconClasses = iconClasses ?? "";
+    this.type = type ?? "button";
+    this.href = href ?? "#";
   }
 
   connectedCallback() {
@@ -14,25 +19,25 @@ class PostAction extends HTMLElement {
     const actionClasses =
       "p-1 hover:bg-light-450 w-full flex hover:text-dark-500 align-middle gap-2 justify-center rounded-md transition-all duration-200 ease-in-out";
 
-    if (this.getAttribute("type") === "link") {
+    if (this.type === "link") {
       action = htmlUtilities.createHTML("a", actionClasses, null, {
-        href: this.getAttribute("href"),
+        href: this.href,
       });
     } else {
       action = htmlUtilities.createHTML("button", actionClasses);
     }
-    const icon = htmlUtilities.createHTML("i", this.getAttribute("icon"));
+    const icon = htmlUtilities.createHTML("i", this.iconClasses);
     const buttonText = htmlUtilities.createHTML(
       "span",
       "sr-only sm:not-sr-only",
-      this.textContent,
+      this.text,
     );
-    this.textContent = "";
+
     action.append(...[icon, buttonText]);
 
     this.classList.add("w-full");
-    this.appendChild(action);
+    this.append(action);
   }
 }
 
-customElements.define("post-action", PostAction);
+customElements.define("post-action-button", PostActionButton);
