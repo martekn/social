@@ -1,9 +1,12 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
-class Username extends HTMLElement {
+export class UserBadge extends HTMLElement {
   constructor({ avatar, name }) {
     super();
-    this.avatar = avatar ?? this.getAttribute("image-url") ?? "";
+    this.avatar =
+      avatar ||
+      this.getAttribute("image-url") ||
+      "/assets/images/avatar-placeholder.jpg";
     this.name = name ?? this.getAttribute("name") ?? "";
   }
 
@@ -33,9 +36,9 @@ class Username extends HTMLElement {
 
     const name = htmlUtilities.createHTML("span", null, this.name);
 
-    htmlUtilities.appendArray([avatar, name], username);
-    this.appendChild(username);
+    username.append(...[avatar, name]);
+    this.append(username);
   }
 }
 
-customElements.define("username-item", Username);
+customElements.define("user-badge", UserBadge);
