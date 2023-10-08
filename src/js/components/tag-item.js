@@ -1,8 +1,10 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
-class TagItem extends HTMLElement {
-  constructor() {
+export class TagItem extends HTMLElement {
+  constructor(tag, tagStyle) {
     super();
+    this.tag = tag ?? this.getAttribute("tag") ?? "";
+    this.tagStyle = tagStyle ?? this.getAttribute("tag-style") ?? "secondary";
   }
 
   connectedCallback() {
@@ -11,10 +13,10 @@ class TagItem extends HTMLElement {
 
   render() {
     const tag = htmlUtilities.createHTML("a", "py-1 w-full", null, {
-      href: this.getAttribute("href"),
+      href: `/search/?tag=${this.tag.replace("#", "")}`,
     });
 
-    if (this.dataset.style === "primary") {
+    if (this.tagStyle === "primary") {
       tag.classList.add("link-primary");
     } else {
       tag.classList.add("link-secondary");
@@ -29,12 +31,11 @@ class TagItem extends HTMLElement {
     const tagName = htmlUtilities.createHTML(
       "span",
       "font-medium",
-      this.textContent,
+      this.tag.replace("#", ""),
     );
 
-    htmlUtilities.appendArray([hashtag, tagName], tag);
-    this.innerHTML = "";
-    this.appendChild(tag);
+    tag.append(...[hashtag, tagName]);
+    this.append(tag);
   }
 }
 
