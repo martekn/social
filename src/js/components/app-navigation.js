@@ -4,17 +4,7 @@ import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
 const modalPostCreation = document.querySelector("#modal_post-creation");
 
-/**
- * The component has to be inserted into an existing element with existing classes
- * If not the layout will shift quite heavily on load
- * @Example
- * ```html
- *<header class="self-start md:col-span-4 md:p-7 md:px-10 lg:col-span-3">
-    <navigation-component></navigation-component>
-  </header>
- * ```
- */
-class NavigationComponent extends HTMLElement {
+class AppNavigation extends HTMLElement {
   constructor() {
     super();
     this.currentPage = window.location.pathname;
@@ -43,8 +33,8 @@ class NavigationComponent extends HTMLElement {
   }
 
   /**
-   * Toggles menu visibility and removes eventhandler
-   * @param {MouseEvent} e - Event from click
+   * Closes the navigation menu.
+   * @param {MouseEvent} e - Event from click.
    */
   closeNav(e) {
     document.removeEventListener("keydown", this.handleFocusNav);
@@ -52,9 +42,8 @@ class NavigationComponent extends HTMLElement {
   }
 
   /**
-   * Callback function for event
-   * Setup for focus trap
-   * @param {MouseEvent} e - Event from click eventlistener
+   * Handles focus trapping in the navigation menu.
+   * @param {MouseEvent} e - Click event.
    */
   // * The method has to be an arrow function, because of the context of the 'this' keyword in relation to class and eventlistener
   // * In order to preserve the 'this' context the callback function also need to use .bind(this)
@@ -68,8 +57,8 @@ class NavigationComponent extends HTMLElement {
   };
 
   /**
-   * Creates the topbar for the navigation
-   * @returns HTMLElement for the topbar
+   * Creates the top bar for navigation.
+   * @returns {HTMLElement} - Top bar element.
    */
   createTopbar() {
     const topbar = htmlUtilities.createHTML(
@@ -133,9 +122,9 @@ class NavigationComponent extends HTMLElement {
   }
 
   /**
-   * Creates the navItem element with icon and text
-   * @param {{ name, href, type, icon, id }} item - object containing info about the item
-   * @returns NavItem element
+   * Creates a navigation item element with icon and text.
+   * @param {{ name, href, type, icon, id }} item - Object containing info about the item
+   * @returns {HTMLElement} - Navigation item element.
    */
   createNavItem(item) {
     const { name, href, type, icon, id } = item;
@@ -173,8 +162,8 @@ class NavigationComponent extends HTMLElement {
   }
 
   /**
-   * Creates and appends nav items to ListElement
-   * @param {HTMLElement} list - Element to append li tags
+   * Renders navigation items and appends them to the list.
+   * @param {HTMLElement} list - Element to which li tags are appended.
    */
   renderNavList(list) {
     for (const item of this.navigationItems) {
@@ -186,8 +175,8 @@ class NavigationComponent extends HTMLElement {
   }
 
   /**
-   * Creates the nav html element
-   * @returns Nav HTMLElement
+   * Creates the navigation HTML element.
+   * @returns {HTMLElement} - Navigation element.
    */
   createNav() {
     const navClasses =
@@ -223,11 +212,13 @@ class NavigationComponent extends HTMLElement {
   }
 
   render() {
+    const header = htmlUtilities.createHTML("header");
     const topbar = this.createTopbar();
     const nav = this.createNav();
 
-    this.append(...[topbar, nav]);
+    header.append(...[topbar, nav]);
+    this.append(header);
   }
 }
 
-customElements.define("navigation-component", NavigationComponent);
+customElements.define("app-navigation", AppNavigation);
