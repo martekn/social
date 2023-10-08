@@ -64,4 +64,8 @@
   .link-secondary {
     @apply text-dark-500 hover:text-dark-300 active:text-dark-200;
   }
+
+  .sidebar {
+    @apply container inset-y-0 right-0 z-50 order-2 hidden h-full w-full max-w-md overflow-y-auto bg-light-200  p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static;
+  }
 }
