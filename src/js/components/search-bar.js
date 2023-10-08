@@ -1,8 +1,9 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
-class SearchBar extends HTMLElement {
-  constructor() {
+export class SearchBar extends HTMLElement {
+  constructor(type) {
     super();
+    this.type = type || this.getAttribute("type") || "";
   }
 
   connectedCallback() {
@@ -27,9 +28,10 @@ class SearchBar extends HTMLElement {
   }
 
   render() {
-    const searchBar = htmlUtilities.createHTML("div", "relative text-dark-200");
-    searchBar.classList.add(...this.classList);
-    this.className = "";
+    const searchbar = htmlUtilities.createHTML("div", "relative text-dark-200");
+    if (this.type === "sidebar-search") {
+      searchbar.classList.add("mb-4");
+    }
 
     const input = htmlUtilities.createHTML("input", null, null, {
       placeholder: "Search",
@@ -44,9 +46,9 @@ class SearchBar extends HTMLElement {
     const icon = htmlUtilities.createHTML("i", ["bi", "bi-search"]);
 
     button.append(icon);
-    htmlUtilities.appendArray([input, button], searchBar);
+    searchbar.append(...[input, button]);
 
-    this.appendChild(searchBar);
+    this.append(searchbar);
   }
 }
 
