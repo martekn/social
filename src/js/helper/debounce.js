@@ -16,7 +16,7 @@
 
  * ```
  */
-const debounce = (func, timeout = 150) => {
+export const debounce = (func, timeout = 150) => {
   let timer;
   return function (e) {
     if (timer) clearTimeout(timer);
