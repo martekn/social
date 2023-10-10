@@ -1,13 +1,14 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
 export class PostActionButton extends HTMLElement {
-  constructor(text, iconClasses, type, href) {
+  constructor(text, iconClasses, type, href, buttonId, postId) {
     super();
 
     this.text = text ?? "";
     this.iconClasses = iconClasses ?? "";
     this.type = type ?? "button";
     this.href = href ?? "#";
+    this.id = `${buttonId}-${postId}`;
   }
 
   connectedCallback() {
@@ -22,9 +23,12 @@ export class PostActionButton extends HTMLElement {
     if (this.type === "link") {
       action = htmlUtilities.createHTML("a", actionClasses, null, {
         href: this.href,
+        id: this.id,
       });
     } else {
-      action = htmlUtilities.createHTML("button", actionClasses);
+      action = htmlUtilities.createHTML("button", actionClasses, null, {
+        id: this.id,
+      });
     }
     const icon = htmlUtilities.createHTML("i", this.iconClasses);
     const buttonText = htmlUtilities.createHTML(

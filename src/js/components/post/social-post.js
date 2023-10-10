@@ -1,22 +1,28 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
-import { getTimeSince } from "../../helper/get-time-since.js";
-import { TagItem } from "../tag-item.js";
-import { PostActionButton } from "./post-action-button.js";
+import { PostHeader } from "./post-header.js";
+import { PostMain } from "./post-main.js";
+import { PostFooter } from "./post-footer.js";
+import "./post-comment-form.js";
+import { PostCommentSection } from "./post-comment-section.js";
+import { PostComment } from "./post-comment.js";
 
 export class SocialPost extends HTMLElement {
-  constructor({
-    id,
-    title,
-    body,
-    tags,
-    media,
-    created,
-    updated,
-    author,
-    reactions,
-    comments,
-    _count,
-  }) {
+  constructor(
+    {
+      id,
+      title,
+      body,
+      tags,
+      media,
+      created,
+      updated,
+      author: { name, avatar },
+      reactions,
+      comments,
+      _count,
+    },
+    profile,
+  ) {
     super();
 
     this.id = id ?? "";
@@ -26,220 +32,121 @@ export class SocialPost extends HTMLElement {
     this.media = media ?? "";
     this.created = created ?? "";
     this.updated = updated ?? "";
-    this.author = author ?? {};
+    this.name = name ?? "";
+    this.avatar = avatar || "/assets/images/avatar-placeholder.jpg";
     this.reactions = reactions ?? [];
     this.comments = comments ?? [];
-    this.count = _count ?? {};
+    this.count = _count ?? { reactions: 0, comments: 0 };
+    this.loggedInUser = {
+      name: profile.name,
+      avatar: profile.avatar,
+      following: profile.following,
+    };
   }
 
   connectedCallback() {
     this.render();
+    this.displayComments();
+
+    const commentAction = this.querySelector(`#action-comment-${this.id}`);
+    const commentButton = this.querySelector(`#comment-counter-${this.id}`);
+
+    if (commentButton) {
+      commentButton.addEventListener("click", this.showComments);
+    }
+
+    commentAction.addEventListener("click", this.showCommentWithFocus);
   }
 
-  createHeader() {
-    const time = getTimeSince(this.created);
-    const isFollowing = true;
-    const isEdited = !this.created === this.updated;
+  showCommentWithFocus = () => {
+    this.showComments();
+    const input = this.querySelector(`#comment-form-0-${this.id} textarea`);
+    input.focus();
+  };
 
-    const header = htmlUtilities.createHTML(
-      "header",
-      "flex gap-2 align-middle",
-    );
+  showComments = (e) => {
+    const actionBar = this.querySelector("footer [data-comments-visible]");
+    actionBar.setAttribute("data-comments-visible", "true");
+    this.querySelector("#comment-section").classList.remove("hidden");
+  };
 
-    // Avatar
-    const imgWrapper = htmlUtilities.createHTML(
-      "a",
-      "w-11 h-11 my-auto",
-      null,
-      { href: `/profile/?u=${this.author.name}` },
-    );
-
-    const img = htmlUtilities.createHTML(
-      "img",
-      "object-cover rounded-full w-full h-full",
-      null,
-      {
-        src: this.author?.avatar ?? "/assets/images/avatar-placeholder.jpg",
-        alt: this.author.name,
-      },
-    );
-    const imgSrOnly = htmlUtilities.createHTML(
-      "span",
-      "sr-only",
-      this.author.name,
-    );
-    imgWrapper.append(...[img, imgSrOnly]);
-
-    // Details
-    const headerDetails = htmlUtilities.createHTML("div");
-    const userDetails = htmlUtilities.createHTML("div", "flex gap-3");
-    const username = htmlUtilities.createHTML(
-      "a",
-      "link link-secondary p-0",
-      this.author.name,
-      { href: `/profile/?u=${this.author.name}` },
-    );
-    userDetails.append(username);
-
-    if (!isFollowing) {
-      const follow = htmlUtilities.createHTML(
-        "button",
-        "before:w-1 before:rounded-full before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
-        "Follow",
-      );
-      userDetails.append(follow);
+  findRootComment(currentComment) {
+    if (!currentComment.replyToId) {
+      return currentComment.id;
     }
 
-    const timeDetails = htmlUtilities.createHTML(
-      "div",
-      "flex gap-3 text-dark-400 -mt-0.5 text-sm font-light font-accent",
+    const parentComment = this.comments.find(
+      ({ id }) => id === currentComment.replyToId,
     );
-    const timeSince = htmlUtilities.createHTML("div", null, time);
-    timeDetails.append(timeSince);
 
-    if (isEdited) {
-      const edited = htmlUtilities.createHTML(
-        "div",
-        "before:w-0.5 before:rounded-full before:h-0.5 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center",
-        "Edited",
-      );
-      timeDetails.append(edited);
+    if (!parentComment) {
+      return currentComment.id;
     }
 
-    headerDetails.append(...[userDetails, timeDetails]);
-
-    header.append(...[imgWrapper, headerDetails]);
-
-    return header;
+    return this.findRootComment(parentComment);
   }
 
-  createMain() {
-    const main = htmlUtilities.createHTML("main", "space-y-2");
+  displayComments() {
+    const list = this.querySelector("#comments-list");
+    const rootComments = this.comments.filter(({ replyToId }) => !replyToId);
+    const nestedComments = this.comments.filter(({ replyToId }) => replyToId);
 
-    if (this.media) {
-      const postImage = htmlUtilities.createHTML(
-        "img",
-        "rounded-md mb-4",
-        null,
-        {
-          src: this.media,
-          alt: "",
-        },
+    for (const comment of rootComments) {
+      const li = htmlUtilities.createHTML("li", null, null, {
+        id: `comment-li-${comment.id}`,
+      });
+      const postComment = new PostComment(
+        comment,
+        true,
+        this.id,
+        this.loggedInUser,
       );
-      main.append(postImage);
+      li.append(postComment);
+      list.append(li);
     }
 
-    if (this.title) {
-      const postTitle = htmlUtilities.createHTML("h2", null, this.title);
-      main.append(postTitle);
-    }
-
-    if (this.body) {
-      const postBody = htmlUtilities.createHTML(
-        "p",
-        "text-dark-400",
-        this.body,
+    for (const comment of nestedComments) {
+      const list = this.querySelector(
+        `#comment-${this.findRootComment(comment)} ul`,
       );
-      main.append(postBody);
-    }
-
-    return main;
-  }
-
-  createFooter() {
-    const footer = htmlUtilities.createHTML("footer", "space-y-2");
-    const footerDetails = htmlUtilities.createHTML(
-      "div",
-      "flex flex-col sm:justify-between sm:flex-row",
-    );
-
-    const tagList = htmlUtilities.createHTML("ul", "flex gap-2");
-    if (this.tags.length > 0) {
-      for (const tag of this.tags) {
-        const li = htmlUtilities.createHTML("li");
-        const tagElem = new TagItem(tag, "primary");
-
-        li.append(tagElem);
-        tagList.append(li);
-      }
-    }
-
-    const reactionDetails = htmlUtilities.createHTML(
-      "div",
-      "space-x-5 text-sm flex text-dark-400 font-accent",
-    );
-
-    if (this.count.reactions > 0) {
-      const wrapper = htmlUtilities.createHTML("div", "space-x-1");
-      const heartCounter = htmlUtilities.createHTML(
-        "span",
-        "font-medium",
-        this.count.reactions,
+      const li = htmlUtilities.createHTML("li", null, null, {
+        id: `comment-li-${comment.id}`,
+      });
+      const postComment = new PostComment(
+        comment,
+        false,
+        this.id,
+        this.loggedInUser,
       );
-      const heartText = htmlUtilities.createHTML("span", null, "hearts");
-      wrapper.append(...[heartCounter, heartText]);
-
-      reactionDetails.append(wrapper);
+      li.append(postComment);
+      list.append(li);
     }
-
-    if (this.count.comments > 0) {
-      const wrapper = htmlUtilities.createHTML(
-        "button",
-        "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0",
-      );
-      const commentCounter = htmlUtilities.createHTML(
-        "span",
-        "font-medium",
-        this.count.comments,
-      );
-      const commentText = htmlUtilities.createHTML("span", null, "comments");
-      wrapper.append(...[commentCounter, commentText]);
-
-      reactionDetails.append(wrapper);
-    }
-
-    footerDetails.append(...[tagList, reactionDetails]);
-
-    const actions = htmlUtilities.createHTML(
-      "div",
-      "flex justify-evenly text-dark-400 border-t pt-1 font-medium border-light-500",
-    );
-
-    const reactionButton = new PostActionButton(
-      "Heart",
-      "bi bi-heart",
-      "button",
-    );
-    const commentButton = new PostActionButton(
-      "Comment",
-      "bi bi-chat-square",
-      "button",
-    );
-    const viewButton = new PostActionButton(
-      "View",
-      "bi bi-box-arrow-up-right",
-      "link",
-      `/post/?id=${this.id}`,
-    );
-
-    actions.append(...[reactionButton, commentButton, viewButton]);
-
-    footer.append(...[footerDetails, actions]);
-    return footer;
   }
 
   render() {
     const article = htmlUtilities.createHTML(
       "article",
-      "rounded-md bg-light-200 space-y-4 px-6 pt-6 pb-1 shadow-sm",
+      "rounded-md bg-light-200 grid gap-4 px-6 pt-6 pb-1 shadow-sm",
     );
 
-    const header = this.createHeader();
-    const main = this.createMain();
+    const header = new PostHeader(
+      this.created,
+      this.updated,
+      this.name,
+      this.avatar,
+    );
+    const main = new PostMain(this.title, this.body, this.media);
 
-    const footer = this.createFooter();
+    const footer = new PostFooter(this.id, this.tags, this.count);
 
-    article.append(...[header, main, footer]);
+    const commentSection = new PostCommentSection(
+      this.name,
+      this.avatar,
+      this.id,
+      this.loggedInUser,
+    );
+
+    article.append(...[header, main, footer, commentSection]);
     this.append(article);
   }
 }
