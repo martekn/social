@@ -2,6 +2,11 @@ import { renderPosts } from "../helper/renderPosts.js";
 import { profile } from "../const/test-data/profile.js";
 import { profilePosts } from "../const/test-data/profile-posts.js";
 import { ProfileModal } from "../components/profile/profile-modal.js";
+import { tags } from "../const/test-data/tags.js";
+
+const sidebar = document.querySelector("app-sidebar");
+sidebar.renderFollowing(profile.following);
+sidebar.renderTags(tags);
 
 /**
  * This function is responsible for rendering the user's profile page, including components like the profile card and social media posts.

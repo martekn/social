@@ -14,8 +14,6 @@ class AppSidebar extends HTMLElement {
   }
   constructor() {
     super();
-    this.following = [];
-    this.tags = [];
     this.isSearchpage = window.location.pathname === "/search/";
   }
 
@@ -29,16 +27,6 @@ class AppSidebar extends HTMLElement {
     });
 
     sidebarClose.addEventListener("click", this.closeSidebar);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "tags-loaded" && newValue === "true") {
-      this.renderTags(this.tags);
-    }
-
-    if (name === "following-loaded" && newValue === "true") {
-      this.renderFollowing(this.following);
-    }
   }
 
   /**
@@ -90,16 +78,16 @@ class AppSidebar extends HTMLElement {
     return section;
   }
 
-  renderTags() {
-    for (const tag of this.tags) {
+  renderTags(tags) {
+    for (const tag of tags) {
       const li = htmlUtilities.createHTML("li");
       li.append(new TagItem(tag, "secondary"));
       document.querySelector("#tags-list").append(li);
     }
   }
 
-  renderFollowing() {
-    for (const user of this.following) {
+  renderFollowing(following) {
+    for (const user of following) {
       const li = htmlUtilities.createHTML("li");
       const username = new UserBadge(user);
       li.append(username);
