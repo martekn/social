@@ -6,6 +6,7 @@ import htmlUtilities from "./html-utilities/index.js";
  *
  * @param {Array} posts - An array of social media posts to be rendered.
  * @param {HTMLElement} parent - The parent element to which the rendered posts will be appended.
+ * @param {{name, avatar, followers}} profile - The logged in users profile information
  *
  * @example
  * ```js
@@ -18,11 +19,11 @@ import htmlUtilities from "./html-utilities/index.js";
  * renderPosts(posts, postContainer);
  * ```
  */
-export const renderPosts = (posts, parent) => {
+export const renderPosts = (posts, parent, profile) => {
   const articles = [];
   for (const post of posts) {
     const li = htmlUtilities.createHTML("li");
-    li.append(new SocialPost(post));
+    li.append(new SocialPost(post, profile));
     articles.push(li);
   }
 
