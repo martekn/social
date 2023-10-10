@@ -36,13 +36,14 @@
     </header>
     <div class="grid min-h-full flex-1 place-items-center p-5">
       <form
+        id="login"
         data-active="true"
         action="/profile/"
         class="container hidden rounded-md bg-light-200 px-5 py-16 shadow-sm data-[active='true']:block sm:max-w-lg sm:p-16"
       >
         <h2 class="text-3xl font-bold">Log in</h2>
         <div
-          class="text-red-800 bg-red-50 mt-5 hidden items-center rounded-md p-4 text-sm font-medium data-[error='true']:flex"
+          class="mt-5 hidden items-center rounded-md bg-red-50 p-4 text-sm font-medium text-red-800 data-[error='true']:flex"
           role="alert"
         >
           <i class="bi bi-exclamation-circle mr-2" aria-hidden="true"></i>
@@ -60,7 +61,7 @@
               required
             />
             <p
-              class="text-red-800 mt-2 hidden gap-1 text-sm data-[error='true']:flex"
+              class="mt-2 hidden gap-1 text-sm text-red-800 data-[error='true']:flex"
             >
               <i class="bi bi-exclamation-circle" aria-hidden="true"></i
               ><span>Email should end with @stud.noroff.no or @noroff.no</span>
@@ -77,7 +78,7 @@
               required
             />
             <p
-              class="text-red-800 mt-2 hidden gap-1 text-sm data-[error='true']:flex"
+              class="mt-2 hidden gap-1 text-sm text-red-800 data-[error='true']:flex"
             >
               <i class="bi bi-exclamation-circle" aria-hidden="true"></i
               ><span>Password needs to be 8 characters long</span>
@@ -90,12 +91,15 @@
         </div>
         <p class="text-dark-300">
           Dont have an account?
-          <a href="/?a=register" class="link link-primary p-0 font-semibold"
+          <a
+            href="/?auth=register"
+            class="link link-primary ml-1 p-0 font-semibold"
             >Sign up</a
           >
         </p>
       </form>
       <form
+        id="register"
         data-active="false"
         action="/profile/"
         class="container hidden max-w-lg rounded-md bg-light-200 px-10 py-16 shadow-sm data-[active='true']:block sm:p-16"
@@ -112,7 +116,7 @@
               required
             />
             <p
-              class="text-red-800 mt-2 hidden gap-1 text-sm data-[error='true']:flex"
+              class="mt-2 hidden gap-1 text-sm text-red-800 data-[error='true']:flex"
             >
               <i class="bi bi-exclamation-circle" aria-hidden="true"></i
               ><span
@@ -131,7 +135,7 @@
               required
             />
             <p
-              class="text-red-800 mt-2 hidden gap-1 text-sm data-[error='true']:flex"
+              class="mt-2 hidden gap-1 text-sm text-red-800 data-[error='true']:flex"
             >
               <i class="bi bi-exclamation-circle" aria-hidden="true"></i
               ><span>Email should end with @stud.noroff.no or @noroff.no</span>
@@ -148,7 +152,7 @@
               required
             />
             <p
-              class="text-red-800 mt-2 hidden gap-1 text-sm data-[error='true']:flex"
+              class="mt-2 hidden gap-1 text-sm text-red-800 data-[error='true']:flex"
             >
               <i class="bi bi-exclamation-circle" aria-hidden="true"></i
               ><span>Password needs to be 8 characters long</span>
@@ -161,7 +165,9 @@
         </div>
         <p class="text-dark-300">
           Already have an account?
-          <a href="/?a=login" class="link link-primary p-0 font-semibold"
+          <a
+            href="/?auth=login"
+            class="link link-primary ml-1 p-0 font-semibold"
             >Log in</a
           >
         </p>
