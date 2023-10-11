@@ -14,17 +14,34 @@ export class ProfileModal extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    this.addEventListener("click", (e) => {
+      const modal = this.querySelector(`#${this.modalType}-modal`);
+      if (e.target == modal) {
+        modal.close();
+      }
+    });
   }
 
   render() {
     const modal = htmlUtilities.createHTML(
       "dialog",
-      "flex h-[90vh] max-h-[600px] max-w-md flex-col overflow-hidden p-0",
+      "h-[90vh] max-h-[600px] max-w-md",
       null,
       {
         id: `${this.modalType}-modal`,
       },
     );
+    const modalContainer = htmlUtilities.createHTML(
+      "div",
+      "flex flex-col h-full w-full overflow-hidden p-0",
+      null,
+      {
+        id: `${this.modalType}-modal_container`,
+      },
+    );
+    modal.append(modalContainer);
+
     const container = htmlUtilities.createHTML(
       "div",
       "flex items-center justify-between border-b border-light-450 px-6 py-2",
@@ -62,7 +79,7 @@ export class ProfileModal extends HTMLElement {
       li.append(userBadge);
       list.append(li);
     }
-    modal.append(...[container, list]);
+    modalContainer.append(...[container, list]);
     this.append(modal);
   }
 }
