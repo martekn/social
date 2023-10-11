@@ -134,6 +134,7 @@ export class SocialPost extends HTMLElement {
       this.updated,
       this.name,
       this.avatar,
+      this.loggedInUser.following,
     );
     const main = new PostMain(this.title, this.body, this.media);
 

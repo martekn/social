@@ -2,12 +2,15 @@ import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 
 export class PostHeader extends HTMLElement {
-  constructor(created, updated, name, avatar) {
+  constructor(created, updated, name, avatar, following) {
     super();
     this.created = created;
     this.updated = updated;
     this.name = name;
     this.avatar = avatar;
+
+    this.isEdited = this.created !== this.updated;
+    this.isFollowing = following.some((user) => user.name === this.name);
   }
 
   connectedCallback() {
@@ -15,10 +18,6 @@ export class PostHeader extends HTMLElement {
   }
 
   render() {
-    const time = getTimeSince(this.created);
-    const isFollowing = true;
-    const isEdited = !this.created === this.updated;
-
     const header = htmlUtilities.createHTML(
       "header",
       "flex gap-2 align-middle",
@@ -55,7 +54,7 @@ export class PostHeader extends HTMLElement {
     );
     userDetails.append(username);
 
-    if (!isFollowing) {
+    if (!this.isFollowing) {
       const follow = htmlUtilities.createHTML(
         "button",
         "before:w-1 before:rounded-full before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
@@ -66,15 +65,21 @@ export class PostHeader extends HTMLElement {
 
     const timeDetails = htmlUtilities.createHTML(
       "div",
-      "flex gap-3 text-dark-400 -mt-0.5 text-sm font-light font-accent",
+      "flex gap-2 text-dark-400 -mt-0.5 text-sm font-light font-accent",
     );
-    const timeSince = htmlUtilities.createHTML("div", null, time);
+    const timeSince = htmlUtilities.createHTML(
+      "div",
+      null,
+      getTimeSince(this.created),
+    );
+
     timeDetails.append(timeSince);
 
-    if (isEdited) {
+    // console.log(this.isEdited);
+    if (this.isEdited) {
       const edited = htmlUtilities.createHTML(
         "div",
-        "before:w-0.5 before:rounded-full before:h-0.5 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center",
+        "before:w-0.5 before:rounded-full before:h-0.5 gap-2 align-middle flex before:block before:bg-dark-300 before:self-center",
         "Edited",
       );
       timeDetails.append(edited);
