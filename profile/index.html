@@ -51,53 +51,6 @@
       <!-- Main end -->
     </div>
 
-    <!-- Post creation modal -->
-    <dialog id="modal_post-creation">
-      <form action="" method="POST" class="space-y-5">
-        <h2>Create a post</h2>
-        <div class="space-y-2">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" placeholder="Post title" />
-        </div>
-
-        <div class="space-y-2">
-          <label for="media">URL to video or image</label>
-          <input
-            type="text"
-            id="media"
-            name="media"
-            placeholder="https://example.com"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="tags">Tags</label>
-          <input
-            type="text"
-            id="tags"
-            name="tags"
-            placeholder="Separate tags with comma"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="body">Body text</label>
-          <textarea id="body" name="body" placeholder="Body text"></textarea>
-        </div>
-
-        <div class="flex justify-end gap-4 pt-3">
-          <button class="font-accent font-medium text-primary-400">
-            Cancel
-          </button>
-          <button
-            type="submit"
-            class="rounded-md bg-primary-400 px-6 py-2 font-accent font-medium text-light-200"
-          >
-            Post
-          </button>
-        </div>
-      </form>
-    </dialog>
-    <!-- Post creation modal end -->
+    <post-modal></post-modal>
   </body>
 </html>

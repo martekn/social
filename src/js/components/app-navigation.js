@@ -2,7 +2,6 @@ import htmlUtilities from "../helper/html-utilities/index.js";
 import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
-const modalPostCreation = document.querySelector("#modal_post-creation");
 
 class AppNavigation extends HTMLElement {
   constructor() {
@@ -22,10 +21,6 @@ class AppNavigation extends HTMLElement {
     });
 
     navClose.addEventListener("click", this.closeNav);
-  }
-
-  openPostModal() {
-    modalPostCreation.showModal();
   }
 
   userLogout() {
@@ -134,7 +129,9 @@ class AppNavigation extends HTMLElement {
     if (type === "button") {
       navItem = htmlUtilities.createHTML("button", classes, null, { id: id });
       if (id === "create-post") {
-        navItem.addEventListener("click", this.openPostModal);
+        navItem.addEventListener("click", (e) => {
+          document.querySelector("#modal_post-creation").showModal();
+        });
       } else if (id === "logout") {
         navItem.addEventListener("click", this.userLogout);
       }
