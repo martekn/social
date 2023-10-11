@@ -10,6 +10,7 @@ export class InputGroup extends HTMLElement {
     inputPlaceholder,
     inputName,
     errorMessage,
+    isRequired = false,
   ) {
     super();
     this.inputLabel = inputLabel;
@@ -19,6 +20,7 @@ export class InputGroup extends HTMLElement {
     this.inputPlaceholder = inputPlaceholder;
     this.inputName = inputName;
     this.errorMessage = errorMessage;
+    this.isRequired = isRequired;
   }
 
   connectedCallback() {
@@ -37,6 +39,10 @@ export class InputGroup extends HTMLElement {
       placeholder: this.inputPlaceholder,
       name: this.inputName,
     });
+
+    if (this.isRequired) {
+      input.setAttribute("required", "true");
+    }
 
     group.append(...[label, input]);
     if (this.errorMessage) {

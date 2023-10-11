@@ -71,6 +71,7 @@ export class PostModal extends HTMLElement {
       "Post title",
       "title",
       "Title is required",
+      true,
     );
     const mediaInput = new InputGroup(
       "URL to video or image",
