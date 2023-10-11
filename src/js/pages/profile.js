@@ -3,6 +3,7 @@ import { profile } from "../const/test-data/profile.js";
 import { profilePosts } from "../const/test-data/profile-posts.js";
 import { ProfileModal } from "../components/profile/profile-modal.js";
 import { tags } from "../const/test-data/tags.js";
+import { EditProfile } from "../components/edit-profile.js";
 
 const sidebar = document.querySelector("app-sidebar");
 sidebar.renderFollowing(profile.following);
@@ -44,3 +45,26 @@ const renderProfile = (user, posts) => {
 };
 
 renderProfile(profile, profilePosts);
+
+const query = new URLSearchParams(window.location.search).get("r");
+const isNewUser = query === "registered";
+
+if (isNewUser) {
+  const setupProfile = new EditProfile(
+    profile.name,
+    profile.avatar,
+    profile.banner,
+    isNewUser,
+  );
+
+  document.body.append(setupProfile);
+  setupProfile.querySelector("dialog").showModal();
+}
+
+const editProfile = new EditProfile(
+  profile.name,
+  profile.avatar,
+  profile.banner,
+);
+
+document.body.append(editProfile);
