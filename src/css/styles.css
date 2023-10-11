@@ -36,7 +36,7 @@
   }
 
   dialog {
-    @apply w-full max-w-2xl rounded-xl p-10  backdrop:bg-dark-500 backdrop:opacity-75;
+    @apply w-full max-w-2xl rounded-md backdrop:bg-dark-500 backdrop:opacity-75;
   }
 
   input,
@@ -50,8 +50,11 @@
 }
 
 @layer components {
+  .button {
+    @apply rounded-md  px-6 py-2 font-accent font-medium;
+  }
   .button-primary {
-    @apply rounded-md bg-primary-400 px-6 py-2 font-accent font-medium text-light-200;
+    @apply bg-primary-400 text-light-200 hover:bg-primary-500;
   }
 
   .link {
