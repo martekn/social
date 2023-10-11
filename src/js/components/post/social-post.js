@@ -130,11 +130,16 @@ export class SocialPost extends HTMLElement {
     );
 
     const header = new PostHeader(
+      this.id,
       this.created,
       this.updated,
       this.name,
       this.avatar,
-      this.loggedInUser.following,
+      this.title,
+      this.media,
+      this.tags,
+      this.body,
+      this.loggedInUser,
     );
     const main = new PostMain(this.title, this.body, this.media);
 

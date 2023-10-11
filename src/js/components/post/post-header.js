@@ -1,16 +1,36 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
+import { PostDropdown } from "./post-dropdown.js";
 
 export class PostHeader extends HTMLElement {
-  constructor(created, updated, name, avatar, following) {
+  constructor(
+    id,
+    created,
+    updated,
+    name,
+    avatar,
+    title,
+    media,
+    tags,
+    body,
+    loggedInUser,
+  ) {
     super();
+    this.id = id;
     this.created = created;
     this.updated = updated;
     this.name = name;
     this.avatar = avatar;
-
+    this.title = title;
+    this.media = media;
+    this.tags = tags;
+    this.body = body;
+    this.loggedInUser;
     this.isEdited = this.created !== this.updated;
-    this.isFollowing = following.some((user) => user.name === this.name);
+    this.isFollowing = loggedInUser.following.some(
+      (user) => user.name === this.name,
+    );
+    this.isLoggedInUser = loggedInUser.name === this.name;
   }
 
   connectedCallback() {
@@ -54,7 +74,7 @@ export class PostHeader extends HTMLElement {
     );
     userDetails.append(username);
 
-    if (!this.isFollowing) {
+    if (!this.isFollowing && !this.isLoggedInUser) {
       const follow = htmlUtilities.createHTML(
         "button",
         "before:w-1 before:rounded-full before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
@@ -75,7 +95,6 @@ export class PostHeader extends HTMLElement {
 
     timeDetails.append(timeSince);
 
-    // console.log(this.isEdited);
     if (this.isEdited) {
       const edited = htmlUtilities.createHTML(
         "div",
@@ -88,6 +107,18 @@ export class PostHeader extends HTMLElement {
     headerDetails.append(...[userDetails, timeDetails]);
 
     header.append(...[imgWrapper, headerDetails]);
+
+    if (this.isLoggedInUser) {
+      const dropdown = new PostDropdown(
+        this.id,
+        this.title,
+        this.media,
+        this.tags,
+        this.body,
+      );
+
+      header.append(dropdown);
+    }
 
     this.append(header);
   }

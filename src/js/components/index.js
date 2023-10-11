@@ -6,3 +6,4 @@ import "./app-navigation.js";
 import "./app-sidebar.js";
 import "./post/social-post.js";
 import "./profile/profile-card.js";
+import "./post-modal.js";
