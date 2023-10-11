@@ -41,7 +41,7 @@
 
   input,
   textarea {
-    @apply block w-full rounded-md border border-dark-200 bg-light-200 px-3 py-3 font-base text-base text-dark-500 placeholder:text-dark-200 focus-visible:ring-1;
+    @apply block w-full rounded-md border border-dark-200 bg-light-200 px-3 py-3 font-base text-dark-500 placeholder:text-dark-200 focus-visible:ring-1;
   }
 
   * {
