@@ -1,7 +1,7 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { InputGroup } from "./input-group.js";
 
-class PostModal extends HTMLElement {
+export class PostModal extends HTMLElement {
   constructor(post = { id: "", title: "", media: "", tags: [], body: "" }) {
     super();
     this.postId = post.id || "";
@@ -18,7 +18,7 @@ class PostModal extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    const cancelButton = this.querySelector("#modal_post-creation-cancel");
+    const cancelButton = this.querySelector(`#${this.dialogId}-cancel`);
     const form = this.querySelector("form");
     const modal = this.querySelector(`#${this.dialogId}`);
 
@@ -77,7 +77,7 @@ class PostModal extends HTMLElement {
       "url",
       "media",
       this.media,
-      "Separate tags with comma",
+      "https://example.com/",
       "media",
       "The link must be a fully formed URL that links to a live and publicly accessible image ",
     );
@@ -97,8 +97,8 @@ class PostModal extends HTMLElement {
     const bodyTextarea = htmlUtilities.createHTML(
       "textarea",
       "min-h-[250px]",
-      null,
-      { id: "body", name: "body", placeholder: "Body text", value: this.body },
+      this.body,
+      { id: "body", name: "body", placeholder: "Body text" },
     );
     bodyContainer.append(bodyLabel, bodyTextarea);
 
