@@ -1,29 +1,34 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
-class ProfileCard extends HTMLElement {
-  static get observedAttributes() {
-    return ["profile-loaded"];
-  }
-  constructor() {
+/**
+ * Represents a `ProfileCard` class that displays details about a user on the profile page, including their image, banner, username, and stats.
+ * The content and behavior of the card vary depending on whether the user is viewing their own profile or someone else's.
+ * @class
+ */
+export class ProfileCard extends HTMLElement {
+  /**
+   * Create a new `ProfileCard` instance.
+   * @constructor
+   * @param {Object} userData - The user data object.
+   * @param {String} userData.name - The username of the user.
+   * @param {String} userData.banner - The URL to the user's banner image.
+   * @param {String} userData.avatar - The URL to the user's avatar image.
+   * @param {Object[]} userData.followers - An array of objects, each containing the username and avatar of people who follow the user.
+   * @param {Object[]} userData.following - An array of objects, each containing the username and avatar of people the user follows.
+   * @param {Object} userData._count - An object with `followers` and `following` properties representing the number of followers and people the user is following.
+   */
+  constructor({ name, banner, avatar, followers, following, _count }) {
     super();
-    this.user = {};
+    this.name = name;
+    this.banner = banner;
+    this.avatar = avatar;
+    this.followers = followers;
+    this.following = following;
+    this.count = _count;
   }
 
-  connectedCallback() {}
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "profile-loaded" && newValue === "true") {
-      const { name, banner, avatar, followers, following, _count } = this.user;
-
-      this.name = name;
-      this.banner = banner;
-      this.avatar = avatar;
-      this.followers = followers;
-      this.following = following;
-      this.count = _count;
-
-      this.render();
-    }
+  connectedCallback() {
+    this.render();
   }
 
   openModal = (type) => {

@@ -2,7 +2,28 @@ import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 import { PostDropdown } from "./post-dropdown.js";
 
+/**
+ * Represents the header component of a post, displaying the post's author information, creation and update dates, and options like the follow button or a dropdown menu.
+ * @class
+ */
 export class PostHeader extends HTMLElement {
+  /**
+   * Create a new PostHeader instance.
+   * @constructor
+   * @param {String|Number} id - The ID of the post.
+   * @param {String|Date} created - The date and time when the post was created. Accepts a string in ISO 8601 format or a Date object.
+   * @param {String|Date} updated - The date and time when the post was last updated. Accepts a string in ISO 8601 format or a Date object.
+   * @param {String} name - The name of the post's author.
+   * @param {String} avatar - The avatar (image) of the post's author.
+   * @param {String} title - The title of the post.
+   * @param {String} media - The URL to the media (image) associated with the post.
+   * @param {String[]} tags - An array of tags associated with the post.
+   * @param {String} body - The body text of the post.
+   * @param {Object} loggedInUser - Information about the logged-in user.
+   * @param {String} loggedInUser.name - The name of the logged-in user.
+   * @param {String} loggedInUser.avatar - The image of the logged-in user (avatar).
+   * @param {String[]} loggedInUser.following - An array of user IDs that the logged-in user follows.
+   */
   constructor(
     id,
     created,

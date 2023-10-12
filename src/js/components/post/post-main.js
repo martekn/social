@@ -1,6 +1,17 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
+/**
+ * Represents the main section of a post, displaying the title, body text, and media content (image or video).
+ * @class
+ */
 export class PostMain extends HTMLElement {
+  /**
+   * Create a new PostMain instance.
+   * @constructor
+   * @param {string} title - The title of the post.
+   * @param {string} body - The body text of the post.
+   * @param {string} media - The URL to the media content (image or video) associated with the post.
+   */
   constructor(title, body, media) {
     super();
 

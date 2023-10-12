@@ -1,6 +1,11 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { InputGroup } from "./input-group.js";
 
+/**
+ * Represents an `AuthForm` class that creates a form for user registration or login based on the query of the site.
+ * If the query is set to "register," the form is configured for user registration; otherwise, it creates a login form.
+ * @class
+ */
 export class AuthForm extends HTMLElement {
   constructor() {
     super();

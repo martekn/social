@@ -2,7 +2,7 @@
  * Traps focus within a specified container until keys other than Shift, Tab, or Enter are pressed.
  *
  * @param {HTMLElement} focusContainer - The HTML element containing focusable elements.
- * @param {string} focusableElements - A CSS selector for the focusable elements within the container.
+ * @param {String} focusableElements - A CSS selector for the focusable elements within the container.
  * @param {Function} exitFocusFunc - The function to call if a keypress doesn't match Shift, Tab, or Enter.
  * @param {KeyboardEvent} e - The keyboard event object passed from an event listener.
  *

@@ -1,6 +1,16 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
+/**
+ * Represents an `ErrorMessage` class that handles and displays a text error message.
+ * @class
+ */
 export class ErrorMessage extends HTMLElement {
+  /**
+   * Create a new `ErrorMessage` instance.
+   * @constructor
+   * @param {String} message - The error message to be displayed as text.
+   * @param {String|Number} errorId - The ID to be associated with the error message element.
+   */
   constructor(message, errorId) {
     super();
     this.message = message;

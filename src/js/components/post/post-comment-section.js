@@ -1,11 +1,22 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { PostCommentForm } from "./post-comment-form.js";
 
+/**
+ * Represents the comment section of a post, including a heading, initial CommentForm, and a comment list.
+ * @class
+ */
 export class PostCommentSection extends HTMLElement {
-  constructor(name, avatar, id, loggedInUser) {
+  /**
+   * Create a new PostCommentSection instance.
+   * @constructor
+   * @param {String} id - The ID of the post to which the comment section is associated.
+   * @param {Object} loggedInUser - Information about the logged-in user.
+   * @param {String} loggedInUser.name - The name of the logged-in user.
+   * @param {String} loggedInUser.avatar - The image of the logged-in user (avatar).
+   */
+  constructor(id, loggedInUser) {
     super();
-    this.name = name;
-    this.avatar = avatar;
+
     this.postId = id;
     this.loggedInUser = loggedInUser;
   }

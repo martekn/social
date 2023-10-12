@@ -1,8 +1,8 @@
 /**
  * Decodes HTML entities in a given input string.
  *
- * @param {string|null} input - The input string that may contain HTML entities.
- * @returns {string|null} - The decoded string or null if the input is falsy.
+ * @param {String|null} input - The input string that may contain HTML entities.
+ * @returns {String|null} - The decoded string or null if the input is falsy.
  *
  * @example
  * ```js

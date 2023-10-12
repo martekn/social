@@ -1,9 +1,19 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
+/**
+ * Represents a `TagItem` class that creates a link element for displaying a tag with an optional tag style.
+ * @class
+ */
 export class TagItem extends HTMLElement {
+  /**
+   * Create a new `TagItem` instance.
+   * @constructor
+   * @param {String} tag - The tag name to be displayed.
+   * @param {String} [tagStyle="secondary"] - The tag style, which can be "secondary" or "primary" (default is "secondary").
+   */
   constructor(tag, tagStyle) {
     super();
-    this.tag = tag ?? this.getAttribute("tag") ?? "";
+    this.tag = tag ?? this.getAttribute("tag");
     this.tagStyle = tagStyle ?? this.getAttribute("tag-style") ?? "secondary";
   }
 

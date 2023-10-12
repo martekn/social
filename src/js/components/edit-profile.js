@@ -1,7 +1,20 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { InputGroup } from "./input-group.js";
 
+/**
+ * Represents an `EditProfile` class, which is a modal component for editing user avatar and banner links.
+ * The modal can be in two states: one for newly registered users and one for general profile updates.
+ * @class
+ */
 export class EditProfile extends HTMLElement {
+  /**
+   * Create a new `EditProfile` instance.
+   * @constructor
+   * @param {String} name - The username of the user.
+   * @param {String} avatar - The URL to the user's avatar image.
+   * @param {String} banner - The URL to the user's banner image.
+   * @param {Boolean} [isNewUser=false] - Indicates whether the user is newly registered (default is false).
+   */
   constructor(name, avatar, banner, isNewUser = false) {
     super();
 

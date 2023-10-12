@@ -1,7 +1,22 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { InputGroup } from "./input-group.js";
 
+/**
+ * Represents a `PostModal` class that adds a modal for either creating or editing an existing post.
+ * The type of operation (create or edit) depends on whether a postId is provided in the configuration.
+ * @class
+ */
 export class PostModal extends HTMLElement {
+  /**
+   * Create a new `PostModal` instance.
+   * @constructor
+   * @param {Object} [post] - The post configuration object (optional). If not provided, a default object is used for creating a new post.
+   * @param {string} post.id - The ID of the post.
+   * @param {string} post.title - The title of the post.
+   * @param {string} post.media - The URL of the media (image or video) associated with the post.
+   * @param {Array} post.tags - An array of tags for the post.
+   * @param {string} post.body - The body text of the post.
+   */
   constructor(post = { id: "", title: "", media: "", tags: [], body: "" }) {
     super();
     this.postId = post.id || "";

@@ -3,9 +3,9 @@ import { decode } from "./decode.js";
 /**
  * Creates an HTML element with optional classes, text, and attributes.
  *
- * @param {string} tag - The HTML element tag (e.g., "div", "a").
- * @param {string|string[]|null} [classes] - CSS classes to add to the element (optional).
- * @param {string} [text] - Text content to set for the element (optional).
+ * @param {String} tag - The HTML element tag (e.g., "div", "a").
+ * @param {String|string[]|null} [classes] - CSS classes to add to the element (optional).
+ * @param {String} [text] - Text content to set for the element (optional).
  * @param {Object|null} [attributes] - Object containing attributes to set on the element (optional).
  *   The attributes object should have keys representing attribute names and values representing attribute values.
  * @returns {HTMLElement} - The created HTML element.

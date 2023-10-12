@@ -3,6 +3,10 @@ import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
 
+/**
+ * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
+ * @class
+ */
 class AppNavigation extends HTMLElement {
   constructor() {
     super();

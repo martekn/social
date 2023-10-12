@@ -1,7 +1,23 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { ErrorMessage } from "./error/error-message.js";
 
+/**
+ * Represents an `InputGroup` class that creates a container for a label, input, and error message for a specific input field.
+ * @class
+ */
 export class InputGroup extends HTMLElement {
+  /**
+   * Create a new `InputGroup` instance.
+   * @constructor
+   * @param {String} inputLabel - The label text for the input field.
+   * @param {String} inputType - The value for the `type` attribute on the input element.
+   * @param {String} inputId - The value for the `id` attribute on the input element.
+   * @param {String} inputValue - The initial value for the input element.
+   * @param {String} inputPlaceholder - The value for the `placeholder` attribute on the input element.
+   * @param {String} inputName - The value for the `name` attribute on the input element.
+   * @param {String} errorMessage - The message to be displayed as an error message.
+   * @param {Boolean} [isRequired=false] - If `true`, the `required` attribute is added to the input element.
+   */
   constructor(
     inputLabel,
     inputType,

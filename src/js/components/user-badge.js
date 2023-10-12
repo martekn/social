@@ -1,6 +1,17 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
+/**
+ * Represents a `UserBadge` class that creates a user badge component displaying the user's image and username as a link.
+ * @class
+ */
 export class UserBadge extends HTMLElement {
+  /**
+   * Create a new `UserBadge` instance.
+   * @constructor
+   * @param {Object} userData - Data about the user.
+   * @param {string} userData.avatar - The URL of the user's avatar image.
+   * @param {string} userData.name - The username of the user.
+   */
   constructor({ avatar, name }) {
     super();
     this.avatar =

@@ -1,6 +1,15 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
+/**
+ * Represents a `SearchBar` class that creates a search bar with a search button for a specific type of search.
+ * @class
+ */
 export class SearchBar extends HTMLElement {
+  /**
+   * Create a new `SearchBar` instance.
+   * @constructor
+   * @param {string} [type] - The type of search (optional). When set to "sidebar-search," a specific class is added.
+   */
   constructor(type) {
     super();
     this.type = type || this.getAttribute("type") || "";

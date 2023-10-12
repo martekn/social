@@ -1,6 +1,20 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
+/**
+ * Represents Post action button
+ * @class
+ */
 export class PostActionButton extends HTMLElement {
+  /**
+   * Create a new PostActionButton instance.
+   * @constructor
+   * @param {String} text - Text to be added to the button.
+   * @param {String} iconClasses - Classes to be added to the button, e.g., 'bi bi-x'.
+   * @param {String} type - Specifies whether it's a link or a button ('link' or 'button').
+   * @param {String} [href] - The link attribute (required if type is 'link').
+   * @param {String|Number} buttonId - The ID to be added to the button.
+   * @param {String|Number} postId - The ID of the post to which the action button will be added.
+   */
   constructor(text, iconClasses, type, href, buttonId, postId) {
     super();
 

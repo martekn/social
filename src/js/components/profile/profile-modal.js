@@ -1,10 +1,18 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { UserBadge } from "../user-badge.js";
 
+/**
+ * Represents a `ProfileModal` class that displays a modal for listing users who are either followers or followed by the current user.
+ * @class
+ */
 export class ProfileModal extends HTMLElement {
-  static get observedAttributes() {
-    return ["profile-loaded"];
-  }
+  /**
+   * Create a new `ProfileModal` instance.
+   * @constructor
+   * @param {String} modalType - The type of the modal, which should be either "follower" or "following".
+   * @param {String} title - The title of the modal.
+   * @param {Object[]} users - An array of user objects, each with `name` and `avatar` properties.
+   */
   constructor(modalType, title, users) {
     super();
     this.modalType = modalType;

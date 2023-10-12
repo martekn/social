@@ -1,6 +1,15 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 
+/**
+ * Represents a modal dialog that asks the user for confirmation when deleting a post.
+ * @class
+ */
 export class PostDeleteModal extends HTMLElement {
+  /**
+   * Create a new PostDeleteModal instance.
+   * @constructor
+   * @param {String|Number} postId - The ID of the post that the user intends to delete.
+   */
   constructor(postId) {
     super();
     this.postId = postId;

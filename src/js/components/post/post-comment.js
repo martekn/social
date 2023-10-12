@@ -2,7 +2,27 @@ import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 import { PostCommentForm } from "./post-comment-form.js";
 
+/**
+ * Represents a comment in a post's comment section.
+ * @class
+ */
 export class PostComment extends HTMLElement {
+  /**
+   * Create a new PostComment instance.
+   * @constructor
+   * @param {String|Number} id - The ID of the comment.
+   * @param {Object} author - Information about the comment author.
+   * @param {String} author.name - The name of the comment author.
+   * @param {String} author.avatar - The image of the comment author (avatar).
+   * @param {Date} created - The timestamp when the comment was posted.
+   * @param {String} body - The text content of the comment.
+   * @param {String} replyToId - The ID of the comment to which this comment is a reply.
+   * @param {boolean} isRootComment - Indicates if this comment is a root comment (direct reply to the post).
+   * @param {String|Number} postId - The ID of the post to which the comment is associated.
+   * @param {Object} loggedInUser - Information about the logged-in user.
+   * @param {String} loggedInUser.name - The name of the logged-in user.
+   * @param {String} loggedInUser.avatar - The image of the logged-in user (avatar).
+   */
   constructor(
     { id, author: { name, avatar }, created, body, replyToId },
     isRootComment,
@@ -29,7 +49,6 @@ export class PostComment extends HTMLElement {
     replyButton.addEventListener("click", (e) => {
       const container = this.querySelector("#comment-container");
       const footer = container.querySelector("footer");
-      console.log(container);
       let form = container.querySelector(
         `#comment-form-${this.id}-${this.postId}`,
       );

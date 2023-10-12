@@ -16,8 +16,8 @@ const months = {
 /**
  * Get a human-readable time string representing the time elapsed since a given date.
  *
- * @param {string|Date} dateInput - The date to calculate the time difference from. Accepts a string in ISO 8601 format or a Date object.
- * @returns {string} - A human-readable time string, such as a full date, days, hours, minutes, or "Just now."
+ * @param {String|Date} dateInput - The date to calculate the time difference from. Accepts a string in ISO 8601 format or a Date object.
+ * @returns {String} - A human-readable time string, such as a full date, days, hours, minutes, or "Just now."
  *
  * @example
  * ```js

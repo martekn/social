@@ -7,11 +7,16 @@ import { SearchBar } from "./search-bar.js";
 
 const sidebarButton = document.querySelector("#sidebar-button");
 
+/**
+ * Represents an `AppSidebar` class that renders the sidebar of the application. This class is typically used in the HTML, where specific tags are updated to render different sections based on data retrieved from the API.
+ * @class
+ */
 // * Add the class 'sidebar' to the sidebar where its used in the html to avoid the layout from shifting
 class AppSidebar extends HTMLElement {
   static get observedAttributes() {
     return ["tags-loaded", "following-loaded"];
   }
+
   constructor() {
     super();
     this.isSearchpage = window.location.pathname === "/search/";

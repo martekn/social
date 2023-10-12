@@ -4,7 +4,20 @@ import { handleFocusTrap } from "../../helper/handle-focus-trap.js";
 import { PostModal } from "../post-modal.js";
 import { PostDeleteModal } from "./post-delete-modal.js";
 
+/**
+ * Represents an extra options dropdown for a post, typically containing options to delete or edit the post.
+ * @class
+ */
 export class PostDropdown extends HTMLElement {
+  /**
+   * Create a new PostDropdown instance.
+   * @constructor
+   * @param {String|Number} postId - The ID of the post to which the dropdown is associated.
+   * @param {String} title - The title of the post.
+   * @param {String} media - The URL to the image associated with the post.
+   * @param {String[]} tags - An array of tags associated with the post.
+   * @param {String} body - The body text of the post.
+   */
   constructor(postId, title, media, tags, body) {
     super();
     this.postId = postId;
@@ -61,7 +74,6 @@ export class PostDropdown extends HTMLElement {
 
     main.append(modal);
     modal.querySelector("dialog").showModal();
-    console.log(modal);
   };
 
   renderDeleteModal = () => {

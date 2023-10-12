@@ -1,6 +1,16 @@
 import htmlUtilities from "../helper/html-utilities/index.js";
 
+/**
+ * Represents a `FilterButton` class that creates buttons for filtering search results on a search page.
+ * @class
+ */
 class FilterButton extends HTMLElement {
+  /**
+   * Create a new `FilterButton` instance.
+   * @constructor
+   * @param {String} buttonText - The text to be displayed on the filter button.
+   * @param {Boolean} isCurrent - Indicates if the button is currently active or not.
+   */
   constructor(buttonText, isCurrent) {
     super();
 
