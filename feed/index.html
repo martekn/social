@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,10 @@
     />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
 
     <!-- CSS -->
     <link href="/dist/styles.css" rel="stylesheet" />
@@ -27,7 +30,33 @@
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/pages/feed.js"></script>
   </head>
+
   <body>
-    <h1 class="text-3xl font-bold underline text-blue-500">Feed - Social</h1>
+    <div
+      class="container-fluid grid min-h-screen auto-rows-min 2xl:container md:auto-rows-auto md:grid-cols-12"
+    >
+      <app-navigation
+        class="self-start md:col-span-4 md:p-7 md:px-10 lg:col-span-3"
+      ></app-navigation>
+      <app-sidebar class="sidebar"></app-sidebar>
+
+      <!-- Main -->
+      <main
+        class="space-y-2 border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+      >
+        <button
+          class="item-cmainr link link-secondary flex gap-2"
+          id="create-button"
+        >
+          <i class="bi bi-plus-square"></i> <span>Create post</span>
+        </button>
+
+        <h1 class="sr-only">Posts in feed</h1>
+        <ul id="posts-list" class="space-y-6"></ul>
+      </main>
+      <!-- Main end -->
+    </div>
+
+    <post-modal></post-modal>
   </body>
 </html>

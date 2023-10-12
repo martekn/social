@@ -1,3 +1,101 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-light-400 font-base;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-accent;
+  }
+
+  h1,
+  h2 {
+    @apply font-medium;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply text-lg;
+  }
+
+  h1 {
+    @apply text-xl;
+  }
+
+  label {
+    @apply font-medium;
+  }
+
+  dialog {
+    @apply w-full max-w-2xl rounded-md backdrop:bg-dark-500 backdrop:opacity-75;
+  }
+
+  input,
+  textarea {
+    @apply block w-full rounded-md border border-dark-200 bg-light-200 px-3 py-3 font-base text-dark-500 placeholder:text-dark-200 focus-visible:ring-1;
+  }
+
+  * {
+    @apply focus-visible:rounded-md focus-visible:border-primary-300  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300;
+  }
+}
+
+@layer components {
+  .button {
+    @apply rounded-md  px-6 py-2 font-accent font-medium;
+  }
+  .button-primary {
+    @apply bg-primary-400 text-light-200 hover:bg-primary-500;
+  }
+
+  .link {
+    @apply inline-block py-2 font-accent font-medium;
+  }
+  .link-primary {
+    @apply text-primary-400 hover:text-primary-300 active:text-primary-500;
+  }
+
+  .link-secondary {
+    @apply text-dark-500 hover:text-dark-300 active:text-dark-200;
+  }
+
+  .sidebar {
+    @apply container inset-y-0 right-0 z-50 order-2 hidden h-full w-full max-w-md overflow-y-auto bg-light-200  p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static;
+  }
+}
+
+@layer utilities {
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #808093 #e9eaed;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom right, #808093 0%, #808093 100%);
+    border-radius: 5px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: #e9eaed;
+    border: 1px solid #e9eaed;
+  }
+
+  .scrollbar::-webkit-scrollbar-button {
+    background-color: #808093;
+    border-radius: 5px;
+  }
+}
