@@ -2,6 +2,7 @@ import htmlUtilities from "../helper/html-utilities/index.js";
 import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
+import Storage from "../helper/storage/index.js";
 
 /**
  * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
@@ -28,7 +29,9 @@ class AppNavigation extends HTMLElement {
   }
 
   userLogout() {
-    // Logic for logging the user out
+    Storage.remove("accessToken");
+    Storage.remove("username");
+    window.location.href = "/";
   }
 
   /**
