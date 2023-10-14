@@ -59,48 +59,62 @@ export class AuthForm extends HTMLElement {
     if (this.query === "register") {
       const username = new InputGroup(
         "Username",
-        "text",
-        "username",
-        "",
-        "username",
-        "username",
-        "Username is required and cant contain punctuation symbols apart from underscore (_)",
-        true,
+        { for: "username" },
+        {
+          id: "username",
+          type: "text",
+          placeholder: "username",
+          name: "name",
+          required: "true",
+          pattern: /^[A-Za-z0-9_]+$/.source,
+          autocomplete: "off",
+          title:
+            "Username can only contain letters, numbers, and underscores (_)",
+          maxlength: "20",
+        },
       );
       inputContainer.append(username);
     }
 
     const email = new InputGroup(
       "Email",
-      "email",
-      "email",
-      "",
-      "example@noroff.no",
-      "email",
-      "Email should end with @stud.noroff.no or @noroff.no",
-      true,
+      { for: "email" },
+      {
+        id: "email",
+        type: "email",
+        placeholder: "example@noroff.no",
+        name: "email",
+        required: "true",
+        pattern: /^[\w\-.]+@(stud\.)?noroff\.no$/.source,
+        autocomplete: "off",
+        title:
+          "Invalid email format. It should end with @stud.noroff.no or @noroff.no",
+      },
     );
 
     const password = new InputGroup(
       "Password",
-      "password",
-      "password",
-      "",
-      "Password",
-      "password",
-      "Password needs to be 8 characters long",
-      true,
+      { for: "password" },
+      {
+        id: "password",
+        type: "password",
+        placeholder: "password",
+        name: "password",
+        required: "true",
+        autocomplete: "off",
+        title: "Password must be 8 characters long",
+        minlength: "8",
+      },
     );
-    password.setAttribute("minlength", "8");
 
     const submit = htmlUtilities.createHTML(
       "button",
       "button button-primary w-full p-3",
       this.heading,
-      { type: "submit" },
     );
 
     inputContainer.append(...[email, password, submit]);
+
     const authToggle = htmlUtilities.createHTML(
       "div",
       "text-dark-300 flex gap-1",
