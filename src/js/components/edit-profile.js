@@ -64,22 +64,30 @@ export class EditProfile extends HTMLElement {
 
     const avatarInput = new InputGroup(
       "Profile picture",
-      "url",
-      "avatar",
-      this.avatar,
-      "https://example.com/",
-      "avatar",
-      "The link must be a fully formed URL that links to a live and publicly accessible image",
+      { for: "avatar" },
+      {
+        type: "url",
+        id: "avatar",
+        value: this.avatar,
+        name: "avatar",
+        placeholder: "https://example.com/",
+        title:
+          "The link must be a fully formed URL that links to a live and publicly accessible image",
+      },
     );
 
     const bannerInput = new InputGroup(
       "Profile banner",
-      "url",
-      "banner",
-      this.banner,
-      "https://example.com/",
-      "banner",
-      "The link must be a fully formed URL that links to a live and publicly accessible image",
+      { for: "banner" },
+      {
+        id: "banner",
+        type: "url",
+        value: this.banner,
+        placeholder: "https://example.com/",
+        name: "banner",
+        title:
+          "The link must be a fully formed URL that links to a live and publicly accessible image",
+      },
     );
 
     inputContainer.append(...[avatarInput, bannerInput]);

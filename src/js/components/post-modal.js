@@ -80,30 +80,41 @@ export class PostModal extends HTMLElement {
 
     const titleInput = new InputGroup(
       "Title",
-      "text",
-      "title",
-      this.title,
-      "Post title",
-      "title",
-      "Title is required",
-      true,
+      { for: "title" },
+      {
+        id: "title",
+        type: "text",
+        value: this.title,
+        placeholder: "Post title",
+        name: "title",
+        title: "Title is required",
+        required: "true",
+      },
     );
     const mediaInput = new InputGroup(
       "URL to video or image",
-      "url",
-      "media",
-      this.media,
-      "https://example.com/",
-      "media",
-      "The link must be a fully formed URL that links to a live and publicly accessible image ",
+      { for: "media" },
+      {
+        id: "media",
+        type: "url",
+        name: "media",
+        placeholder: "https://example.com/",
+        value: this.media,
+        title:
+          "The link must be a fully formed URL that links to a live and publicly accessible image",
+      },
     );
     const tagsInput = new InputGroup(
       "Tags",
-      "text",
-      "tags",
-      this.tags,
-      "Separate tags with a space, tags cant contain hashtags(#)",
-      "tags",
+      { for: "tags" },
+      {
+        id: "tags",
+        type: "text",
+        name: "tags",
+        value: this.tags,
+        placeholder:
+          "Separate tags with a space, tags cant contain hashtags(#)",
+      },
     );
 
     const bodyContainer = htmlUtilities.createHTML("div", "space-y-2");

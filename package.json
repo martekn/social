@@ -29,6 +29,7 @@
     "live-server": "^1.2.2",
     "postcss-cli": "^10.1.0",
     "prettier-plugin-tailwindcss": "^0.5.4",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "tailwindcss-animated": "^1.0.1"
   }
 }
