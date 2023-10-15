@@ -19,48 +19,37 @@ export const request = async (
   method = "GET",
   body = null,
 ) => {
-  try {
-    let url = baseUrl;
+  let url = baseUrl;
 
-    if (endpoint) {
-      url += endpoint;
-    }
-    const options = {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) {
-      const token = Storage.get("accessToken");
-      options.headers.Authorization = `Bearer ${token}`;
-    }
-
-    if (params) {
-      url = `${url}?${new URLSearchParams(params).toString()}`;
-    }
-
-    if (body) {
-      options.body = JSON.stringify(body);
-    }
-
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      if (response.status === 401 || response.status === 400) {
-        const errorData = await response.json();
-        throw new Error(errorData.errors[0].message);
-      } else {
-        throw new Error(
-          `HTTP Error: ${response.status} - ${response.statusText}`,
-        );
-      }
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error("An error occurred:", error);
-    throw error;
+  if (endpoint) {
+    url += endpoint;
   }
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (token) {
+    const token = Storage.get("accessToken");
+    options.headers.Authorization = `Bearer ${token}`;
+  }
+
+  if (params) {
+    url = `${url}?${new URLSearchParams(params).toString()}`;
+  }
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.errors[0].message);
+  }
+
+  const result = await response.json();
+  return result;
 };
