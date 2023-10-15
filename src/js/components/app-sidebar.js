@@ -13,10 +13,6 @@ const sidebarButton = document.querySelector("#sidebar-button");
  */
 // * Add the class 'sidebar' to the sidebar where its used in the html to avoid the layout from shifting
 class AppSidebar extends HTMLElement {
-  static get observedAttributes() {
-    return ["tags-loaded", "following-loaded"];
-  }
-
   constructor() {
     super();
     this.isSearchpage = window.location.pathname === "/search/";
@@ -69,8 +65,10 @@ class AppSidebar extends HTMLElement {
    * @param {String} listId - ID for the list element.
    * @returns {HTMLElement} - Section element containing heading and ul.
    */
-  renderSection(text, listId) {
-    const section = htmlUtilities.createHTML("section", "py-4");
+  renderSection(text, listId, id) {
+    const section = htmlUtilities.createHTML("section", "py-4", null, {
+      id: id,
+    });
     const heading = htmlUtilities.createHTML(
       "h2",
       "font-light text-dark-300",
@@ -135,12 +133,20 @@ class AppSidebar extends HTMLElement {
       "div",
       "divide-y divide-light-500",
     );
-    const tagsSection = this.renderSection("Popular tags", "tags-list");
+    const tagsSection = this.renderSection(
+      "Popular tags",
+      "tags-list",
+      "tags-section",
+    );
     if (this.isSearchpage) {
       tagsSection.classList.add("border-t-0");
     }
 
-    const followingSection = this.renderSection("Following", "following-list");
+    const followingSection = this.renderSection(
+      "Following",
+      "following-list",
+      "following-section",
+    );
 
     const footer = htmlUtilities.createHTML(
       "footer",
