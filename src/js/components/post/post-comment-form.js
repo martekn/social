@@ -24,7 +24,8 @@ export class PostCommentForm extends HTMLElement {
     this.formId = `comment-form-${this.id}`;
     this.inputId = this.id;
     this.name = loggedInUser.name;
-    this.avatar = loggedInUser.avatar;
+    this.avatar =
+      loggedInUser.avatar || "/assets/images/avatar-placeholder.jpg";
   }
 
   connectedCallback() {
@@ -66,9 +67,14 @@ export class PostCommentForm extends HTMLElement {
 
     const userAvatar = htmlUtilities.createHTML(
       "img",
-      "h-11 w-11 flex-none rounded-full hidden sm:block object-cover",
+      "h-11 w-11 flex-none bg-light-400 rounded-full hidden sm:block object-cover",
       null,
-      { src: this.avatar, alt: this.name },
+      {
+        src: this.avatar,
+        alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
+      },
     );
 
     const formContent = htmlUtilities.createHTML("div", "w-full");

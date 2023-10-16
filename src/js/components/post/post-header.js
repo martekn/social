@@ -74,11 +74,13 @@ export class PostHeader extends HTMLElement {
 
     const img = htmlUtilities.createHTML(
       "img",
-      "object-cover rounded-full w-full h-full",
+      "object-cover bg-light-400 rounded-full w-full h-full",
       null,
       {
         src: this?.avatar,
         alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
       },
     );
     const imgSrOnly = htmlUtilities.createHTML("span", "sr-only", this.name);

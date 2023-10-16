@@ -35,6 +35,8 @@ export class PostMain extends HTMLElement {
         {
           src: this.media,
           alt: "",
+          onerror:
+            "this.onerror=null;this.src='/assets/images/img-placeholder.jpg';",
         },
       );
       main.append(postImage);
