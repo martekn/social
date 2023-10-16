@@ -1,27 +1,26 @@
 import { renderPosts } from "../helper/renderPosts.js";
-import { profile } from "../const/test-data/profile.js";
-import { profilePosts } from "../const/test-data/profile-posts.js";
 import { ProfileModal } from "../components/profile/profile-modal.js";
-import { tags } from "../const/test-data/tags.js";
 import { EditProfile } from "../components/edit-profile.js";
 import { ProfileCard } from "../components/profile/profile-card.js";
+import Storage from "../helper/storage/index.js";
+import { userById } from "../helper/api/request-object/user-by-id.js";
+import { userPosts } from "../helper/api/request-object/user-posts.js";
+import { allPosts } from "../helper/api/request-object/all-posts.js";
+import { requestAll } from "../helper/api/request-all.js";
+import { ErrorDialog } from "../components/error/error-dialog.js";
 
 const main = document.querySelector("main");
-const sidebar = document.querySelector("app-sidebar");
-
-sidebar.renderFollowing(profile.following);
-sidebar.renderTags(tags);
 
 /**
- * Renders a user's profile card, including follower and following modals, and appends them to the main content area.
+ * Render a user's profile card with follower and following modals.
  *
- * @param {Object} user - The user object containing profile information.
- * @param {String} user.name - The username of the user.
- * @param {String} user.avatar - The URL to the user's avatar image.
- * @param {String} user.banner - The URL to the user's banner image.
- * @param {Object[]} user.followers - An array of objects, each containing the username and avatar of people who follow the user.
- * @param {Object[]} user.following - An array of objects, each containing the username and avatar of people the user follows.
- * @param {Object} user._count - An object with `followers` and `following` properties representing the number of followers and people the user is following.
+ * @param {object} user - The user object containing profile information.
+ * @property {string} user.name - The name of the user.
+ * @property {string} user.avatar - The user's profile picture.
+ * @property {string} user.banner - The user's banner image.
+ * @property {number} user.following - The number of users this user is following.
+ * @property {number} user.followers - The number of followers this user has.
+ * @property {number} user._count - An internal count property (private).
  */
 const renderProfileCard = (user) => {
   const profile = new ProfileCard(user);
@@ -42,12 +41,12 @@ const renderProfileCard = (user) => {
 };
 
 /**
- * Renders an edit profile modal based on the user's profile state and appends it to the document body.
+ * Render an edit profile modal, allowing users to edit their profile information.
  *
- * @param {Object} options - The options for the edit profile modal.
- * @param {String} options.name - The username of the user.
- * @param {String} options.avatar - The URL to the user's avatar image.
- * @param {String} options.banner - The URL to the user's banner image.
+ * @param {object} options - Options for rendering the edit profile modal.
+ * @param {string} options.name - The user's name.
+ * @param {string} options.avatar - The user's profile picture.
+ * @param {string} options.banner - The user's banner image.
  */
 const renderEditModal = ({ name, avatar, banner }) => {
   const query = new URLSearchParams(window.location.search).get("r");
@@ -66,18 +65,70 @@ const renderEditModal = ({ name, avatar, banner }) => {
 };
 
 /**
- * This function is responsible for rendering the user's profile page, including components like the profile card and social media posts.
+ * Render a user's profile with their profile card, edit modal, and posts.
  *
- * @param {{name, banner, avatar, followers, following, _count}} user  - An object containing user information, including name, banner, avatar, followers, following, and post count.
- * @param {Object[]} posts - An array of objects representing social media posts.
+ * @param {Promise} profile - A Promise representing the user's profile data.
+ * @param {Promise} profilePosts - A Promise representing the user's posts data.
+ * @param {Promise} loggedInUser - A Promise representing the currently logged-in user's data.
  */
-const renderProfile = (user, posts) => {
-  renderProfileCard(user);
-
-  posts.sort((a, b) => a.created < b.created);
-  renderPosts(posts, document.querySelector("#posts-list"), user);
-
-  renderEditModal(user);
+const renderProfile = (profile, profilePosts, loggedInUser) => {
+  if (profile.status === "fulfilled") {
+    renderProfileCard(profile.value);
+    renderEditModal(profile.value);
+    renderProfilePosts(profilePosts, loggedInUser);
+  } else {
+    const error = new ErrorDialog(profile.reason, "profile-error");
+    main.append(error);
+  }
 };
 
-renderProfile(profile, profilePosts);
+/**
+ * Render the posts of a user's profile.
+ *
+ * @param {Promise} posts - A Promise representing the user's posts data.
+ * @param {Promise} user - A Promise representing the user's profile information.
+ */
+const renderProfilePosts = (posts, user) => {
+  const list = document.querySelector("#posts-list");
+  if (posts.status === "fulfilled" && posts.value.length > 0) {
+    console.log(posts.value);
+    posts.value.sort((a, b) => a.created < b.created);
+    renderPosts(posts.value, list, user.value);
+  } else if (posts.status === "fulfilled") {
+    const errorMessage =
+      "It appears that this user currently has no posts to display. Please check back later to see any updates from them.";
+    const error = new ErrorDialog(errorMessage, "profile-error");
+    list.append(error);
+  } else {
+    const errorMessage =
+      "We're sorry, but we were unable to fetch the posts for this user at the moment. Please try again later or contact our support team if the issue persists.";
+    const error = new ErrorDialog(errorMessage, "profile-error");
+    list.append(error);
+  }
+};
+
+const fetchProfileData = async () => {
+  const loggedInUsername = Storage.get("username");
+  const usernameQuery = new URLSearchParams(window.location.search).get("u");
+  const requests = [allPosts(), userById(loggedInUsername)];
+  if (loggedInUsername !== usernameQuery && usernameQuery !== null) {
+    requests.push(userPosts(usernameQuery));
+    requests.push(userById(usernameQuery));
+    console.log(usernameQuery);
+  } else {
+    requests.push(userPosts(loggedInUsername));
+  }
+  const response = await requestAll(requests);
+  const [sidebarPosts, loggedInUser, profilePosts, profileResponse] = response;
+  let profile = loggedInUser;
+  if (loggedInUsername !== usernameQuery && usernameQuery !== null) {
+    profile = profileResponse;
+  }
+
+  const sidebar = document.querySelector("app-sidebar");
+  sidebar.setup(sidebarPosts, loggedInUser);
+
+  renderProfile(profile, profilePosts, loggedInUser);
+};
+
+fetchProfileData();
