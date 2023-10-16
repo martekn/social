@@ -4,6 +4,8 @@ import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { TagItem } from "./tag-item.js";
 import { UserBadge } from "./user-badge.js";
 import { SearchBar } from "./search-bar.js";
+import { getPopularTags } from "../helper/get-popular-tags.js";
+import { renderUserSuggestions } from "../helper/render-user-suggestions.js";
 
 const sidebarButton = document.querySelector("#sidebar-button");
 
@@ -29,6 +31,22 @@ class AppSidebar extends HTMLElement {
 
     sidebarClose.addEventListener("click", this.closeSidebar);
   }
+
+  setup = (posts, user) => {
+    if (posts.status === "fulfilled") {
+      this.renderTags(getPopularTags(posts.value));
+    } else {
+      this.querySelector("#tags-section").remove();
+    }
+
+    if (user.status === "fulfilled" && user.value.following.length > 0) {
+      this.renderFollowing(user.value.following);
+    } else if (user.status === "fulfilled") {
+      renderUserSuggestions();
+    } else {
+      renderUserSuggestions();
+    }
+  };
 
   /**
    * Toggles menu visibility and removes eventhandler

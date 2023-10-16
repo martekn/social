@@ -7,7 +7,7 @@ export const getPopularTags = (posts) => {
   /**
    * Filter posts with tags.
    */
-  const postsWithTags = posts.value.filter((post) => {
+  const postsWithTags = posts.filter((post) => {
     if (post.tags.length > 0) {
       return post.tags;
     }
