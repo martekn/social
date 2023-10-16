@@ -44,12 +44,14 @@ export class ProfileCard extends HTMLElement {
 
     const bannerImg = htmlUtilities.createHTML(
       "img",
-      "aspect-[5/2] w-full rounded-t-md object-cover",
+      "aspect-[5/2] bg-light-400 w-full rounded-t-md object-cover",
       null,
       {
         src: this.banner
           ? this.banner
           : "/assets/images/banner-placeholder.jpg",
+        onerror:
+          "this.onerror=null;this.src='/assets/images/banner-placeholder.jpg';",
         alt: "",
       },
     );
@@ -65,13 +67,15 @@ export class ProfileCard extends HTMLElement {
     );
     const avatarImg = htmlUtilities.createHTML(
       "img",
-      "absolute bottom-0 aspect-square w-full object-cover rounded-full border-4 border-light-200 sm:-bottom-12",
+      "absolute bg-light-400 bottom-0 bg-light-400 aspect-square w-full object-cover rounded-full border-4 border-light-200 sm:-bottom-12",
       null,
       {
         src: this.avatar
           ? this.avatar
           : "/assets/images/avatar-placeholder.jpg",
         alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
       },
     );
     avatarWrapper.append(avatarImg);

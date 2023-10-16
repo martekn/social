@@ -82,9 +82,14 @@ export class PostComment extends HTMLElement {
     );
     const avatar = htmlUtilities.createHTML(
       "img",
-      "h-full w-full rounded-full object-cover",
+      "h-full w-full bg-light-400 rounded-full object-cover",
       null,
-      { src: this.avatar, alt: this.name },
+      {
+        src: this.avatar,
+        alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
+      },
     );
     const avatarText = htmlUtilities.createHTML("span", "sr-only", this.name);
     avatarWrapper.append(...[avatar, avatarText]);
