@@ -1,4 +1,7 @@
+import { deletePost } from "../../helper/api/deleteRequests/delete-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
+import { ErrorDialog } from "../error/error-dialog.js";
+import { SuccessAlert } from "../error/success-alert.js";
 
 /**
  * Represents a modal dialog that asks the user for confirmation when deleting a post.
@@ -18,6 +21,26 @@ export class PostDeleteModal extends HTMLElement {
   connectedCallback() {
     this.render();
   }
+
+  deletePostHandler = async () => {
+    try {
+      const response = await deletePost(this.postId);
+
+      const success = new SuccessAlert("Post was deleted", "delete-success");
+      document.body.append(success);
+      document.querySelector(`#post-${this.postId}`).remove();
+      this.remove();
+    } catch (error) {
+      console.log(error);
+      const errorMessage = new ErrorDialog(
+        error,
+        `delete-modal-${this.postId}_error`,
+      );
+
+      container.prepend(errorMessage);
+      container.classList.add("pt-5");
+    }
+  };
 
   render() {
     const deleteModal = htmlUtilities.createHTML("dialog", "max-w-lg", null, {
@@ -57,6 +80,8 @@ export class PostDeleteModal extends HTMLElement {
       "Delete",
       { id: `delete-modal-${this.postId}_delete` },
     );
+
+    deleteButton.addEventListener("click", this.deletePostHandler);
 
     actionContainer.append(...[cancelButton, deleteButton]);
     container.append(...[heading, actionContainer]);
