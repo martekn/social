@@ -17,8 +17,10 @@ export const register = async (body) => {
   try {
     await request("/api/v1/social/auth/register", null, null, "POST", body);
 
-    await login({ email: body.email, password: body.password });
-    window.location.href = "/profile?newuser=true";
+    await login(
+      { email: body.email, password: body.password },
+      "/profile/?status=new",
+    );
   } catch (error) {
     throw error;
   }
