@@ -49,8 +49,8 @@ const renderProfileCard = (user) => {
  * @param {string} options.banner - The user's banner image.
  */
 const renderEditModal = ({ name, avatar, banner }) => {
-  const query = new URLSearchParams(window.location.search).get("r");
-  const isNewUser = query === "registered";
+  const query = new URLSearchParams(window.location.search).get("status");
+  const isNewUser = query === "new";
 
   if (isNewUser) {
     const setupProfile = new EditProfile(name, avatar, banner, isNewUser);
@@ -91,7 +91,6 @@ const renderProfile = (profile, profilePosts, loggedInUser) => {
 const renderProfilePosts = (posts, user) => {
   const list = document.querySelector("#posts-list");
   if (posts.status === "fulfilled" && posts.value.length > 0) {
-    console.log(posts.value);
     posts.value.sort((a, b) => a.created < b.created);
     renderPosts(posts.value, list, user.value);
   } else if (posts.status === "fulfilled") {
@@ -114,7 +113,6 @@ const fetchProfileData = async () => {
   if (loggedInUsername !== usernameQuery && usernameQuery !== null) {
     requests.push(userPosts(usernameQuery));
     requests.push(userById(usernameQuery));
-    console.log(usernameQuery);
   } else {
     requests.push(userPosts(loggedInUsername));
   }

@@ -1,4 +1,5 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
+import Storage from "../../helper/storage/index.js";
 
 /**
  * Represents a `ProfileCard` class that displays details about a user on the profile page, including their image, banner, username, and stats.
@@ -25,14 +26,29 @@ export class ProfileCard extends HTMLElement {
     this.followers = followers;
     this.following = following;
     this.count = _count;
+    this.isLoggedInUser = this.name === Storage.get("username");
+    this.cardButtonText = this.isLoggedInUser ? "Edit" : "Follow";
   }
 
   connectedCallback() {
     this.render();
+
+    const cardButton = this.querySelector("#card-button");
+
+    if (this.isLoggedInUser) {
+      cardButton.addEventListener("click", (e) => {
+        this.openModal("edit-modal");
+      });
+    }
   }
 
-  openModal = (type) => {
-    const modal = document.querySelector(`#${type}-modal`);
+  /**
+   * Opens a modal with the specified ID.
+   *
+   * @param {string} id - The ID of the modal element to be opened.
+   */
+  openModal = (id) => {
+    const modal = document.querySelector(`#${id}`);
     modal.showModal();
   };
 
@@ -97,7 +113,7 @@ export class ProfileCard extends HTMLElement {
       "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
     );
     followerButton.addEventListener("click", (e) => {
-      this.openModal("follower");
+      this.openModal("follower-modal");
     });
 
     const followerCount = htmlUtilities.createHTML(
@@ -117,7 +133,7 @@ export class ProfileCard extends HTMLElement {
       "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
     );
     followingButton.addEventListener("click", (e) => {
-      this.openModal("following");
+      this.openModal("following-modal");
     });
 
     const followingCount = htmlUtilities.createHTML(
@@ -134,14 +150,15 @@ export class ProfileCard extends HTMLElement {
 
     userStats.append(...[followerButton, followingButton]);
 
-    const followButton = htmlUtilities.createHTML(
+    const cardButton = htmlUtilities.createHTML(
       "button",
       "button button-primary w-fit sm:self-start",
-      "Follow",
+      this.cardButtonText,
+      { id: "card-button" },
     );
 
     userDetail.append(...[username, userStats]);
-    userDetailWrapper.append(...[userDetail, followButton]);
+    userDetailWrapper.append(...[userDetail, cardButton]);
     profileContent.append(...[avatarWrapper, userDetailWrapper]);
     profile.append(...[bannerImg, profileContent]);
     this.append(profile);
