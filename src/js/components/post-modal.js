@@ -1,4 +1,9 @@
+import { createPost } from "../helper/api/postRequests/create-post.js";
+import { updatePost } from "../helper/api/putRequests/update-post.js";
+import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
+import { ErrorDialog } from "./error/error-dialog.js";
+import { SuccessAlert } from "./error/success-alert.js";
 import { InputGroup } from "./input-group.js";
 
 /**
@@ -19,16 +24,17 @@ export class PostModal extends HTMLElement {
    */
   constructor(post = { id: "", title: "", media: "", tags: [], body: "" }) {
     super();
+    this.isEdit = Boolean(post.id);
     this.postId = post.id || "";
-    this.heading = this.postId ? "Edit post" : "Create post";
-    this.buttonText = this.postId ? "Save" : "Post";
+    this.heading = this.isEdit ? "Edit post" : "Create post";
+    this.buttonText = this.isEdit ? "Save" : "Post";
     this.title = post.title;
     this.media = post.media;
     this.tags = post.tags.join(" ");
     this.body = post.body;
-    this.dialogId = this.postId ? "modal_post-edit" : "modal_post-creation";
-    this.action = this.postId ? "" : "";
-    this.method = this.postId ? "PUT" : "POST";
+    this.dialogId = this.isEdit ? "modal_post-edit" : "modal_post-creation";
+    this.action = this.isEdit ? "" : "";
+    this.method = this.isEdit ? "PUT" : "POST";
   }
 
   connectedCallback() {
@@ -39,7 +45,7 @@ export class PostModal extends HTMLElement {
 
     this.addEventListener("click", (e) => {
       if (e.target == modal) {
-        if (this.postId) {
+        if (this.isEdit) {
           this.remove();
         } else {
           modal.close();
@@ -47,18 +53,84 @@ export class PostModal extends HTMLElement {
       }
     });
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-    });
+    if (this.isEdit) {
+      form.addEventListener("submit", this.postUpdateHandler);
+    } else {
+      form.addEventListener("submit", this.postCreationHandler);
+    }
 
     cancelButton.addEventListener("click", (e) => {
-      if (this.postId) {
+      if (this.isEdit) {
         this.remove();
       } else {
         modal.close();
       }
     });
   }
+
+  /**
+   * Handles the submission of an update post form.
+   *
+   * @param {SubmitEvent} e - The form submission event.
+   */
+  postUpdateHandler = async (e) => {
+    e.preventDefault();
+    const formData = getFormData(e);
+
+    try {
+      const response = await updatePost(this.postId, formData);
+      console.log("body:", formData);
+      console.log("response:", response);
+      const post = document.querySelector(`#post-${this.postId}`);
+      post.updateContent(
+        response.updated,
+        response.title,
+        response.media,
+        response.tags,
+        response.body,
+      );
+
+      e.target.reset();
+      this.querySelector(`#${this.dialogId}`).close();
+      const success = new SuccessAlert("Post was edited", "post-edited");
+      document.body.prepend(success);
+    } catch (error) {
+      console.log(error);
+      const errorMessage = new ErrorDialog(error, "edit-error");
+      const heading = this.querySelector("h1");
+      e.target.insertBefore(errorMessage, heading.nextSibling);
+    }
+  };
+
+  /**
+   * Handles the submission of a create post form.
+   *
+   * @param {SubmitEvent} e - The form submission event.
+   */
+  postCreationHandler = async (e) => {
+    e.preventDefault();
+    const formData = getFormData(e);
+
+    try {
+      await createPost(formData);
+      this.querySelector(`#${this.dialogId}`).close();
+      const success = new SuccessAlert("Post was created", "post-created");
+      document.body.prepend(success);
+      const queryString = window.location.search;
+      const searchParams = new URLSearchParams(queryString);
+      e.target.reset();
+      if (queryString) {
+        queryString = searchParams.set("created", "true").toString();
+      } else {
+        window.location.href = `${window.location.href}?created=true`;
+      }
+    } catch (error) {
+      console.log(error);
+      const errorMessage = new ErrorDialog(error, "create-error");
+      const heading = this.querySelector("h1");
+      e.target.insertBefore(errorMessage, heading.nextSibling);
+    }
+  };
 
   render() {
     const dialog = htmlUtilities.createHTML("dialog", null, null, {
