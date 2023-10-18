@@ -7,6 +7,19 @@
 export const getFormData = (e) => {
   const form = e.target;
   const formData = new FormData(form);
-  const user = Object.fromEntries(formData.entries());
-  return user;
+  const formDataObj = Object.fromEntries(formData.entries());
+
+  const filteredFormData = Object.entries(formDataObj).filter(
+    ([key, value]) => {
+      if (key === "media") {
+        return true;
+      }
+
+      return value;
+    },
+  );
+
+  const data = Object.fromEntries(filteredFormData);
+
+  return data;
 };

@@ -49,8 +49,8 @@ export class SocialPost extends HTMLElement {
     profile,
   ) {
     super();
-
-    this.id = id ?? "";
+    this.postId = id ?? "";
+    this.id = `post-${this.postId}`;
     this.title = title ?? "";
     this.body = body ?? "";
     this.tags = tags ?? [];
@@ -73,8 +73,8 @@ export class SocialPost extends HTMLElement {
     this.render();
     this.displayComments();
 
-    const commentAction = this.querySelector(`#action-comment-${this.id}`);
-    const commentButton = this.querySelector(`#comment-counter-${this.id}`);
+    const commentAction = this.querySelector(`#action-comment-${this.postId}`);
+    const commentButton = this.querySelector(`#comment-counter-${this.postId}`);
 
     if (commentButton) {
       commentButton.addEventListener("click", this.showComments);
@@ -85,7 +85,7 @@ export class SocialPost extends HTMLElement {
 
   showCommentWithFocus = () => {
     this.showComments();
-    const input = this.querySelector(`#comment-form-0-${this.id} textarea`);
+    const input = this.querySelector(`#comment-form-0-${this.postId} textarea`);
     input.focus();
   };
 
@@ -131,7 +131,7 @@ export class SocialPost extends HTMLElement {
       const postComment = new PostComment(
         comment,
         true,
-        this.id,
+        this.postId,
         this.loggedInUser,
       );
       li.append(postComment);
@@ -148,12 +148,46 @@ export class SocialPost extends HTMLElement {
       const postComment = new PostComment(
         comment,
         false,
-        this.id,
+        this.postId,
         this.loggedInUser,
       );
       li.append(postComment);
       list.append(li);
     }
+  }
+
+  updateContent(updatedDate, title, media, tags, body) {
+    const post = this.querySelector("article");
+    post.innerHTML = "";
+
+    const header = new PostHeader(
+      this.postId,
+      this.created,
+      updatedDate,
+      this.name,
+      this.avatar,
+      title,
+      media,
+      tags,
+      body,
+      this.loggedInUser,
+    );
+
+    const main = new PostMain(title, body, media);
+
+    const footer = new PostFooter(
+      this.postId,
+      tags,
+      this.commentCount,
+      this.reactionCount,
+    );
+
+    const commentSection = new PostCommentSection(
+      this.postId,
+      this.loggedInUser,
+    );
+
+    post.append(...[header, main, footer, commentSection]);
   }
 
   render() {
@@ -163,7 +197,7 @@ export class SocialPost extends HTMLElement {
     );
 
     const header = new PostHeader(
-      this.id,
+      this.postId,
       this.created,
       this.updated,
       this.name,
@@ -174,16 +208,20 @@ export class SocialPost extends HTMLElement {
       this.body,
       this.loggedInUser,
     );
+
     const main = new PostMain(this.title, this.body, this.media);
 
     const footer = new PostFooter(
-      this.id,
+      this.postId,
       this.tags,
       this.commentCount,
       this.reactionCount,
     );
 
-    const commentSection = new PostCommentSection(this.id, this.loggedInUser);
+    const commentSection = new PostCommentSection(
+      this.postId,
+      this.loggedInUser,
+    );
 
     article.append(...[header, main, footer, commentSection]);
     this.append(article);

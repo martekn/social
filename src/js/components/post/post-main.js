@@ -15,9 +15,9 @@ export class PostMain extends HTMLElement {
   constructor(title, body, media) {
     super();
 
-    this.title = title;
-    this.body = body;
-    this.media = media;
+    this.title = title ?? "";
+    this.body = body ?? "";
+    this.media = media ?? "";
   }
 
   connectedCallback() {
