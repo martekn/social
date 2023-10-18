@@ -18,6 +18,7 @@ export class SocialPost extends HTMLElement {
    * @param {String|Number} postData.id - The ID of the post.
    * @param {String} postData.title - The title of the post.
    * @param {String} postData.body - The body text of the post.
+   * @param {String[]} postData.tags - An array of tags associated with the post.
    * @param {String} postData.media - The URL to the media content (image or video) associated with the post.
    * @param {Date} postData.created - The timestamp when the post was created (e.g., '2023-10-03T12:40:04.628Z').
    * @param {Date} postData.updated - The timestamp when the post was last updated (e.g., '2023-10-03T12:40:04.628Z').
@@ -43,6 +44,7 @@ export class SocialPost extends HTMLElement {
       author: { name, avatar },
       comments,
       _count,
+      reactions,
     },
     profile,
   ) {
@@ -58,8 +60,13 @@ export class SocialPost extends HTMLElement {
     this.name = name ?? "";
     this.avatar = avatar || "/assets/images/avatar-placeholder.jpg";
     this.comments = comments ?? [];
-    this.count = _count ?? { reactions: 0, comments: 0 };
+    this.commentCount = _count?.comments ?? 0;
     this.loggedInUser = profile;
+    this.reactionCount = reactions.reduce(
+      (totalReactions, currentReaction) =>
+        totalReactions + currentReaction.count,
+      0,
+    );
   }
 
   connectedCallback() {
@@ -169,7 +176,12 @@ export class SocialPost extends HTMLElement {
     );
     const main = new PostMain(this.title, this.body, this.media);
 
-    const footer = new PostFooter(this.id, this.tags, this.count);
+    const footer = new PostFooter(
+      this.id,
+      this.tags,
+      this.commentCount,
+      this.reactionCount,
+    );
 
     const commentSection = new PostCommentSection(this.id, this.loggedInUser);
 
