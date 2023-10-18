@@ -11,7 +11,7 @@ export const getFormData = (e) => {
 
   const filteredFormData = Object.entries(formDataObj).filter(
     ([key, value]) => {
-      if (key === "media") {
+      if (key === "media" || key === "banner" || key === "avatar") {
         return true;
       }
 

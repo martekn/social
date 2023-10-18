@@ -1,4 +1,7 @@
+import { updateUser } from "../helper/api/putRequests/update-user.js";
+import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
+import { ErrorDialog } from "./error/error-dialog.js";
 import { InputGroup } from "./input-group.js";
 
 /**
@@ -19,8 +22,8 @@ export class EditProfile extends HTMLElement {
     super();
 
     this.name = name;
-    this.avatar = avatar;
-    this.banner = banner;
+    this.avatar = avatar ?? "";
+    this.banner = banner ?? "";
     this.isNewUser = isNewUser;
     this.dialogId = "edit-modal";
     this.heading = this.isNewUser
@@ -30,7 +33,29 @@ export class EditProfile extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const form = this.querySelector("form");
+    form.addEventListener("submit", this.userEditHandler);
   }
+
+  /**
+   * Handles user profile editing and updates the user information.
+   * @param {SubmitEvent} e - The event object, typically from a form submission.
+   */
+  userEditHandler = async (e) => {
+    e.preventDefault();
+    const formData = getFormData(e);
+    try {
+      const response = await updateUser(formData);
+
+      window.location.href = "/profile/";
+    } catch (error) {
+      console.log(error);
+      const errorMessage = new ErrorDialog(error, "edit-error");
+      const inputContainer = this.querySelector("div");
+      e.target.insertBefore(errorMessage, inputContainer);
+    }
+  };
 
   render() {
     const dialog = htmlUtilities.createHTML("dialog", null, null, {
