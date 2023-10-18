@@ -12,17 +12,16 @@ export class PostFooter extends HTMLElement {
    * @constructor
    * @param {String|Number} id - The ID of the post to which the footer is associated.
    * @param {String[]} tags - An array of tags associated with the post.
-   * @param {Object} metadata - Metadata about the post, including reactions and comments counts.
-   * @param {String|Number} metadata.reactions - The number of reactions (e.g., likes) for the post.
-   * @param {String|Number} metadata.comments - The number of comments on the post.
+   * @param {String|Number} commentCount - The number of comments on the post.
+   * @param {String|Number} reactionCount - The number of reactions (e.g., likes) for the post.
    */
-  constructor(id, tags, { reactions, comments }) {
+  constructor(id, tags, commentCount, reactionCount) {
     super();
 
     this.id = id;
     this.tags = tags;
-    this.reactions = reactions;
-    this.comments = comments;
+    this.commentCount = commentCount;
+    this.reactionCount = reactionCount;
   }
 
   connectedCallback() {
@@ -55,12 +54,12 @@ export class PostFooter extends HTMLElement {
       "space-x-5 text-sm flex text-dark-400 font-accent",
     );
 
-    if (this.reactions > 0) {
+    if (this.reactionCount > 0) {
       const wrapper = htmlUtilities.createHTML("div", "space-x-1");
       const heartCounter = htmlUtilities.createHTML(
         "span",
         "font-medium",
-        this.reactions,
+        this.reactionCount,
       );
       const heartText = htmlUtilities.createHTML("span", null, "hearts");
       wrapper.append(...[heartCounter, heartText]);
@@ -68,7 +67,7 @@ export class PostFooter extends HTMLElement {
       reactionDetails.append(wrapper);
     }
 
-    if (this.comments > 0) {
+    if (this.commentCount > 0) {
       const wrapper = htmlUtilities.createHTML(
         "button",
         "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0",
@@ -78,7 +77,7 @@ export class PostFooter extends HTMLElement {
       const commentCounter = htmlUtilities.createHTML(
         "span",
         "font-medium",
-        this.comments,
+        this.commentCount,
       );
       const commentText = htmlUtilities.createHTML("span", null, "comments");
       wrapper.append(...[commentCounter, commentText]);
