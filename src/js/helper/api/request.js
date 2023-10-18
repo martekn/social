@@ -26,9 +26,7 @@ export const request = async (
   }
   const options = {
     method,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: {},
   };
 
   if (token) {
@@ -42,6 +40,7 @@ export const request = async (
 
   if (body) {
     options.body = JSON.stringify(body);
+    options.headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(url, options);
