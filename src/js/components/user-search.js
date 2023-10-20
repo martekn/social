@@ -1,3 +1,4 @@
+import { followUnfollowHandler } from "../helper/follow-unfollow-handler.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 
 /**
@@ -28,6 +29,7 @@ export class UserSearch extends HTMLElement {
     this.isFollowing = loggedInUser.following.some(
       (user) => user.name === this.name,
     );
+    this.isLoggedInUser = loggedInUser.name === this.name;
   }
 
   connectedCallback() {
@@ -84,13 +86,19 @@ export class UserSearch extends HTMLElement {
     userDetails.append(...[username, userStats]);
     container.append(userDetails);
 
-    if (!this.isFollowing) {
+    if (!this.isLoggedInUser) {
       const button = htmlUtilities.createHTML(
         "button",
-        "link link-primary",
+        "link link-primary data-[following='true']:hidden",
         "Follow",
-        { id: `search-follow-${this.name}` },
+        {
+          id: `search-follow-${this.name}`,
+          "data-user": this.name,
+          "data-following": this.isFollowing.toString(),
+        },
       );
+      button.addEventListener("click", followUnfollowHandler);
+
       container.append(button);
     }
     this.append(...[avatarLink, container]);

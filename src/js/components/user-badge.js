@@ -26,6 +26,7 @@ export class UserBadge extends HTMLElement {
   }
 
   render() {
+    this.setAttribute("data-badge", this.name);
     const username = htmlUtilities.createHTML(
       "a",
       "flex items-center link link-secondary gap-2 py-1",

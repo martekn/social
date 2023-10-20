@@ -32,6 +32,12 @@ class AppSidebar extends HTMLElement {
     sidebarClose.addEventListener("click", this.closeSidebar);
   }
 
+  /**
+   * Set up the app sidebar with tags and user suggestions based on provided data.
+   *
+   * @param {Promise} posts - A Promise representing the user's posts data.
+   * @param {Promise} user - A Promise representing the currently logged-in user's information.
+   */
   setup = (posts, user) => {
     if (posts.status === "fulfilled") {
       this.renderTags(getPopularTags(posts.value));
@@ -44,9 +50,15 @@ class AppSidebar extends HTMLElement {
     } else if (user.status === "fulfilled") {
       renderUserSuggestions();
     } else {
-      renderUserSuggestions();
+      this.querySelector("#following-section").remove();
     }
   };
+
+  updateFollowing(following) {
+    if (following.length > 0) {
+      this.renderFollowing(following);
+    }
+  }
 
   /**
    * Toggles menu visibility and removes eventhandler
@@ -108,11 +120,13 @@ class AppSidebar extends HTMLElement {
   }
 
   renderFollowing(following) {
+    const list = document.querySelector("#following-list");
+    list.innerHTML = "";
     for (const user of following) {
       const li = htmlUtilities.createHTML("li");
       const username = new UserBadge(user);
       li.append(username);
-      document.querySelector("#following-list").append(li);
+      list.append(li);
     }
   }
 

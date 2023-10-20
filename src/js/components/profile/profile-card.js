@@ -1,3 +1,4 @@
+import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import Storage from "../../helper/storage/index.js";
 
@@ -26,8 +27,17 @@ export class ProfileCard extends HTMLElement {
     this.followers = followers;
     this.following = following;
     this.count = _count;
-    this.isLoggedInUser = this.name === Storage.get("username");
-    this.cardButtonText = this.isLoggedInUser ? "Edit" : "Follow";
+    this.loggedInUser = Storage.get("username");
+    this.isLoggedInUser = this.name === this.loggedInUser;
+    this.isFollowing = this.followers.some(
+      (user) => user.name === this.loggedInUser,
+    );
+    this.followUnfollowText = this.isFollowing ? "Unfollow" : "Follow";
+    this.cardButtonText = this.isLoggedInUser
+      ? "Edit"
+      : this.followUnfollowText;
+
+    console.log(this.isFollowing);
   }
 
   connectedCallback() {
@@ -111,6 +121,7 @@ export class ProfileCard extends HTMLElement {
     const followerButton = htmlUtilities.createHTML(
       "button",
       "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      null,
     );
     followerButton.addEventListener("click", (e) => {
       this.openModal("follower-modal");
@@ -120,6 +131,7 @@ export class ProfileCard extends HTMLElement {
       "span",
       "font-medium",
       `${this.count.followers}`,
+      { id: "follower-count" },
     );
     const followerText = htmlUtilities.createHTML(
       "span",
@@ -154,8 +166,16 @@ export class ProfileCard extends HTMLElement {
       "button",
       "button button-primary w-fit sm:self-start",
       this.cardButtonText,
-      { id: "card-button" },
+      {
+        id: "card-button",
+        "data-user": this.name,
+        "data-following": this.isFollowing.toString(),
+      },
     );
+
+    if (!this.isLoggedInUser) {
+      cardButton.addEventListener("click", followUnfollowHandler);
+    }
 
     userDetail.append(...[username, userStats]);
     userDetailWrapper.append(...[userDetail, cardButton]);
