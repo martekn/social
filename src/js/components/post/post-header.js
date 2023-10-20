@@ -1,6 +1,7 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 import { PostDropdown } from "./post-dropdown.js";
+import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 
 /**
  * Represents the header component of a post, displaying the post's author information, creation and update dates, and options like the follow button or a dropdown menu.
@@ -97,13 +98,19 @@ export class PostHeader extends HTMLElement {
     );
     userDetails.append(username);
 
-    if (!this.isFollowing && !this.isLoggedInUser) {
+    if (!this.isLoggedInUser) {
       const follow = htmlUtilities.createHTML(
         "button",
-        "before:w-1 before:rounded-full before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
+        "before:w-1 before:rounded-full data-[following='true']:hidden before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
         "Follow",
+        {
+          "data-user": this.name,
+          "data-following": this.isFollowing.toString(),
+        },
       );
       userDetails.append(follow);
+
+      follow.addEventListener("click", followUnfollowHandler);
     }
 
     const timeDetails = htmlUtilities.createHTML(
