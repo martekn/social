@@ -119,7 +119,7 @@ export class PostModal extends HTMLElement {
       e.target.reset();
 
       if (queryString) {
-        queryString = searchParams.set("created", "true").toString();
+        window.location.search = searchParams.set("created", "true").toString();
       } else {
         window.location.href = `${window.location.href}?created=true`;
       }
