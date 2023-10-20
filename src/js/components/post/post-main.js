@@ -15,7 +15,7 @@ export class PostMain extends HTMLElement {
   constructor(title, body, media) {
     super();
 
-    this.title = title ?? "";
+    this.postTitle = title ?? "";
     this.body = body ?? "";
     this.media = media ?? "";
   }
@@ -42,8 +42,12 @@ export class PostMain extends HTMLElement {
       main.append(postImage);
     }
 
-    if (this.title) {
-      const postTitle = htmlUtilities.createHTML("h2", "break-all", this.title);
+    if (this.postTitle) {
+      const postTitle = htmlUtilities.createHTML(
+        "h2",
+        "break-all",
+        this.postTitle,
+      );
       main.append(postTitle);
     }
 

@@ -16,7 +16,7 @@ export class ProfileModal extends HTMLElement {
   constructor(modalType, title, users) {
     super();
     this.modalType = modalType;
-    this.title = title;
+    this.postTitle = title;
     this.users = users;
   }
 
@@ -54,7 +54,7 @@ export class ProfileModal extends HTMLElement {
       "div",
       "flex items-center justify-between border-b border-light-450 px-6 py-2",
     );
-    const heading = htmlUtilities.createHTML("h2", null, this.title);
+    const heading = htmlUtilities.createHTML("h2", null, this.postTitle);
 
     const closeButton = htmlUtilities.createHTML(
       "button",
@@ -66,7 +66,7 @@ export class ProfileModal extends HTMLElement {
     const buttonText = htmlUtilities.createHTML(
       "span",
       "sr-only",
-      `Close ${this.title} modal`,
+      `Close ${this.postTitle} modal`,
     );
 
     closeButton.addEventListener("click", (e) => {

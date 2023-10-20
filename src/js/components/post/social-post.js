@@ -51,7 +51,7 @@ export class SocialPost extends HTMLElement {
     super();
     this.postId = id ?? "";
     this.id = `post-${this.postId}`;
-    this.title = title ?? "";
+    this.postTitle = title ?? "";
     this.body = body ?? "";
     this.tags = tags ?? [];
     this.media = media ?? "";
@@ -202,14 +202,14 @@ export class SocialPost extends HTMLElement {
       this.updated,
       this.name,
       this.avatar,
-      this.title,
+      this.postTitle,
       this.media,
       this.tags,
       this.body,
       this.loggedInUser,
     );
 
-    const main = new PostMain(this.title, this.body, this.media);
+    const main = new PostMain(this.postTitle, this.body, this.media);
 
     const footer = new PostFooter(
       this.postId,

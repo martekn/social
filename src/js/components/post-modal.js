@@ -28,7 +28,7 @@ export class PostModal extends HTMLElement {
     this.postId = post.id || "";
     this.heading = this.isEdit ? "Edit post" : "Create post";
     this.buttonText = this.isEdit ? "Save" : "Post";
-    this.title = post.title;
+    this.postTitle = post.title;
     this.media = post.media;
     this.tags = post.tags.join(" ");
     this.body = post.body;
@@ -117,6 +117,7 @@ export class PostModal extends HTMLElement {
       const queryString = window.location.search;
       const searchParams = new URLSearchParams(queryString);
       e.target.reset();
+
       if (queryString) {
         queryString = searchParams.set("created", "true").toString();
       } else {
@@ -154,7 +155,7 @@ export class PostModal extends HTMLElement {
       {
         id: "title",
         type: "text",
-        value: this.title,
+        value: this.postTitle,
         placeholder: "Post title",
         name: "title",
         title: "Title is required",
