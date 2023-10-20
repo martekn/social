@@ -7,7 +7,7 @@ import { postsByTag } from "../helper/api/request-object/posts-by-tag.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
 import { renderFilterButtons } from "../helper/render-filter-buttons.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
-import { ErrorDialog } from "../components/error/error-dialog.js";
+import { ErrorDialog } from "../components/alerts/error-dialog.js";
 import { renderUserSearch } from "../helper/render-user-search.js";
 
 const sidebar = document.querySelector("app-sidebar");

@@ -1,7 +1,7 @@
 import { deletePost } from "../../helper/api/deleteRequests/delete-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
-import { ErrorDialog } from "../error/error-dialog.js";
-import { SuccessAlert } from "../error/success-alert.js";
+import { ErrorDialog } from "../alerts/error-dialog.js";
+import { renderToast } from "../../helper/render-toast.js";
 
 /**
  * Represents a modal dialog that asks the user for confirmation when deleting a post.
@@ -26,8 +26,11 @@ export class PostDeleteModal extends HTMLElement {
     try {
       const response = await deletePost(this.postId);
 
-      const success = new SuccessAlert("Post was deleted", "delete-success");
-      document.body.append(success);
+      renderToast(
+        "Success: Post has been deleted",
+        "delete-success",
+        "success",
+      );
       document.querySelector(`#post-${this.postId}`).remove();
       this.remove();
     } catch (error) {

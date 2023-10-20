@@ -7,7 +7,7 @@ import { userById } from "../helper/api/request-object/user-by-id.js";
 import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { requestAll } from "../helper/api/request-all.js";
-import { ErrorDialog } from "../components/error/error-dialog.js";
+import { ErrorDialog } from "../components/alerts/error-dialog.js";
 
 const main = document.querySelector("main");
 
