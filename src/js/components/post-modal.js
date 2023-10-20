@@ -2,8 +2,8 @@ import { createPost } from "../helper/api/postRequests/create-post.js";
 import { updatePost } from "../helper/api/putRequests/update-post.js";
 import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
-import { ErrorDialog } from "./error/error-dialog.js";
-import { SuccessAlert } from "./error/success-alert.js";
+import { renderToast } from "../helper/render-toast.js";
+import { ErrorDialog } from "./alerts/error-dialog.js";
 import { InputGroup } from "./input-group.js";
 
 /**
@@ -92,8 +92,7 @@ export class PostModal extends HTMLElement {
 
       e.target.reset();
       this.querySelector(`#${this.dialogId}`).close();
-      const success = new SuccessAlert("Post was edited", "post-edited");
-      document.body.prepend(success);
+      renderToast("Success: Post has been edited", "post-edited", "success");
     } catch (error) {
       console.log(error);
       const errorMessage = new ErrorDialog(error, "edit-error");
@@ -114,8 +113,7 @@ export class PostModal extends HTMLElement {
     try {
       await createPost(formData);
       this.querySelector(`#${this.dialogId}`).close();
-      const success = new SuccessAlert("Post was created", "post-created");
-      document.body.prepend(success);
+      renderToast("Success: Post was created", "post-edited", "success");
       const queryString = window.location.search;
       const searchParams = new URLSearchParams(queryString);
       e.target.reset();

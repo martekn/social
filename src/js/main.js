@@ -2,7 +2,7 @@ import Storage from "./helper/storage/index.js";
 import "./components/index.js";
 import { privatePaths } from "./const/private-paths.js";
 import { publicPaths } from "./const/public-paths.js";
-import { SuccessAlert } from "./components/error/success-alert.js";
+import { renderToast } from "./helper/render-toast.js";
 const createPostButton = document.querySelector("#create-button");
 
 if (createPostButton) {
@@ -15,7 +15,7 @@ const searchParams = new URLSearchParams(window.location.search);
 const createdQuery = searchParams.get("created");
 
 if (createdQuery === "true") {
-  document.body.prepend(new SuccessAlert("Post created", "post-success"));
+  renderToast("Success: Post was created", "post-success", "success");
   const newURL = window.location.href
     .replace("?created=true", "")
     .replace("&created=true");

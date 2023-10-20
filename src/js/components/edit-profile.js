@@ -1,7 +1,7 @@
 import { updateUser } from "../helper/api/putRequests/update-user.js";
 import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
-import { ErrorDialog } from "./error/error-dialog.js";
+import { ErrorDialog } from "./alerts/error-dialog.js";
 import { InputGroup } from "./input-group.js";
 
 /**
