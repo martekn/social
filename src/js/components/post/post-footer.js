@@ -1,4 +1,6 @@
+import { reactToPost } from "../../helper/api/putRequests/react-to-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
+import { renderToast } from "../../helper/render-toast.js";
 import { TagItem } from "../tag-item.js";
 import { PostActionButton } from "./post-action-button.js";
 
@@ -27,6 +29,21 @@ export class PostFooter extends HTMLElement {
   connectedCallback() {
     this.render();
   }
+
+  reactionHandler = async () => {
+    try {
+      const response = await reactToPost(this.id);
+      const reactionCount = this.querySelector(`#reaction-counter-${this.id}`);
+      const currentCount = Number(reactionCount.innerText);
+      reactionCount.innerText = currentCount + 1;
+    } catch (error) {
+      renderToast(
+        "Error: Unable to heart post at the moment, please try again later",
+        "reaction-error",
+        "error",
+      );
+    }
+  };
 
   render() {
     const footer = htmlUtilities.createHTML("footer", "space-y-2");
@@ -60,6 +77,7 @@ export class PostFooter extends HTMLElement {
         "span",
         "font-medium",
         this.reactionCount,
+        { id: `reaction-counter-${this.id}` },
       );
       const heartText = htmlUtilities.createHTML("span", null, "hearts");
       wrapper.append(...[heartCounter, heartText]);
@@ -102,6 +120,7 @@ export class PostFooter extends HTMLElement {
       "action-heart",
       this.id,
     );
+    reactionButton.addEventListener("click", this.reactionHandler);
 
     const commentButton = new PostActionButton(
       "Comment",
