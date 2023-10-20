@@ -43,7 +43,7 @@ export class PostHeader extends HTMLElement {
     this.updated = updated;
     this.name = name;
     this.avatar = avatar;
-    this.title = title;
+    this.postTitle = title;
     this.media = media;
     this.tags = tags;
     this.body = body;
@@ -141,7 +141,7 @@ export class PostHeader extends HTMLElement {
     if (this.isLoggedInUser) {
       const dropdown = new PostDropdown(
         this.id,
-        this.title,
+        this.postTitle,
         this.media,
         this.tags,
         this.body,
