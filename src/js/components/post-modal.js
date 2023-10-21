@@ -208,7 +208,7 @@ export class PostModal extends HTMLElement {
       "button",
       "font-accent font-medium text-primary-400",
       "Cancel",
-      { id: `${this.dialogId}-cancel` },
+      { id: `${this.dialogId}-cancel`, type: "button" },
     );
     const sendAction = htmlUtilities.createHTML(
       "button",

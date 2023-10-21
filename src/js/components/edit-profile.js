@@ -62,19 +62,14 @@ export class EditProfile extends HTMLElement {
       id: this.dialogId,
     });
 
-    const container = htmlUtilities.createHTML(
-      "form",
-      "p-10 grid gap-2",
-      null,
-      {
-        id: `${this.dialogId}_container`,
-      },
-    );
+    const form = htmlUtilities.createHTML("form", "p-10 grid gap-2", null, {
+      id: `${this.dialogId}_container`,
+    });
 
-    dialog.append(container);
+    dialog.append(form);
 
     const heading = htmlUtilities.createHTML("h1", null, this.heading);
-    container.append(heading);
+    form.append(heading);
 
     if (this.isNewUser) {
       const text = htmlUtilities.createHTML(
@@ -82,7 +77,7 @@ export class EditProfile extends HTMLElement {
         null,
         "Welcome! This is where you personalize your profile and banner – your online identity starts here. Enjoy!",
       );
-      container.append(text);
+      form.append(text);
     }
 
     const inputContainer = htmlUtilities.createHTML("div", "py-5 grid gap-5");
@@ -126,8 +121,13 @@ export class EditProfile extends HTMLElement {
       "button",
       "font-accent font-medium text-primary-400",
       `${this.isNewUser ? "Skip" : "Cancel"}`,
-      { id: `${this.dialogId}-cancel` },
+      { id: `${this.dialogId}-cancel`, type: "button" },
     );
+
+    cancelAction.addEventListener("click", (e) => {
+      form.reset();
+      dialog.close();
+    });
 
     const sendAction = htmlUtilities.createHTML(
       "button",
@@ -137,9 +137,9 @@ export class EditProfile extends HTMLElement {
     );
 
     actionContainer.append(...[cancelAction, sendAction]);
-    container.append(...[inputContainer, actionContainer]);
+    form.append(...[inputContainer, actionContainer]);
 
-    dialog.append(container);
+    dialog.append(form);
 
     this.append(dialog);
   }
