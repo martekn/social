@@ -22,7 +22,7 @@ const renderPost = (post, user) => {
       "mb-6 sr-only",
       `${post.value.author.name}'s post`,
     );
-    const socialPost = new SocialPost(post.value, user);
+    const socialPost = new SocialPost(post.value, user.value);
     main.append(...[heading, socialPost]);
 
     socialPost.showComments();
