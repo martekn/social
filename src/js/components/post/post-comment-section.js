@@ -33,10 +33,10 @@ export class PostCommentSection extends HTMLElement {
     const heading = htmlUtilities.createHTML("h3", "sr-only", "Comments");
 
     const commentForm = new PostCommentForm(
-      "comment-form",
       "0",
       this.postId,
       this.loggedInUser,
+      null,
     );
 
     const commentList = htmlUtilities.createHTML("ul", "space-y-2", null, {

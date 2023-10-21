@@ -127,6 +127,7 @@ export class SocialPost extends HTMLElement {
     for (const comment of rootComments) {
       const li = htmlUtilities.createHTML("li", null, null, {
         id: `comment-li-${comment.id}`,
+        "data-root": "true",
       });
       const postComment = new PostComment(
         comment,
@@ -135,15 +136,15 @@ export class SocialPost extends HTMLElement {
         this.loggedInUser,
       );
       li.append(postComment);
-      list.append(li);
+      list.prepend(li);
     }
 
     for (const comment of nestedComments) {
-      const list = this.querySelector(
-        `#comment-${this.findRootComment(comment)} ul`,
-      );
+      const rootParentId = this.findRootComment(comment, this.comments);
+      const list = this.querySelector(`#comment-${rootParentId} ul`);
       const li = htmlUtilities.createHTML("li", null, null, {
         id: `comment-li-${comment.id}`,
+        "data-parent": rootParentId,
       });
       const postComment = new PostComment(
         comment,
