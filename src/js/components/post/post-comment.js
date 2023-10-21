@@ -75,7 +75,6 @@ export class PostComment extends HTMLElement {
             .getAttribute("data-root"),
         );
 
-        console.log(isReplyingToRootComment);
         textarea.value = isReplyingToRootComment ? `@${this.name} ` : "";
       }
       textarea.focus();

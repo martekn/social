@@ -28,7 +28,6 @@ export const login = async (body, redirect = "/profile/") => {
     Storage.set("accessToken", response.accessToken);
     Storage.set("username", response.name);
 
-    console.log(redirect);
     window.location.href = redirect;
   } catch (error) {
     throw error;

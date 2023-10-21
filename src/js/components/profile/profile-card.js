@@ -36,8 +36,6 @@ export class ProfileCard extends HTMLElement {
     this.cardButtonText = this.isLoggedInUser
       ? "Edit"
       : this.followUnfollowText;
-
-    console.log(this.isFollowing);
   }
 
   connectedCallback() {
