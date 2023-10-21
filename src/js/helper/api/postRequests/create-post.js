@@ -15,6 +15,12 @@ import { request } from "../request.js";
  * @returns {Promise<Object>} A Promise that resolves to the response object from the server.
  */
 export const createPost = async (body) => {
+  if (body.tags) {
+    body.tags = body.tags.trim().split(" ");
+  } else {
+    body.tags = [];
+  }
+
   const response = await request(
     "/api/v1/social/posts",
     null,
