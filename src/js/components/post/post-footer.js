@@ -1,4 +1,6 @@
+import { reactToPost } from "../../helper/api/putRequests/react-to-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
+import { renderToast } from "../../helper/render-toast.js";
 import { TagItem } from "../tag-item.js";
 import { PostActionButton } from "./post-action-button.js";
 
@@ -28,6 +30,29 @@ export class PostFooter extends HTMLElement {
     this.render();
   }
 
+  reactionHandler = async () => {
+    try {
+      const response = await reactToPost(this.id);
+      const reactionCounterContainer = this.querySelector(
+        `#reaction-counter-${this.id}`,
+      );
+      const reactionCount = reactionCounterContainer.querySelector(
+        `#reaction-count-${this.id}`,
+      );
+      const currentCount = Number(reactionCount.innerText);
+      reactionCount.innerText = currentCount + 1;
+      if (reactionCounterContainer.classList.contains("hidden")) {
+        reactionCounterContainer.classList.remove("hidden");
+      }
+    } catch (error) {
+      renderToast(
+        "Error: Unable to heart post at the moment, please try again later",
+        "reaction-error",
+        "error",
+      );
+    }
+  };
+
   render() {
     const footer = htmlUtilities.createHTML("footer", "space-y-2");
     const footerDetails = htmlUtilities.createHTML(
@@ -54,35 +79,42 @@ export class PostFooter extends HTMLElement {
       "space-x-5 text-sm flex text-dark-400 font-accent",
     );
 
-    if (this.reactionCount > 0) {
-      const wrapper = htmlUtilities.createHTML("div", "space-x-1");
-      const heartCounter = htmlUtilities.createHTML(
-        "span",
-        "font-medium",
-        this.reactionCount,
-      );
-      const heartText = htmlUtilities.createHTML("span", null, "hearts");
-      wrapper.append(...[heartCounter, heartText]);
+    const heartContainer = htmlUtilities.createHTML("div", "space-x-1", null, {
+      id: `reaction-counter-${this.id}`,
+    });
+    const heartCounter = htmlUtilities.createHTML(
+      "span",
+      "font-medium",
+      this.reactionCount,
+      { id: `reaction-count-${this.id}` },
+    );
+    const heartText = htmlUtilities.createHTML("span", null, "hearts");
+    heartContainer.append(...[heartCounter, heartText]);
 
-      reactionDetails.append(wrapper);
+    reactionDetails.append(heartContainer);
+    if (this.reactionCount == 0) {
+      heartContainer.classList.add("hidden");
     }
 
-    if (this.commentCount > 0) {
-      const wrapper = htmlUtilities.createHTML(
-        "button",
-        "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0",
-        null,
-        { id: `comment-counter-${this.id}` },
-      );
-      const commentCounter = htmlUtilities.createHTML(
-        "span",
-        "font-medium",
-        this.commentCount,
-      );
-      const commentText = htmlUtilities.createHTML("span", null, "comments");
-      wrapper.append(...[commentCounter, commentText]);
+    const commentContainer = htmlUtilities.createHTML(
+      "button",
+      "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0",
+      null,
+      { id: `comment-counter-${this.id}` },
+    );
+    const commentCounter = htmlUtilities.createHTML(
+      "span",
+      "font-medium",
+      this.commentCount,
+      { id: `comment-count-${this.id}` },
+    );
+    const commentText = htmlUtilities.createHTML("span", null, "comments");
+    commentContainer.append(...[commentCounter, commentText]);
 
-      reactionDetails.append(wrapper);
+    reactionDetails.append(commentContainer);
+
+    if (this.commentCount == 0) {
+      commentContainer.classList.add("hidden");
     }
 
     footerDetails.append(...[tagList, reactionDetails]);
@@ -102,6 +134,7 @@ export class PostFooter extends HTMLElement {
       "action-heart",
       this.id,
     );
+    reactionButton.addEventListener("click", this.reactionHandler);
 
     const commentButton = new PostActionButton(
       "Comment",
