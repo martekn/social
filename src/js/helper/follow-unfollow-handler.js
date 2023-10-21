@@ -41,11 +41,9 @@ const updateProfileCard = (card, state, name, avatar) => {
   const followerList = followerModal.querySelector("ul");
 
   if (state) {
-    console.log("true");
     const badge = followerList.querySelector(`[data-badge=${name}]`);
     badge.remove();
   } else {
-    console.log("false");
     const li = htmlUtilities.createHTML("li");
     const userBadge = new UserBadge({
       avatar,
@@ -66,7 +64,6 @@ export const followUnfollowHandler = async (e) => {
   let isFollowing = stringToBoolean(button.getAttribute("data-following"));
 
   const user = button.getAttribute("data-user");
-  console.log(user);
   const sidebar = document.querySelector("app-sidebar");
   let response = "";
   try {

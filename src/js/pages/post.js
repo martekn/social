@@ -1,4 +1,3 @@
-import { profile } from "../const/test-data/profile.js";
 import { SocialPost } from "../components/post/social-post.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { requestAll } from "../helper/api/request-all.js";
@@ -14,7 +13,7 @@ if (!postId) {
   window.location.href = "/feed";
 }
 
-const renderPost = (post) => {
+const renderPost = (post, user) => {
   const main = document.querySelector("main");
 
   if (post.status === "fulfilled") {
@@ -23,7 +22,7 @@ const renderPost = (post) => {
       "mb-6 sr-only",
       `${post.value.author.name}'s post`,
     );
-    const socialPost = new SocialPost(post.value, profile);
+    const socialPost = new SocialPost(post.value, user);
     main.append(...[heading, socialPost]);
 
     socialPost.showComments();
@@ -41,7 +40,7 @@ const setupPostPage = async () => {
     const sidebar = document.querySelector("app-sidebar");
     sidebar.setup(posts, user);
 
-    renderPost(post);
+    renderPost(post, user);
   } catch (error) {
     console.log(error);
   }

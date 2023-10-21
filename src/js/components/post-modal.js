@@ -79,8 +79,6 @@ export class PostModal extends HTMLElement {
 
     try {
       const response = await updatePost(this.postId, formData);
-      console.log("body:", formData);
-      console.log("response:", response);
       const post = document.querySelector(`#post-${this.postId}`);
       post.updateContent(
         response.updated,
