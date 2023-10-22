@@ -73,6 +73,12 @@ const renderEditModal = ({ name, avatar, banner }) => {
  */
 const renderProfile = (profile, profilePosts, loggedInUser) => {
   if (profile.status === "fulfilled") {
+    document.title = `${profile.value.name} - Social`;
+    const profileMetaDescription = `Explore ${profile.value.name}'s profile on Social. Connect and discover their posts and updates.`;
+    document
+      .querySelector('meta[name="description"]')
+      .setAttribute("content", profileMetaDescription);
+
     renderProfileCard(profile.value);
     renderEditModal(profile.value);
     renderProfilePosts(profilePosts, loggedInUser);
