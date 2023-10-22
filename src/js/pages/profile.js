@@ -1,4 +1,4 @@
-import { renderPosts } from "../helper/renderPosts.js";
+import { renderPosts } from "../helper/render-posts.js";
 import { ProfileModal } from "../components/profile/profile-modal.js";
 import { EditProfile } from "../components/edit-profile.js";
 import { ProfileCard } from "../components/profile/profile-card.js";

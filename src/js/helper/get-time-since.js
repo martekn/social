@@ -61,7 +61,7 @@ export const getTimeSince = (dateInput) => {
     return `${amountOfDays} d`;
   } else {
     if (amountOfHours >= 1) {
-      return `${amountOfHours} t`;
+      return `${amountOfHours} h`;
     } else if (amountOfMinutes >= 1) {
       return `${amountOfMinutes} m`;
     } else {

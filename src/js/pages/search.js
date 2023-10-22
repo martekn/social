@@ -1,4 +1,4 @@
-import { renderPosts } from "../helper/renderPosts.js";
+import { renderPosts } from "../helper/render-posts.js";
 import Storage from "../helper/storage/index.js";
 import { requestAll } from "../helper/api/request-all.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
