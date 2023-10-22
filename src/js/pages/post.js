@@ -40,6 +40,13 @@ const setupPostPage = async () => {
     const sidebar = document.querySelector("app-sidebar");
     sidebar.setup(posts, user);
 
+    if (post.status === "fulfilled") {
+      document.title = `${post.value.title} - Social`;
+      const profileMetaDescription = `Read and engage with ${post.value.author.name}'s post on Social. Join the conversation.`;
+      document
+        .querySelector('meta[name="description"]')
+        .setAttribute("content", profileMetaDescription);
+    }
     renderPost(post, user);
   } catch (error) {
     console.log(error);
