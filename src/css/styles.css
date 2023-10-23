@@ -98,4 +98,8 @@
     background-color: #808093;
     border-radius: 5px;
   }
+
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+  }
 }
