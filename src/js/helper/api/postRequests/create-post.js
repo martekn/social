@@ -23,7 +23,7 @@ export const createPost = async (body) => {
 
   const response = await request(
     "/api/v1/social/posts",
-    null,
+    { _author: "true", _reactions: "true", _comments: "true" },
     true,
     "POST",
     body,
