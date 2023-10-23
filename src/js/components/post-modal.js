@@ -5,6 +5,7 @@ import htmlUtilities from "../helper/html-utilities/index.js";
 import { renderToast } from "../helper/render-toast.js";
 import { ErrorDialog } from "./alerts/error-dialog.js";
 import { InputGroup } from "./input-group.js";
+import { SocialPost } from "./post/social-post.js";
 
 /**
  * Represents a `PostModal` class that adds a modal for either creating or editing an existing post.
@@ -91,6 +92,16 @@ export class PostModal extends HTMLElement {
       e.target.reset();
       this.querySelector(`#${this.dialogId}`).close();
       renderToast("Success: Post has been edited", "post-edited", "success");
+      const toast = document.querySelector("#post-edited p");
+      const link = htmlUtilities.createHTML(
+        "a",
+        "link underline font-medium px-1",
+        "view",
+        {
+          href: `/post/?id=${response.id}`,
+        },
+      );
+      toast.append(link);
     } catch (error) {
       console.log(error);
       const errorMessage = new ErrorDialog(error, "edit-error");
@@ -109,18 +120,45 @@ export class PostModal extends HTMLElement {
     const formData = getFormData(e);
 
     try {
-      await createPost(formData);
-      this.querySelector(`#${this.dialogId}`).close();
-      renderToast("Success: Post was created", "post-edited", "success");
-      const queryString = window.location.search;
-      const searchParams = new URLSearchParams(queryString);
-      e.target.reset();
+      const response = await createPost(formData);
 
-      if (queryString) {
-        window.location.search = searchParams.set("created", "true").toString();
-      } else {
-        window.location.href = `${window.location.href}?created=true`;
+      this.querySelector(`#${this.dialogId}`).close();
+
+      renderToast("Success: Post was created", "post-created", "success");
+      const toast = document.querySelector("#post-created p");
+      const link = htmlUtilities.createHTML(
+        "a",
+        "link underline hover:text-dark-500 font-medium px-1",
+        "view",
+        {
+          href: `/post/?id=${response.id}`,
+        },
+      );
+
+      toast.append(link);
+
+      const list = document.querySelector("#posts-list");
+      const path = window.location.pathname;
+      const query = new URLSearchParams(window.location.search)?.get("u");
+      const username = response.author.name;
+
+      if (list && path !== "/search/") {
+        if (query && query !== username && path === "/profile/") {
+          return;
+        }
+
+        response.author.following = [];
+        const post = new SocialPost(response, response.author);
+        const li = htmlUtilities.createHTML("li");
+        li.append(post);
+        list.prepend(li);
+
+        post
+          .querySelector("article")
+          .classList.add(..."border-2 border-primary-200".split(" "));
       }
+
+      e.target.reset();
     } catch (error) {
       console.log(error);
       const errorMessage = new ErrorDialog(error, "create-error");
@@ -193,15 +231,18 @@ export class PostModal extends HTMLElement {
     const bodyTextarea = htmlUtilities.createHTML(
       "textarea",
       "min-h-[250px]",
-      this.body,
+      null,
       { id: "body", name: "body", placeholder: "Body text" },
     );
+    bodyTextarea.textContent = this.body;
+
     bodyContainer.append(bodyLabel, bodyTextarea);
 
     const actionContainer = htmlUtilities.createHTML(
       "div",
       "flex justify-end gap-4 pt-3",
     );
+
     const cancelAction = htmlUtilities.createHTML(
       "button",
       "font-accent font-medium text-primary-400",
