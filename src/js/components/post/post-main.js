@@ -45,7 +45,7 @@ export class PostMain extends HTMLElement {
     if (this.postTitle) {
       const postTitle = htmlUtilities.createHTML(
         "h2",
-        "break-all",
+        "overflow-wrap-anywhere",
         this.postTitle,
       );
       main.append(postTitle);
@@ -54,7 +54,7 @@ export class PostMain extends HTMLElement {
     if (this.body) {
       const postBody = htmlUtilities.createHTML(
         "p",
-        "text-dark-400 break-all",
+        "text-dark-400 overflow-wrap-anywhere",
         this.body,
       );
       main.append(postBody);
