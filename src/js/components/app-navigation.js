@@ -217,10 +217,20 @@ class AppNavigation extends HTMLElement {
 
   render() {
     const header = htmlUtilities.createHTML("header");
+
+    const skipClasses =
+      "sr-only bg-primary-400 top-0 font-accent font-medium text-light-200 focus:not-sr-only focus:absolute focus:rounded-b-md focus:rounded-t-none focus:px-3 focus:py-3 focus:ring-0";
+    const skipToMain = htmlUtilities.createHTML(
+      "a",
+      skipClasses,
+      "Skip to main content",
+      { href: "#main" },
+    );
+
     const topbar = this.createTopbar();
     const nav = this.createNav();
 
-    header.append(...[topbar, nav]);
+    header.append(...[skipToMain, topbar, nav]);
     this.append(header);
   }
 }
