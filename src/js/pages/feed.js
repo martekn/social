@@ -3,20 +3,23 @@ import { requestAll } from "../helper/api/request-all.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { followingPosts } from "../helper/api/request-object/following-posts.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
+import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { ErrorDialog } from "../components/alerts/error-dialog.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
 import Storage from "../helper/storage/index.js";
 
 const sidebar = document.querySelector("app-sidebar");
+const username = Storage.get("username");
 const requests = [
   allPosts(),
   followingPosts(),
-  userById(Storage.get("username")),
+  userById(username),
+  userPosts(username),
 ];
 
 const renderFeedPage = async () => {
   try {
-    const [allPosts, feedPosts, user] = await requestAll(requests);
+    const [allPosts, feedPosts, user, userPosts] = await requestAll(requests);
     sidebar.setup(allPosts, user);
 
     if (
@@ -25,11 +28,15 @@ const renderFeedPage = async () => {
       allPosts.status === "fulfilled"
     ) {
       if (feedPosts.value.length > 0) {
-        renderPosts(
-          feedPosts.value,
-          document.querySelector("#posts-list"),
-          user.value,
+        const userPostsArray =
+          userPosts.status === "fulfilled" ? userPosts.value : [];
+        const feedPostsArray =
+          feedPosts.status === "fulfilled" ? feedPosts.value : [];
+
+        const posts = [...feedPostsArray, ...userPostsArray].sort(
+          (a, b) => a.created < b.created,
         );
+        renderPosts(posts, document.querySelector("#posts-list"), user.value);
       } else {
         renderPosts(
           sortPopularPosts(allPosts.value),
