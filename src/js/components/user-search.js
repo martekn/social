@@ -59,7 +59,7 @@ export class UserSearch extends HTMLElement {
 
     const container = htmlUtilities.createHTML(
       "div",
-      "flex w-full justify-between",
+      "flex w-full justify-between items-center",
     );
     const userDetails = htmlUtilities.createHTML("div");
     const username = htmlUtilities.createHTML(
