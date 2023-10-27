@@ -240,7 +240,9 @@ class AppNavigation extends HTMLElement {
 
     const topbar = this.createTopbar();
     const nav = this.createNav();
-
+    this.classList.add(
+      ..."sticky top-0 overflow-hidden h-screen max-h-screen".split(" "),
+    );
     header.append(...[skipToMain, topbar, nav]);
     this.append(header);
   }
