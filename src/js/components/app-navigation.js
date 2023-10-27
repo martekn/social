@@ -150,7 +150,18 @@ class AppNavigation extends HTMLElement {
 
     let iconClass = icon.default;
 
-    if (this.currentPage === href) {
+    const searchQuery = new URLSearchParams(window.location.search);
+    const user = Storage.get("username");
+    const currentProfile = searchQuery?.get("u") ?? user;
+
+    const isPersonalProfile = href === "/profile/" && user === currentProfile;
+
+    if (
+      this.currentPage === href &&
+      (href !== "/profile/" || isPersonalProfile)
+    ) {
+      console.log(name);
+
       navItem.setAttribute("aria-current", "page");
       navItem.classList.add("font-medium");
       navItem.classList.remove("font-light");
