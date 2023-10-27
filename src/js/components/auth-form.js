@@ -3,7 +3,7 @@ import { InputGroup } from "./input-group.js";
 import { getFormData } from "../helper/get-form-data.js";
 import { login } from "../helper/api/authRequests/login.js";
 import { register } from "../helper/api/authRequests/register.js";
-import { ErrorDialog } from "./alerts/error-dialog.js";
+import { DialogAlert } from "./alerts/dialog-alert.js";
 
 /**
  * Represents an `AuthForm` class that creates a form for user registration or login based on the query of the site.
@@ -51,7 +51,7 @@ export class AuthForm extends HTMLElement {
         if (errorMessage) {
           errorMessage.remove();
         }
-        errorMessage = new ErrorDialog(error, "auth-error");
+        errorMessage = new DialogAlert(error, "auth-error", "error");
         form.insertBefore(errorMessage, this.querySelector("#container"));
       }
     });

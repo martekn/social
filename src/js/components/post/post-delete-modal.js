@@ -1,6 +1,6 @@
 import { deletePost } from "../../helper/api/deleteRequests/delete-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
-import { ErrorDialog } from "../alerts/error-dialog.js";
+import { DialogAlert } from "../alerts/dialog-alert.js";
 import { renderToast } from "../../helper/render-toast.js";
 
 /**
@@ -35,9 +35,10 @@ export class PostDeleteModal extends HTMLElement {
       this.remove();
     } catch (error) {
       console.log(error);
-      const errorMessage = new ErrorDialog(
+      const errorMessage = new DialogAlert(
         error,
         `delete-modal-${this.postId}_error`,
+        "error",
       );
 
       container.prepend(errorMessage);

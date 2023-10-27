@@ -3,7 +3,7 @@ import { updatePost } from "../helper/api/putRequests/update-post.js";
 import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { renderToast } from "../helper/render-toast.js";
-import { ErrorDialog } from "./alerts/error-dialog.js";
+import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
 import { SocialPost } from "./post/social-post.js";
 
@@ -50,6 +50,10 @@ export class PostModal extends HTMLElement {
           this.remove();
         } else {
           modal.close();
+          const previousAlert = this.querySelector("dialog-alert");
+          if (previousAlert) {
+            previousAlert.remove();
+          }
         }
       }
     });
@@ -65,6 +69,10 @@ export class PostModal extends HTMLElement {
         this.remove();
       } else {
         modal.close();
+        const previousAlert = this.querySelector("dialog-alert");
+        if (previousAlert) {
+          previousAlert.remove();
+        }
       }
     });
   }
@@ -104,7 +112,7 @@ export class PostModal extends HTMLElement {
       toast.append(link);
     } catch (error) {
       console.log(error);
-      const errorMessage = new ErrorDialog(error, "edit-error");
+      const errorMessage = new DialogAlert(error, "edit-error", "error");
       const heading = this.querySelector("h1");
       e.target.insertBefore(errorMessage, heading.nextSibling);
     }
@@ -157,11 +165,14 @@ export class PostModal extends HTMLElement {
           .querySelector("article")
           .classList.add(..."border-2 border-primary-200".split(" "));
       }
-
       e.target.reset();
     } catch (error) {
       console.log(error);
-      const errorMessage = new ErrorDialog(error, "create-error");
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
+      const errorMessage = new DialogAlert(error, "create-error", "error");
       const heading = this.querySelector("h1");
       e.target.insertBefore(errorMessage, heading.nextSibling);
     }

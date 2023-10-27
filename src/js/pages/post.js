@@ -27,7 +27,7 @@ const renderPost = (post, user) => {
 
     socialPost.showComments();
   } else {
-    const error = new ErrorDialog(post.response, "post-error");
+    const error = new DialogAlert(post.response, "post-error", "error");
     main.append(error);
   }
 };

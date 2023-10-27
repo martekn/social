@@ -7,7 +7,7 @@ import { userById } from "../helper/api/request-object/user-by-id.js";
 import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { requestAll } from "../helper/api/request-all.js";
-import { ErrorDialog } from "../components/alerts/error-dialog.js";
+import { DialogAlert } from "../components/alerts/dialog-alert.js";
 
 const main = document.querySelector("main");
 
@@ -83,7 +83,7 @@ const renderProfile = (profile, profilePosts, loggedInUser) => {
     renderEditModal(profile.value);
     renderProfilePosts(profilePosts, loggedInUser);
   } else {
-    const error = new ErrorDialog(profile.reason, "profile-error");
+    const error = new DialogAlert(profile.reason, "profile-error", "error");
     main.append(error);
   }
 };
@@ -102,12 +102,12 @@ const renderProfilePosts = (posts, user) => {
   } else if (posts.status === "fulfilled") {
     const errorMessage =
       "It appears that this user currently has no posts to display. Please check back later to see any updates from them.";
-    const error = new ErrorDialog(errorMessage, "profile-error");
+    const error = new DialogAlert(errorMessage, "profile-error", "information");
     list.append(error);
   } else {
     const errorMessage =
       "We're sorry, but we were unable to fetch the posts for this user at the moment. Please try again later or contact our support team if the issue persists.";
-    const error = new ErrorDialog(errorMessage, "profile-error");
+    const error = new DialogAlert(errorMessage, "profile-error", "error");
     list.append(error);
   }
 };

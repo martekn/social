@@ -1,7 +1,7 @@
 import { updateUser } from "../helper/api/putRequests/update-user.js";
 import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
-import { ErrorDialog } from "./alerts/error-dialog.js";
+import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
 
 /**
@@ -51,7 +51,12 @@ export class EditProfile extends HTMLElement {
       window.location.href = "/profile/";
     } catch (error) {
       console.log(error);
-      const errorMessage = new ErrorDialog(error, "edit-error");
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
+
+      const errorMessage = new DialogAlert(error, "edit-error", "error");
       const inputContainer = this.querySelector("div");
       e.target.insertBefore(errorMessage, inputContainer);
     }
@@ -126,6 +131,10 @@ export class EditProfile extends HTMLElement {
 
     cancelAction.addEventListener("click", (e) => {
       form.reset();
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
       dialog.close();
     });
 

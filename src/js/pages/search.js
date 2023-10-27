@@ -7,7 +7,7 @@ import { postsByTag } from "../helper/api/request-object/posts-by-tag.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
 import { renderFilterButtons } from "../helper/render-filter-buttons.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
-import { ErrorDialog } from "../components/alerts/error-dialog.js";
+import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import { renderUserSearch } from "../helper/render-user-search.js";
 
 const sidebar = document.querySelector("app-sidebar");
@@ -241,6 +241,18 @@ const searchUsers = (users) => {
   return filteredUsers;
 };
 
+/**
+ * Handles the display of an alert message when an array is empty.
+ *
+ * This function creates a new alert using the provided message and appends it to the searchList
+ *
+ * @param {string} message - The message to be displayed in the alert.
+ */
+const handleEmptyArray = (message) => {
+  const alert = new DialogAlert(message, "empty-array");
+  searchList.append(alert);
+};
+
 const setupSearch = async () => {
   const fetchFunctions = {
     latest: getLatestPosts,
@@ -265,6 +277,10 @@ const setupSearch = async () => {
         response.postsToRender.status === "fulfilled" &&
         response.loggedInUser.status === "fulfilled"
       ) {
+        if (response.postsToRender.value.length === 0) {
+          handleEmptyArray(`No posts matching search: ${searchQuery}`);
+          return;
+        }
         renderPosts(
           response.postsToRender.value,
           searchList,
@@ -278,6 +294,11 @@ const setupSearch = async () => {
         response.usersToRender.status === "fulfilled" &&
         response.loggedInUser.status === "fulfilled"
       ) {
+        if (response.usersToRender.value.length === 0) {
+          handleEmptyArray(`No user matching search: ${searchQuery}`);
+          return;
+        }
+
         renderUserSearch(
           response.usersToRender.value,
           searchList,
@@ -291,7 +312,7 @@ const setupSearch = async () => {
     console.log(error);
     document
       .querySelector("main")
-      .append(new ErrorDialog(error, "search-error"));
+      .append(new DialogAlert(error, "search-error", "error"));
   }
 };
 

@@ -69,21 +69,34 @@ export const followUnfollowHandler = async (e) => {
   try {
     if (isFollowing) {
       response = await unfollowUser(user);
+      const followFeedbacks = Array.from(
+        document.querySelectorAll(`.follow-feedback[data-user=${user}`),
+      );
+      for (const feedback of followFeedbacks) {
+        feedback.remove();
+      }
     } else {
       response = await followUser(user);
+      if (button.id !== "card-button") {
+        const span = htmlUtilities.createHTML(
+          "span",
+          "follow-feedback data-[following='false']:hidden before:h-1 font-accent p-0 gap-3 align-middle flex text-sm text-dark-300",
+          "Following",
+          { "data-following": !isFollowing, "data-user": user },
+        );
+
+        if (button.id !== `search-follow-${user}`) {
+          span.classList.add(
+            ..."before:w-1 before:rounded-full before:block before:bg-dark-300 before:self-center text-base".split(
+              " ",
+            ),
+          );
+        }
+        button.parentNode.append(span);
+      }
     }
 
     sidebar.updateFollowing(response.following);
-
-    if (isFollowing) {
-      renderToast(
-        `Success: No longer following ${user}`,
-        "follow-success",
-        "success",
-      );
-    } else {
-      renderToast(`Success: Following ${user}`, "follow-success", "success");
-    }
 
     const profileCard = document.querySelector("profile-card");
     if (profileCard) {
