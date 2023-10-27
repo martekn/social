@@ -4,7 +4,7 @@ import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { followingPosts } from "../helper/api/request-object/following-posts.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
 import { userPosts } from "../helper/api/request-object/user-posts.js";
-import { ErrorDialog } from "../components/alerts/error-dialog.js";
+import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
 import Storage from "../helper/storage/index.js";
 
@@ -47,7 +47,7 @@ const renderFeedPage = async () => {
     } else {
       const errorMessage =
         "Sorry, we couldn't load the feed at the moment. Please check your internet connection and try again. If the problem persists, please contact our support team for assistance.";
-      const error = new ErrorDialog(errorMessage, "feed-error");
+      const error = new DialogAlert(errorMessage, "feed-error", "error");
       document.querySelector("main").append(error);
     }
   } catch (error) {
