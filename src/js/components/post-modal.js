@@ -50,6 +50,10 @@ export class PostModal extends HTMLElement {
           this.remove();
         } else {
           modal.close();
+          const previousAlert = this.querySelector("dialog-alert");
+          if (previousAlert) {
+            previousAlert.remove();
+          }
         }
       }
     });
@@ -65,6 +69,10 @@ export class PostModal extends HTMLElement {
         this.remove();
       } else {
         modal.close();
+        const previousAlert = this.querySelector("dialog-alert");
+        if (previousAlert) {
+          previousAlert.remove();
+        }
       }
     });
   }
@@ -157,10 +165,13 @@ export class PostModal extends HTMLElement {
           .querySelector("article")
           .classList.add(..."border-2 border-primary-200".split(" "));
       }
-
       e.target.reset();
     } catch (error) {
       console.log(error);
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
       const errorMessage = new DialogAlert(error, "create-error", "error");
       const heading = this.querySelector("h1");
       e.target.insertBefore(errorMessage, heading.nextSibling);

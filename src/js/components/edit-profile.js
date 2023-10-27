@@ -51,6 +51,11 @@ export class EditProfile extends HTMLElement {
       window.location.href = "/profile/";
     } catch (error) {
       console.log(error);
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
+
       const errorMessage = new DialogAlert(error, "edit-error", "error");
       const inputContainer = this.querySelector("div");
       e.target.insertBefore(errorMessage, inputContainer);
@@ -126,6 +131,10 @@ export class EditProfile extends HTMLElement {
 
     cancelAction.addEventListener("click", (e) => {
       form.reset();
+      const previousAlert = this.querySelector("dialog-alert");
+      if (previousAlert) {
+        previousAlert.remove();
+      }
       dialog.close();
     });
 
