@@ -21,6 +21,17 @@ export class PostDeleteModal extends HTMLElement {
 
   connectedCallback() {
     this.render();
+
+    const modal = this.querySelector("dialog");
+    this.addEventListener("click", (e) => {
+      if (e.target == modal) {
+        if (this.isEdit) {
+          Modal.remove(this);
+        } else {
+          Modal.close(modal);
+        }
+      }
+    });
   }
 
   deletePostHandler = async () => {
@@ -48,29 +59,43 @@ export class PostDeleteModal extends HTMLElement {
   };
 
   render() {
-    const deleteModal = htmlUtilities.createHTML("dialog", "max-w-lg", null, {
-      id: `delete-modal-${this.postId}`,
-    });
-    const container = htmlUtilities.createHTML(
-      "div",
-      "space-y-6 p-10 text-center",
+    const deleteModal = htmlUtilities.createHTML(
+      "dialog",
+      "max-w-lg container",
       null,
-      { id: `delete-modal-${this.postId}_container` },
+      {
+        id: `delete-modal-${this.postId}`,
+      },
     );
+    const container = htmlUtilities.createHTML("div", null, null, {
+      id: `delete-modal-${this.postId}_container`,
+    });
 
+    const textContainer = htmlUtilities.createHTML(
+      "div",
+      "p-10 text-center space-y-3",
+    );
     const heading = htmlUtilities.createHTML(
       "h1",
       "null",
-      "Are you sure you want to delete the post?",
-    );
-    const actionContainer = htmlUtilities.createHTML(
-      "div",
-      "flex justify-center gap-10",
+      "Are you sure you want to delete this post?",
     );
 
+    const text = htmlUtilities.createHTML(
+      "p",
+      "text-dark-300",
+      "Once you delete this post, it cannot be recovered. All associated comments and reactions will also be removed.",
+    );
+    textContainer.append(...[heading, text]);
+
+    const actionContainer = htmlUtilities.createHTML(
+      "div",
+      "flex justify-evenly divide-x divide-light-450 border-t border-light-450",
+    );
+    const buttonClasses = "block w-full p-3 font-accent font-medium";
     const cancelButton = htmlUtilities.createHTML(
       "button",
-      "w-49 link link-secondary block",
+      `${buttonClasses} hover:bg-light-400 hover:text-dark-500 text-dark-400`,
       "Cancel",
       { id: `delete-modal-${this.postId}_cancel` },
     );
@@ -81,7 +106,7 @@ export class PostDeleteModal extends HTMLElement {
 
     const deleteButton = htmlUtilities.createHTML(
       "button",
-      "button w-49 bg-red-900 text-light-200 hover:bg-red-800",
+      `${buttonClasses} text-red-800 hover:bg-red-50 w-full hover:text-red-900`,
       "Delete",
       { id: `delete-modal-${this.postId}_delete` },
     );
@@ -89,7 +114,7 @@ export class PostDeleteModal extends HTMLElement {
     deleteButton.addEventListener("click", this.deletePostHandler);
 
     actionContainer.append(...[cancelButton, deleteButton]);
-    container.append(...[heading, actionContainer]);
+    container.append(...[textContainer, actionContainer]);
     deleteModal.append(container);
 
     this.append(deleteModal);
