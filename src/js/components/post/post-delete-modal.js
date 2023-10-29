@@ -2,6 +2,7 @@ import { deletePost } from "../../helper/api/deleteRequests/delete-post.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { DialogAlert } from "../alerts/dialog-alert.js";
 import { renderToast } from "../../helper/render-toast.js";
+import Modal from "../../helper/modal/index.js";
 
 /**
  * Represents a modal dialog that asks the user for confirmation when deleting a post.
@@ -32,7 +33,7 @@ export class PostDeleteModal extends HTMLElement {
         "success",
       );
       document.querySelector(`#post-${this.postId}`).remove();
-      this.remove();
+      Modal.remove(this);
     } catch (error) {
       console.log(error);
       const errorMessage = new DialogAlert(
@@ -75,7 +76,7 @@ export class PostDeleteModal extends HTMLElement {
     );
 
     cancelButton.addEventListener("click", (e) => {
-      this.remove();
+      Modal.remove(this);
     });
 
     const deleteButton = htmlUtilities.createHTML(

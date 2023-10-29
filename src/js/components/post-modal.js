@@ -48,7 +48,7 @@ export class PostModal extends HTMLElement {
     this.addEventListener("click", (e) => {
       if (e.target == modal) {
         if (this.isEdit) {
-          this.remove();
+          Modal.remove(this);
         } else {
           Modal.close(modal);
           const previousAlert = this.querySelector("dialog-alert");
@@ -67,7 +67,7 @@ export class PostModal extends HTMLElement {
 
     cancelButton.addEventListener("click", (e) => {
       if (this.isEdit) {
-        this.remove();
+        Modal.remove(this);
       } else {
         Modal.close(modal);
         const previousAlert = this.querySelector("dialog-alert");
