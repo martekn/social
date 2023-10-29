@@ -104,7 +104,7 @@ export class PostModal extends HTMLElement {
       const toast = document.querySelector("#post-edited p");
       const link = htmlUtilities.createHTML(
         "a",
-        "link underline font-medium px-1",
+        "link underline hover:text-dark-500 font-medium px-1 transition-all",
         "view",
         {
           href: `/post/?id=${response.id}`,
@@ -136,7 +136,7 @@ export class PostModal extends HTMLElement {
       const toast = document.querySelector("#post-created p");
       const link = htmlUtilities.createHTML(
         "a",
-        "link underline hover:text-dark-500 font-medium px-1",
+        "link underline hover:text-dark-500 font-medium px-1 transition-all",
         "view",
         {
           href: `/post/?id=${response.id}`,
@@ -256,13 +256,13 @@ export class PostModal extends HTMLElement {
 
     const cancelAction = htmlUtilities.createHTML(
       "button",
-      "font-accent font-medium text-primary-400",
+      "link link-primary",
       "Cancel",
       { id: `${this.dialogId}-cancel`, type: "button" },
     );
     const sendAction = htmlUtilities.createHTML(
       "button",
-      "rounded-md bg-primary-400 px-6 py-2 font-accent font-medium text-light-200",
+      "button button-primary",
       this.buttonText,
       { id: `${this.dialogId}-send`, type: "submit" },
     );

@@ -30,7 +30,7 @@ export class FilterButton extends HTMLElement {
 
   render() {
     const classes =
-      "w-full border-b border-light-500 px-6 xs:px-4 p-2 font-accent text-dark-300 transition-all duration-200 ease-in-out hover:rounded-t-md hover:bg-light-450 hover:text-dark-500 data-[active='true']:border-b-2 data-[active='true']:border-primary-400 data-[active='true']:font-medium data-[active='true']:text-dark-500 block text-center";
+      "w-full border-b border-light-500 px-6 xs:px-4 p-2 font-accent text-dark-300 transition-all duration-200 ease-in-out hover:rounded-t-md hover:bg-light-450 hover:text-dark-500 data-[active='true']:border-b-2 data-[active='true']:border-primary-400 data-[active='true']:font-medium data-[active='true']:text-dark-500 block text-center transition-all";
 
     const button = htmlUtilities.createHTML("a", classes, this.buttonText, {
       id: this.buttonId,

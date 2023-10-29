@@ -109,7 +109,7 @@ export class ProfileCard extends HTMLElement {
     const userStats = htmlUtilities.createHTML("div", "flex gap-4");
     const followerButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
       null,
     );
     followerButton.addEventListener("click", (e) => {
@@ -124,14 +124,14 @@ export class ProfileCard extends HTMLElement {
     );
     const followerText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Followers",
     );
     followerButton.append(...[followerCount, followerText]);
 
     const followingButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
     );
 
     followingButton.addEventListener("click", (e) => {
@@ -145,7 +145,7 @@ export class ProfileCard extends HTMLElement {
     );
     const followingText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Following",
     );
     followingButton.append(...[followingCount, followingText]);

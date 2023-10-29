@@ -78,6 +78,7 @@ class AppNavigation extends HTMLElement {
 
     const searchButtonClasses =
       "link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:fixed md:rounded-full md:bg-primary-400 md:px-2 md:text-light-200 md:shadow-sm md:hover:bg-primary-500 md:hover:text-light-200 lg:hidden";
+
     const searchButtonAttributes = {
       "aria-controls": "sidebar",
       "aria-expanded": "false",
