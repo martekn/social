@@ -42,12 +42,6 @@ export class PostDropdown extends HTMLElement {
       let state = stringToBoolean(dropdownButton.getAttribute("aria-expanded"));
       state = !state;
 
-      dropdownButton.setAttribute("aria-expanded", state);
-
-      const list = this.querySelector(`#dropdown-${this.postId}_list`);
-      list.setAttribute("aria-expanded", state);
-      list.setAttribute("data-dropdown-open", state);
-
       if (state) {
         this.openDropdown();
       } else {
@@ -56,6 +50,30 @@ export class PostDropdown extends HTMLElement {
     });
   }
 
+  /**
+   * Update the state of a dropdown component.
+   *
+   * @param {boolean} state - The new state of the dropdown (true for open, false for closed).
+   */
+  updateDropdownState = (state) => {
+    const dropdownButton = this.querySelector(
+      `#dropdown-${this.postId}_button`,
+    );
+
+    dropdownButton.setAttribute("aria-expanded", state);
+
+    const list = this.querySelector(`#dropdown-${this.postId}_list`);
+    list.setAttribute("aria-expanded", state);
+    list.setAttribute("data-dropdown-open", state);
+  };
+
+  handleClickOutsideDropdown = (e) => {
+    const elements = Array.from(this.querySelectorAll("*"));
+    if (!elements.find((element) => element === e.target)) {
+      this.closeDropdown();
+    }
+  };
+
   setDropdownFocus(e) {
     const dropdown = this.querySelector(`#dropdown-${this.postId}`);
     handleFocusTrap(dropdown, "button", this.closeDropdown, e);
@@ -63,10 +81,16 @@ export class PostDropdown extends HTMLElement {
 
   openDropdown() {
     this.addEventListener("keydown", this.setDropdownFocus);
+    window.addEventListener("click", this.handleClickOutsideDropdown);
+
+    this.updateDropdownState(true);
   }
 
   closeDropdown = () => {
     this.removeEventListener("keydown", this.setDropdownFocus);
+    window.removeEventListener("click", this.handleClickOutsideDropdown);
+
+    this.updateDropdownState(false);
   };
 
   renderEditModal = () => {
@@ -75,6 +99,7 @@ export class PostDropdown extends HTMLElement {
 
     main.append(modal);
     Modal.open(modal.querySelector("dialog"));
+    this.closeDropdown();
   };
 
   renderDeleteModal = () => {
@@ -82,6 +107,7 @@ export class PostDropdown extends HTMLElement {
     const modal = new PostDeleteModal(this.postId);
     main.append(modal);
     Modal.open(modal.querySelector("dialog"));
+    this.closeDropdown();
   };
 
   render() {
@@ -92,7 +118,7 @@ export class PostDropdown extends HTMLElement {
     });
     const dropdownButton = htmlUtilities.createHTML(
       "button",
-      "aspect-square h-8 rounded-md text-dark-300 hover:bg-light-400",
+      "aspect-square h-8 rounded-md text-dark-300 hover:bg-light-400 active:bg-light-450 transition-all",
       null,
       {
         id: `dropdown-${this.postId}_button`,
@@ -117,7 +143,7 @@ export class PostDropdown extends HTMLElement {
 
     const dropdownList = htmlUtilities.createHTML(
       "ul",
-      "absolute font-accent divide-y divide-light-500 font-medium right-0 top-9 hidden w-40 rounded-md bg-light-400 p-1 shadow-sm data-[dropdown-open='true']:block",
+      "absolute font-accent divide-y divide-light-500 border border-light-500 font-medium right-0 top-9 hidden w-40 rounded-md bg-light-300 shadow-sm data-[dropdown-open='true']:block animate-once animate-fade animate-duration-100 animate-ease-in",
       null,
       {
         "data-open": "false",
@@ -125,10 +151,14 @@ export class PostDropdown extends HTMLElement {
         "aria-expanded": "false",
       },
     );
+
+    const buttonClasses =
+      "button w-full flex items-center rounded-none gap-2 p-3 transition-all hover:bg-light-400 active:bg-light-450";
     const editButton = htmlUtilities.createHTML(
       "button",
-      "flex w-full font-accent font-medium items-center gap-2 rounded-sm p-3 hover:bg-light-300",
+      `${buttonClasses} rounded-t-md`,
     );
+
     const editIcon = htmlUtilities.createHTML(
       "i",
       "bi bi-pencil-square",
@@ -144,7 +174,7 @@ export class PostDropdown extends HTMLElement {
 
     const deleteButton = htmlUtilities.createHTML(
       "button",
-      "flex w-full items-center gap-2 rounded-sm p-3 text-red-800 hover:bg-light-300",
+      `${buttonClasses} rounded-b-md text-red-800`,
     );
     const deleteIcon = htmlUtilities.createHTML("i", "bi bi-trash3", null, {
       "aria-hidden": "true",
