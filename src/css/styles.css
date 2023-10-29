@@ -40,7 +40,7 @@
   }
 
   dialog {
-    @apply scrollbar w-full max-w-2xl animate-fade rounded-md animate-duration-100 animate-once animate-ease-in backdrop:bg-dark-500 backdrop:opacity-75;
+    @apply scrollbar w-full max-w-2xl animate-fade rounded-md animate-duration-200 animate-once animate-ease-in backdrop:bg-dark-500 backdrop:opacity-75;
   }
 
   input,
