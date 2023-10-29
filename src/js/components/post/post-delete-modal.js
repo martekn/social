@@ -45,6 +45,14 @@ export class PostDeleteModal extends HTMLElement {
       );
       document.querySelector(`#post-${this.postId}`).remove();
       Modal.remove(this);
+      if (window.location.pathname === "/post/") {
+        const alert = new DialogAlert(
+          "This post has been deleted",
+          "deleted-post",
+          "information",
+        );
+        document.querySelector("main").append(alert);
+      }
     } catch (error) {
       console.log(error);
       const errorMessage = new DialogAlert(

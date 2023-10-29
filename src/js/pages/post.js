@@ -5,6 +5,7 @@ import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
 import { postById } from "../helper/api/request-object/post-by-id.js";
 import Storage from "../helper/storage/index.js";
+import { DialogAlert } from "../components/alerts/dialog-alert.js";
 
 const username = Storage.get("username");
 const postId = new URLSearchParams(window.location.search).get("id");
@@ -27,7 +28,7 @@ const renderPost = (post, user) => {
 
     socialPost.showComments();
   } else {
-    const error = new DialogAlert(post.response, "post-error", "error");
+    const error = new DialogAlert(post.reason, "post-error", "error");
     main.append(error);
   }
 };
