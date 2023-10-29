@@ -44,6 +44,8 @@ export class SearchBar extends HTMLElement {
     const searchbar = htmlUtilities.createHTML("div", "relative text-dark-200");
     if (this.type === "sidebar-search") {
       searchbar.classList.add("mb-4");
+    } else {
+      searchbar.classList.add(..."mx-6 xs:mx-0".split(" "));
     }
 
     const input = htmlUtilities.createHTML("input", null, null, {

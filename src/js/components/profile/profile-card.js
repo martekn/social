@@ -1,6 +1,7 @@
 import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import Storage from "../../helper/storage/index.js";
+import Modal from "../../helper/modal/index.js";
 
 /**
  * Represents a `ProfileCard` class that displays details about a user on the profile page, including their image, banner, username, and stats.
@@ -45,30 +46,20 @@ export class ProfileCard extends HTMLElement {
 
     if (this.isLoggedInUser) {
       cardButton.addEventListener("click", (e) => {
-        this.openModal("edit-modal");
+        Modal.open(document.querySelector("#edit-modal"));
       });
     }
   }
 
-  /**
-   * Opens a modal with the specified ID.
-   *
-   * @param {string} id - The ID of the modal element to be opened.
-   */
-  openModal = (id) => {
-    const modal = document.querySelector(`#${id}`);
-    modal.showModal();
-  };
-
   render() {
     const profile = htmlUtilities.createHTML(
       "div",
-      "rounded-md bg-light-200 shadow-sm",
+      "xs:rounded-md bg-light-200 shadow-sm",
     );
 
     const bannerImg = htmlUtilities.createHTML(
       "img",
-      "aspect-[5/2] bg-light-400 w-full rounded-t-md object-cover",
+      "aspect-[5/2] bg-light-400 w-full xs:rounded-t-md object-cover",
       null,
       {
         src: this.banner
@@ -118,11 +109,11 @@ export class ProfileCard extends HTMLElement {
     const userStats = htmlUtilities.createHTML("div", "flex gap-4");
     const followerButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
       null,
     );
     followerButton.addEventListener("click", (e) => {
-      this.openModal("follower-modal");
+      Modal.open(document.querySelector("#follower-modal"));
     });
 
     const followerCount = htmlUtilities.createHTML(
@@ -133,17 +124,18 @@ export class ProfileCard extends HTMLElement {
     );
     const followerText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Followers",
     );
     followerButton.append(...[followerCount, followerText]);
 
     const followingButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
     );
+
     followingButton.addEventListener("click", (e) => {
-      this.openModal("following-modal");
+      Modal.open(document.querySelector("#following-modal"));
     });
 
     const followingCount = htmlUtilities.createHTML(
@@ -153,7 +145,7 @@ export class ProfileCard extends HTMLElement {
     );
     const followingText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Following",
     );
     followingButton.append(...[followingCount, followingText]);

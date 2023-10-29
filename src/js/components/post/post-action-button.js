@@ -32,7 +32,7 @@ export class PostActionButton extends HTMLElement {
   render() {
     let action;
     const actionClasses =
-      "p-1 hover:bg-light-450 w-full flex hover:text-dark-500 align-middle gap-2 justify-center rounded-md transition-all duration-200 ease-in-out";
+      "p-1 hover:bg-light-400 w-full flex hover:text-dark-500 align-middle gap-2 justify-center rounded-md transition-all duration-200 ease-in-out";
 
     if (this.type === "link") {
       action = htmlUtilities.createHTML("a", actionClasses, null, {

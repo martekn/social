@@ -4,12 +4,13 @@ import { privatePaths } from "./const/private-paths.js";
 import { publicPaths } from "./const/public-paths.js";
 import { setSidebarScroll } from "./helper/set-sidebar-scroll.js";
 import { setNavigationScroll } from "./helper/set-navigation-scroll.js";
+import Modal from "./helper/modal/index.js";
 
 const createPostButton = document.querySelector("#create-button");
 
 if (createPostButton) {
   createPostButton.addEventListener("click", (e) => {
-    document.querySelector("#modal_post-creation").showModal();
+    Modal.open(document.querySelector("#modal_post-creation"));
   });
 }
 

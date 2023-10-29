@@ -8,6 +8,7 @@ import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { requestAll } from "../helper/api/request-all.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
+import Modal from "../helper/modal/index.js";
 
 const main = document.querySelector("main");
 
@@ -56,7 +57,7 @@ const renderEditModal = ({ name, avatar, banner }) => {
     const setupProfile = new EditProfile(name, avatar, banner, isNewUser);
 
     document.body.append(setupProfile);
-    setupProfile.querySelector("dialog").showModal();
+    Modal.open(setupProfile.querySelector("dialog"));
   }
 
   const editProfile = new EditProfile(name, avatar, banner);

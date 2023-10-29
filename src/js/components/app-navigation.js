@@ -3,6 +3,7 @@ import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
 import Storage from "../helper/storage/index.js";
+import Modal from "../helper/modal/index.js";
 
 /**
  * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
@@ -65,7 +66,7 @@ class AppNavigation extends HTMLElement {
   createTopbar() {
     const topbar = htmlUtilities.createHTML(
       "div",
-      "flex items-center gap-3 border-b border-light-500 px-7 py-2 md:px-0 md:pt-0",
+      "flex items-center gap-3 border-b border-light-500 px-6 xs:px-7 py-2 md:px-0 md:pt-0",
     );
 
     const logo = htmlUtilities.createHTML(
@@ -77,6 +78,7 @@ class AppNavigation extends HTMLElement {
 
     const searchButtonClasses =
       "link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:fixed md:rounded-full md:bg-primary-400 md:px-2 md:text-light-200 md:shadow-sm md:hover:bg-primary-500 md:hover:text-light-200 lg:hidden";
+
     const searchButtonAttributes = {
       "aria-controls": "sidebar",
       "aria-expanded": "false",
@@ -137,7 +139,7 @@ class AppNavigation extends HTMLElement {
       navItem = htmlUtilities.createHTML("button", classes, null, { id: id });
       if (id === "create-post") {
         navItem.addEventListener("click", (e) => {
-          document.querySelector("#modal_post-creation").showModal();
+          Modal.open(document.querySelector("#modal_post-creation"));
         });
       } else if (id === "logout") {
         navItem.addEventListener("click", this.userLogout);
@@ -195,7 +197,7 @@ class AppNavigation extends HTMLElement {
    */
   createNav() {
     const navClasses =
-      "inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static";
+      "inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-6 xs:px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static";
 
     const nav = htmlUtilities.createHTML("nav", navClasses, null, {
       id: "primary-navigation",
@@ -241,7 +243,9 @@ class AppNavigation extends HTMLElement {
     const topbar = this.createTopbar();
     const nav = this.createNav();
     this.classList.add(
-      ..."sticky top-0 overflow-hidden h-screen max-h-screen".split(" "),
+      ..."md:sticky md:top-0 md:overflow-hidden md:h-screen md:max-h-screen".split(
+        " ",
+      ),
     );
     header.append(...[skipToMain, topbar, nav]);
     this.append(header);

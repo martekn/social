@@ -3,6 +3,7 @@ import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
+import Modal from "../helper/modal/index.js";
 
 /**
  * Represents an `EditProfile` class, which is a modal component for editing user avatar and banner links.
@@ -35,7 +36,19 @@ export class EditProfile extends HTMLElement {
     this.render();
 
     const form = this.querySelector("form");
+    const modal = this.querySelector("dialog");
+
     form.addEventListener("submit", this.userEditHandler);
+
+    this.addEventListener("click", (e) => {
+      if (e.target == modal) {
+        Modal.close(modal);
+        const previousAlert = this.querySelector("dialog-alert");
+        if (previousAlert) {
+          previousAlert.remove();
+        }
+      }
+    });
   }
 
   /**
@@ -124,7 +137,7 @@ export class EditProfile extends HTMLElement {
 
     const cancelAction = htmlUtilities.createHTML(
       "button",
-      "font-accent font-medium text-primary-400",
+      "link link-primary",
       `${this.isNewUser ? "Skip" : "Cancel"}`,
       { id: `${this.dialogId}-cancel`, type: "button" },
     );
@@ -135,17 +148,17 @@ export class EditProfile extends HTMLElement {
       if (previousAlert) {
         previousAlert.remove();
       }
-      dialog.close();
+      Modal.close(dialog);
     });
 
-    const sendAction = htmlUtilities.createHTML(
+    const saveAction = htmlUtilities.createHTML(
       "button",
-      "rounded-md bg-primary-400 px-6 py-2 font-accent font-medium text-light-200",
+      "button button-primary",
       "Save",
       { id: `${this.dialogId}-save`, type: "submit" },
     );
 
-    actionContainer.append(...[cancelAction, sendAction]);
+    actionContainer.append(...[cancelAction, saveAction]);
     form.append(...[inputContainer, actionContainer]);
 
     dialog.append(form);

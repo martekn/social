@@ -76,7 +76,7 @@ export class PostFooter extends HTMLElement {
 
     const reactionDetails = htmlUtilities.createHTML(
       "div",
-      "space-x-5 text-sm flex text-dark-400 font-accent",
+      "space-x-5 text-sm flex ml-auto items-center text-dark-400 font-accent",
     );
 
     const heartContainer = htmlUtilities.createHTML("div", "space-x-1", null, {
@@ -98,7 +98,7 @@ export class PostFooter extends HTMLElement {
 
     const commentContainer = htmlUtilities.createHTML(
       "button",
-      "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0",
+      "space-x-1 hover:text-dark-500 hover:border-b hover:border-dark-300 pb-[1px] hover:pb-0 transition-color",
       null,
       { id: `comment-counter-${this.id}` },
     );
