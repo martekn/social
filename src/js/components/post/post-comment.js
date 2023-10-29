@@ -88,7 +88,7 @@ export class PostComment extends HTMLElement {
 
     const avatarWrapper = htmlUtilities.createHTML(
       "a",
-      "h-11 w-11 flex-none",
+      "h-8 xs:h-11 w-8 xs:w-11 flex-none",
       null,
       { href: `/profile/?u=${this.name}` },
     );

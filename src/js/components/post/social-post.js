@@ -194,7 +194,7 @@ export class SocialPost extends HTMLElement {
   render() {
     const article = htmlUtilities.createHTML(
       "article",
-      "rounded-md bg-light-200 grid gap-4 px-6 pt-6 pb-1 shadow-sm",
+      "xs:rounded-md bg-light-200 grid gap-4 px-6 pt-6 pb-1 shadow-sm",
     );
 
     const header = new PostHeader(

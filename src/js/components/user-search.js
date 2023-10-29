@@ -37,7 +37,9 @@ export class UserSearch extends HTMLElement {
   }
 
   render() {
-    this.classList.add(..."flex items-center gap-3 py-8".split(" "));
+    this.classList.add(
+      ..."flex xs:items-center gap-3 px-6 xs:px-0 py-8".split(" "),
+    );
     const avatarLink = htmlUtilities.createHTML(
       "a",
       "aspect-square w-11",
@@ -59,7 +61,7 @@ export class UserSearch extends HTMLElement {
 
     const container = htmlUtilities.createHTML(
       "div",
-      "flex w-full justify-between items-center",
+      "flex w-full xs:justify-between xs:items-center items-start flex-col xs:flex-row",
     );
     const userDetails = htmlUtilities.createHTML("div");
     const username = htmlUtilities.createHTML(

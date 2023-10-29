@@ -69,7 +69,7 @@
   }
 
   .sidebar {
-    @apply container sticky inset-y-0 right-0 top-0 z-50 order-2 hidden h-full max-h-screen w-full max-w-md overflow-hidden bg-light-200 p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:col-span-3 lg:block lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static;
+    @apply container inset-y-0 right-0 z-50 order-2 hidden h-full max-h-screen w-full max-w-md overflow-auto bg-light-200 p-7 pt-2 shadow-xl transition-all data-[mobile-visible='true']:absolute data-[mobile-visible='true']:block data-[mobile-visible='true']:animate-slide md:pt-7 lg:sticky lg:top-0 lg:col-span-3 lg:block lg:h-screen lg:overflow-hidden lg:bg-light-400 lg:px-10 lg:shadow-none lg:data-[mobile-visible='true']:static;
   }
 }
 

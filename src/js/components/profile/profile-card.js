@@ -63,12 +63,12 @@ export class ProfileCard extends HTMLElement {
   render() {
     const profile = htmlUtilities.createHTML(
       "div",
-      "rounded-md bg-light-200 shadow-sm",
+      "xs:rounded-md bg-light-200 shadow-sm",
     );
 
     const bannerImg = htmlUtilities.createHTML(
       "img",
-      "aspect-[5/2] bg-light-400 w-full rounded-t-md object-cover",
+      "aspect-[5/2] bg-light-400 w-full xs:rounded-t-md object-cover",
       null,
       {
         src: this.banner
