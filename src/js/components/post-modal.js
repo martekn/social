@@ -6,6 +6,7 @@ import { renderToast } from "../helper/render-toast.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
 import { SocialPost } from "./post/social-post.js";
+import Modal from "../helper/modal/index.js";
 
 /**
  * Represents a `PostModal` class that adds a modal for either creating or editing an existing post.
@@ -49,7 +50,7 @@ export class PostModal extends HTMLElement {
         if (this.isEdit) {
           this.remove();
         } else {
-          modal.close();
+          Modal.close(modal);
           const previousAlert = this.querySelector("dialog-alert");
           if (previousAlert) {
             previousAlert.remove();
@@ -68,7 +69,7 @@ export class PostModal extends HTMLElement {
       if (this.isEdit) {
         this.remove();
       } else {
-        modal.close();
+        Modal.close(modal);
         const previousAlert = this.querySelector("dialog-alert");
         if (previousAlert) {
           previousAlert.remove();
@@ -98,7 +99,7 @@ export class PostModal extends HTMLElement {
       );
 
       e.target.reset();
-      this.querySelector(`#${this.dialogId}`).close();
+      Modal.close(this.querySelector(`#${this.dialogId}`));
       renderToast("Success: Post has been edited", "post-edited", "success");
       const toast = document.querySelector("#post-edited p");
       const link = htmlUtilities.createHTML(
@@ -129,8 +130,7 @@ export class PostModal extends HTMLElement {
 
     try {
       const response = await createPost(formData);
-
-      this.querySelector(`#${this.dialogId}`).close();
+      Modal.close(this.querySelector(`#${this.dialogId}`));
 
       renderToast("Success: Post was created", "post-created", "success");
       const toast = document.querySelector("#post-created p");

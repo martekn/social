@@ -36,7 +36,7 @@
   }
 
   dialog {
-    @apply w-full max-w-2xl rounded-md backdrop:bg-dark-500 backdrop:opacity-75;
+    @apply scrollbar w-full max-w-2xl rounded-md backdrop:bg-dark-500 backdrop:opacity-75;
   }
 
   input,

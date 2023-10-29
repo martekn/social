@@ -3,6 +3,7 @@ import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
+import Modal from "../helper/modal/index.js";
 
 /**
  * Represents an `EditProfile` class, which is a modal component for editing user avatar and banner links.
@@ -135,7 +136,7 @@ export class EditProfile extends HTMLElement {
       if (previousAlert) {
         previousAlert.remove();
       }
-      dialog.close();
+      Modal.close(dialog);
     });
 
     const sendAction = htmlUtilities.createHTML(

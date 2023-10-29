@@ -3,6 +3,7 @@ import { stringToBoolean } from "../../helper/string-to-boolean.js";
 import { handleFocusTrap } from "../../helper/handle-focus-trap.js";
 import { PostModal } from "../post-modal.js";
 import { PostDeleteModal } from "./post-delete-modal.js";
+import Modal from "../../helper/modal/index.js";
 
 /**
  * Represents an extra options dropdown for a post, typically containing options to delete or edit the post.
@@ -73,14 +74,14 @@ export class PostDropdown extends HTMLElement {
     const modal = new PostModal(this.post);
 
     main.append(modal);
-    modal.querySelector("dialog").showModal();
+    Modal.open(modal.querySelector("dialog"));
   };
 
   renderDeleteModal = () => {
     const main = document.querySelector("main");
     const modal = new PostDeleteModal(this.postId);
     main.append(modal);
-    modal.querySelector("dialog").showModal();
+    Modal.open(modal.querySelector("dialog"));
   };
 
   render() {

@@ -3,6 +3,7 @@ import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
 import Storage from "../helper/storage/index.js";
+import Modal from "../helper/modal/index.js";
 
 /**
  * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
@@ -137,7 +138,7 @@ class AppNavigation extends HTMLElement {
       navItem = htmlUtilities.createHTML("button", classes, null, { id: id });
       if (id === "create-post") {
         navItem.addEventListener("click", (e) => {
-          document.querySelector("#modal_post-creation").showModal();
+          Modal.open(document.querySelector("#modal_post-creation"));
         });
       } else if (id === "logout") {
         navItem.addEventListener("click", this.userLogout);
