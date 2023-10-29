@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply min-h-screen bg-light-400 font-base;
   }
@@ -97,6 +101,18 @@
   .scrollbar::-webkit-scrollbar-button {
     background-color: #808093;
     border-radius: 5px;
+  }
+
+  .scrollbar-transparent {
+    scrollbar-color: #80809350 #e9eaed;
+  }
+
+  .scrollbar-transparent::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom right, #80809350 0%, #80809350 100%);
+  }
+
+  .scrollbar-transparent::-webkit-scrollbar-button {
+    background-color: #80809350;
   }
 
   .overflow-wrap-anywhere {
