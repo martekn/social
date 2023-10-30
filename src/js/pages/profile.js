@@ -133,6 +133,7 @@ const fetchProfileData = async () => {
   const sidebar = document.querySelector("app-sidebar");
   sidebar.setup(sidebarPosts, loggedInUser);
 
+  document.querySelector("app-loader").remove();
   renderProfile(profile, profilePosts, loggedInUser);
 };
 

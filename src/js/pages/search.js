@@ -44,6 +44,7 @@ const getLatestPosts = async () => {
       isPosts: true,
     };
   }
+
   const filteredPosts = searchPosts(posts.value);
   return {
     postsToRender: {
@@ -272,6 +273,7 @@ const setupSearch = async () => {
     const response = await fetchFunctions[actionQuery]();
     sidebar.setup(response.allPosts, response.loggedInUser);
 
+    document.querySelector("app-loader").remove();
     if (response.isPosts) {
       if (
         response.postsToRender.status === "fulfilled" &&

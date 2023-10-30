@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,7 +42,7 @@
       <!-- Main -->
       <main
         id="main"
-        class="grid gap-5 border-light-500 py-7 xs:px-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+        class="grid auto-rows-[auto_auto_1fr] gap-5 border-light-500 py-7 xs:px-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
       >
         <h1 class="sr-only">Search</h1>
         <search-bar></search-bar>
@@ -50,7 +50,9 @@
           class="scrollbar scrollbar-transparent flex w-screen overflow-x-auto scroll-smooth pb-0.5 xs:w-full xs:justify-evenly"
           id="filter-list"
         ></ul>
-        <ul id="search-list" class="space-y-6"></ul>
+        <ul id="search-list" class="space-y-6">
+          <app-loader></app-loader>
+        </ul>
       </main>
       <!-- Main end -->
     </div>

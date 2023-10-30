@@ -3,6 +3,7 @@ import { getFormData } from "../helper/get-form-data.js";
 import htmlUtilities from "../helper/html-utilities/index.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
+import { AppLoader } from "./app-loader.js";
 import Modal from "../helper/modal/index.js";
 
 /**
@@ -56,6 +57,9 @@ export class EditProfile extends HTMLElement {
    * @param {SubmitEvent} e - The event object, typically from a form submission.
    */
   userEditHandler = async (e) => {
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`#${this.dialogId}-save`);
+    button.prepend(loader);
     e.preventDefault();
     const formData = getFormData(e);
     try {
@@ -72,6 +76,8 @@ export class EditProfile extends HTMLElement {
       const errorMessage = new DialogAlert(error, "edit-error", "error");
       const inputContainer = this.querySelector("div");
       e.target.insertBefore(errorMessage, inputContainer);
+    } finally {
+      loader.remove();
     }
   };
 
@@ -153,7 +159,7 @@ export class EditProfile extends HTMLElement {
 
     const saveAction = htmlUtilities.createHTML(
       "button",
-      "button button-primary",
+      "button button-primary flex gap-2",
       "Save",
       { id: `${this.dialogId}-save`, type: "submit" },
     );
