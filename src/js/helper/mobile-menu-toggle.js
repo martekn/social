@@ -10,6 +10,13 @@ export const mobileMenuToggle = (button) => {
   let isVisible = stringToBoolean(menu.getAttribute("data-mobile-visible"));
 
   isVisible = !isVisible;
+
+  if (isVisible) {
+    document.body.classList.add("overflow-hidden");
+  } else {
+    document.body.classList.remove("overflow-hidden");
+  }
+
   button.setAttribute("aria-expanded", isVisible);
   menu.setAttribute("data-mobile-visible", isVisible);
 };

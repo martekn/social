@@ -89,7 +89,10 @@ export class PostDropdown extends HTMLElement {
   closeDropdown = () => {
     this.removeEventListener("keydown", this.setDropdownFocus);
     window.removeEventListener("click", this.handleClickOutsideDropdown);
-
+    const dropdownButton = this.querySelector(
+      `#dropdown-${this.postId}_button`,
+    );
+    dropdownButton.focus();
     this.updateDropdownState(false);
   };
 
