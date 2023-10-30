@@ -158,10 +158,15 @@ export class PostModal extends HTMLElement {
       const path = window.location.pathname;
       const query = new URLSearchParams(window.location.search)?.get("u");
       const username = response.author.name;
+      const alert = document.querySelector("ul dialog-alert");
 
       if (list && path !== "/search/") {
         if (query && query !== username && path === "/profile/") {
           return;
+        }
+
+        if (alert) {
+          alert.remove();
         }
 
         response.author.following = [];

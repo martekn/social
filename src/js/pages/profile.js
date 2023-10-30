@@ -11,6 +11,10 @@ import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import Modal from "../helper/modal/index.js";
 
 const main = document.querySelector("main");
+const loggedInUsername = Storage.get("username");
+const usernameQuery = new URLSearchParams(window.location.search).get("u");
+const isNotLoggedInUser =
+  loggedInUsername !== usernameQuery && usernameQuery !== null;
 
 /**
  * Render a user's profile card with follower and following modals.
@@ -101,32 +105,39 @@ const renderProfilePosts = (posts, user) => {
     posts.value.sort((a, b) => a.created < b.created);
     renderPosts(posts.value, list, user.value);
   } else if (posts.status === "fulfilled") {
-    const errorMessage =
-      "It appears that this user currently has no posts to display. Please check back later to see any updates from them.";
+    let errorMessage =
+      "It seems that there are no posts to display on your profile at the moment. Please feel free to share your thoughts, updates, or content whenever you're ready. We look forward to seeing your contributions in the future!";
+    if (isNotLoggedInUser) {
+      errorMessage =
+        "It appears that this user currently has no posts to display. Please check back later to see any updates from them.";
+    }
     const error = new DialogAlert(errorMessage, "profile-error", "information");
     list.append(error);
   } else {
-    const errorMessage =
-      "We're sorry, but we were unable to fetch the posts for this user at the moment. Please try again later or contact our support team if the issue persists.";
+    let errorMessage =
+      "I'm sorry, but we're currently experiencing difficulties fetching your posts. Please try again later, and if the issue persists, don't hesitate to reach out to our support team for assistance.";
+    if (isNotLoggedInUser) {
+      errorMessage =
+        "We're sorry, but we were unable to fetch the posts for this user at the moment. Please try again later or contact our support team if the issue persists.";
+    }
     const error = new DialogAlert(errorMessage, "profile-error", "error");
     list.append(error);
   }
 };
 
 const fetchProfileData = async () => {
-  const loggedInUsername = Storage.get("username");
-  const usernameQuery = new URLSearchParams(window.location.search).get("u");
   const requests = [allPosts(), userById(loggedInUsername)];
-  if (loggedInUsername !== usernameQuery && usernameQuery !== null) {
+  if (isNotLoggedInUser) {
     requests.push(userPosts(usernameQuery));
     requests.push(userById(usernameQuery));
   } else {
     requests.push(userPosts(loggedInUsername));
   }
+
   const response = await requestAll(requests);
   const [sidebarPosts, loggedInUser, profilePosts, profileResponse] = response;
   let profile = loggedInUser;
-  if (loggedInUsername !== usernameQuery && usernameQuery !== null) {
+  if (isNotLoggedInUser) {
     profile = profileResponse;
   }
 
