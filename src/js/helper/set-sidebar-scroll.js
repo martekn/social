@@ -1,5 +1,5 @@
+import { lgQuery } from "../const/queries.js";
 const sidebar = document.querySelector("app-sidebar");
-const lgQuery = window.matchMedia("(min-width: 1024px)");
 let previousScrollTop = 0;
 
 const sidebarScrollHandler = (e) => {

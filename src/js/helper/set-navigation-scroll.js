@@ -1,5 +1,6 @@
+import { mdQuery } from "../const/queries.js";
+
 const navigation = document.querySelector("app-navigation");
-const mdQuery = window.matchMedia("(min-width: 768px)");
 let previousScrollTop = 0;
 
 const navigationScrollHandler = (e) => {
