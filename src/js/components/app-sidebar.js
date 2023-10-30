@@ -6,6 +6,8 @@ import { UserBadge } from "./user-badge.js";
 import { SearchBar } from "./search-bar.js";
 import { getPopularTags } from "../helper/get-popular-tags.js";
 import { renderUserSuggestions } from "../helper/render-user-suggestions.js";
+import { lgQuery } from "../const/queries.js";
+import { stringToBoolean } from "../helper/string-to-boolean.js";
 
 const sidebarButton = document.querySelector("#sidebar-button");
 
@@ -30,6 +32,15 @@ class AppSidebar extends HTMLElement {
     });
 
     sidebarClose.addEventListener("click", this.closeSidebar);
+
+    lgQuery.addEventListener("change", (e) => {
+      if (
+        lgQuery.matches &&
+        stringToBoolean(this.getAttribute("data-mobile-visible"))
+      ) {
+        this.closeSidebar();
+      }
+    });
   }
 
   /**
@@ -66,7 +77,9 @@ class AppSidebar extends HTMLElement {
    */
   closeSidebar(e) {
     mobileMenuToggle(sidebarButton);
+    sidebarButton.focus();
     document.removeEventListener("keydown", this.handleFocusSidebar);
+    document.body.classList.remove("overflow-hidden");
   }
 
   /**

@@ -2,6 +2,8 @@ import htmlUtilities from "../helper/html-utilities/index.js";
 import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
+import { mdQuery } from "../const/queries.js";
+import { stringToBoolean } from "../helper/string-to-boolean.js";
 import Storage from "../helper/storage/index.js";
 import Modal from "../helper/modal/index.js";
 
@@ -27,6 +29,17 @@ class AppNavigation extends HTMLElement {
     });
 
     navClose.addEventListener("click", this.closeNav);
+
+    mdQuery.addEventListener("change", (e) => {
+      if (
+        mdQuery.matches &&
+        stringToBoolean(
+          this.querySelector("nav").getAttribute("data-mobile-visible"),
+        )
+      ) {
+        this.closeNav();
+      }
+    });
   }
 
   userLogout() {
@@ -40,8 +53,11 @@ class AppNavigation extends HTMLElement {
    * @param {MouseEvent} e - Event from click.
    */
   closeNav(e) {
+    const navButton = document.querySelector("#nav-button");
     document.removeEventListener("keydown", this.handleFocusNav);
-    mobileMenuToggle(document.querySelector("#nav-button"));
+    mobileMenuToggle(navButton);
+    navButton.focus();
+    document.body.classList.remove("overflow-hidden");
   }
 
   /**
@@ -162,8 +178,6 @@ class AppNavigation extends HTMLElement {
       this.currentPage === href &&
       (href !== "/profile/" || isPersonalProfile)
     ) {
-      console.log(name);
-
       navItem.setAttribute("aria-current", "page");
       navItem.classList.add("font-medium");
       navItem.classList.remove("font-light");
