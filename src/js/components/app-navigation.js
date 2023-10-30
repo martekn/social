@@ -22,6 +22,7 @@ class AppNavigation extends HTMLElement {
     this.render();
     const navClose = document.querySelector("#nav-close");
     const navButton = document.querySelector("#nav-button");
+    const nav = this.querySelector("nav");
 
     navButton.addEventListener("click", (e) => {
       mobileMenuToggle(navButton);
@@ -33,11 +34,19 @@ class AppNavigation extends HTMLElement {
     mdQuery.addEventListener("change", (e) => {
       if (
         mdQuery.matches &&
-        stringToBoolean(
-          this.querySelector("nav").getAttribute("data-mobile-visible"),
-        )
+        stringToBoolean(nav.getAttribute("data-mobile-visible"))
       ) {
         this.closeNav();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        nav.getAttribute("data-mobile-visible") === "true" &&
+        e.target.closest("nav") !== nav &&
+        e.target.closest("button") !== navButton
+      ) {
+        this.closeNav(e);
       }
     });
   }

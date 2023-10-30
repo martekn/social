@@ -41,6 +41,16 @@ class AppSidebar extends HTMLElement {
         this.closeSidebar();
       }
     });
+
+    document.addEventListener("click", (e) => {
+      if (
+        this.getAttribute("data-mobile-visible") === "true" &&
+        e.target.closest("app-sidebar") !== this &&
+        e.target.closest("button") !== sidebarButton
+      ) {
+        this.closeSidebar(e);
+      }
+    });
   }
 
   /**
