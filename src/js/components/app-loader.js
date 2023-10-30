@@ -11,7 +11,6 @@ export class AppLoader extends HTMLElement {
    */
   constructor(isSmall = false) {
     super();
-    console.log(isSmall);
     this.isSmall = isSmall;
     this.height = isSmall ? "h-4" : "h-9";
     this.width = isSmall ? "w-4" : "w-9";
