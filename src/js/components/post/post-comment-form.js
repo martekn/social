@@ -5,6 +5,7 @@ import { getFormData } from "../../helper/get-form-data.js";
 import { PostComment } from "./post-comment.js";
 import { stringToBoolean } from "../../helper/string-to-boolean.js";
 import { renderToast } from "../../helper/render-toast.js";
+import { AppLoader } from "../app-loader.js";
 
 /**
  * Represents a comment form for a post, allowing users to write comments.
@@ -51,6 +52,9 @@ export class PostCommentForm extends HTMLElement {
 
   createComment = async (e) => {
     e.preventDefault();
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`button`);
+    button.prepend(loader);
     try {
       const body = getFormData(e);
       if (this.replyToId) {
@@ -105,6 +109,8 @@ export class PostCommentForm extends HTMLElement {
     } catch (error) {
       console.log(error);
       renderToast(error, "comment-error", "error");
+    } finally {
+      loader.remove();
     }
   };
 
@@ -158,7 +164,7 @@ export class PostCommentForm extends HTMLElement {
 
     const button = htmlUtilities.createHTML(
       "button",
-      "button button-primary mt-2 peer-placeholder-shown:hidden",
+      "button button-primary flex gap-2 mt-2 peer-placeholder-shown:hidden",
       "Post",
     );
 

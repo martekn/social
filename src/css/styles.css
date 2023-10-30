@@ -11,6 +11,10 @@
     @apply min-h-screen bg-light-400 font-base;
   }
 
+  main {
+    @apply min-h-full;
+  }
+
   h1,
   h2,
   h3,

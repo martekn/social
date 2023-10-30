@@ -22,6 +22,9 @@ const renderFeedPage = async () => {
     const [allPosts, feedPosts, user, userPosts] = await requestAll(requests);
     sidebar.setup(allPosts, user);
 
+    const postList = document.querySelector("#posts-list");
+    document.querySelector("app-loader").remove();
+
     if (
       feedPosts.status === "fulfilled" &&
       user.status === "fulfilled" &&
@@ -36,13 +39,9 @@ const renderFeedPage = async () => {
         const posts = [...feedPostsArray, ...userPostsArray].sort(
           (a, b) => a.created < b.created,
         );
-        renderPosts(posts, document.querySelector("#posts-list"), user.value);
+        renderPosts(posts, postList, user.value);
       } else {
-        renderPosts(
-          sortPopularPosts(allPosts.value),
-          document.querySelector("#posts-list"),
-          user.value,
-        );
+        renderPosts(sortPopularPosts(allPosts.value), postList, user.value);
       }
     } else {
       const errorMessage =

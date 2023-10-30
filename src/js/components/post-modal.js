@@ -6,6 +6,7 @@ import { renderToast } from "../helper/render-toast.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { InputGroup } from "./input-group.js";
 import { SocialPost } from "./post/social-post.js";
+import { AppLoader } from "./app-loader.js";
 import Modal from "../helper/modal/index.js";
 
 /**
@@ -85,6 +86,9 @@ export class PostModal extends HTMLElement {
    */
   postUpdateHandler = async (e) => {
     e.preventDefault();
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`#${this.dialogId}-send`);
+    button.prepend(loader);
     const formData = getFormData(e);
 
     try {
@@ -116,6 +120,8 @@ export class PostModal extends HTMLElement {
       const errorMessage = new DialogAlert(error, "edit-error", "error");
       const heading = this.querySelector("h1");
       e.target.insertBefore(errorMessage, heading.nextSibling);
+    } finally {
+      loader.remove();
     }
   };
 
@@ -126,6 +132,9 @@ export class PostModal extends HTMLElement {
    */
   postCreationHandler = async (e) => {
     e.preventDefault();
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`#${this.dialogId}-send`);
+    button.prepend(loader);
     const formData = getFormData(e);
 
     try {
@@ -149,10 +158,15 @@ export class PostModal extends HTMLElement {
       const path = window.location.pathname;
       const query = new URLSearchParams(window.location.search)?.get("u");
       const username = response.author.name;
+      const alert = document.querySelector("ul dialog-alert");
 
       if (list && path !== "/search/") {
         if (query && query !== username && path === "/profile/") {
           return;
+        }
+
+        if (alert) {
+          alert.remove();
         }
 
         response.author.following = [];
@@ -175,6 +189,8 @@ export class PostModal extends HTMLElement {
       const errorMessage = new DialogAlert(error, "create-error", "error");
       const heading = this.querySelector("h1");
       e.target.insertBefore(errorMessage, heading.nextSibling);
+    } finally {
+      loader.remove();
     }
   };
 
@@ -262,7 +278,7 @@ export class PostModal extends HTMLElement {
     );
     const sendAction = htmlUtilities.createHTML(
       "button",
-      "button button-primary",
+      "button button-primary flex gap-2",
       this.buttonText,
       { id: `${this.dialogId}-send`, type: "submit" },
     );

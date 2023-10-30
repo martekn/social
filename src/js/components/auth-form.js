@@ -4,6 +4,7 @@ import { getFormData } from "../helper/get-form-data.js";
 import { login } from "../helper/api/authRequests/login.js";
 import { register } from "../helper/api/authRequests/register.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
+import { AppLoader } from "./app-loader.js";
 
 /**
  * Represents an `AuthForm` class that creates a form for user registration or login based on the query of the site.
@@ -38,6 +39,9 @@ export class AuthForm extends HTMLElement {
     const form = this.querySelector("form");
 
     form.addEventListener("submit", async (e) => {
+      const loader = new AppLoader(true);
+      const button = this.querySelector(`button`);
+      button.prepend(loader);
       try {
         e.preventDefault();
         const user = getFormData(e);
@@ -53,6 +57,8 @@ export class AuthForm extends HTMLElement {
         }
         errorMessage = new DialogAlert(error, "auth-error", "error");
         form.insertBefore(errorMessage, this.querySelector("#container"));
+      } finally {
+        loader.remove();
       }
     });
   }
@@ -135,7 +141,7 @@ export class AuthForm extends HTMLElement {
 
     const submit = htmlUtilities.createHTML(
       "button",
-      "button button-primary w-full p-3",
+      "button button-primary flex gap-2 justify-center w-full p-3",
       this.heading,
     );
 

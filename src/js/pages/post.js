@@ -48,6 +48,8 @@ const setupPostPage = async () => {
         .querySelector('meta[name="description"]')
         .setAttribute("content", profileMetaDescription);
     }
+
+    document.querySelector("app-loader").remove();
     renderPost(post, user);
   } catch (error) {
     console.log(error);
