@@ -50,7 +50,7 @@ export class PostCommentForm extends HTMLElement {
     });
   }
 
-  createComment = async (e) => {
+  async createComment(e) {
     e.preventDefault();
     const loader = new AppLoader(true);
     const button = this.querySelector(`button`);
@@ -112,7 +112,7 @@ export class PostCommentForm extends HTMLElement {
     } finally {
       loader.remove();
     }
-  };
+  }
 
   /**
    * Automatically resizes a textarea element to fit its content.
@@ -128,7 +128,7 @@ export class PostCommentForm extends HTMLElement {
     this.id = this.formId;
     this.classList.add("comment-form");
     const form = htmlUtilities.createHTML("form", "flex gap-2 mb-4", null);
-    form.addEventListener("submit", this.createComment);
+    form.addEventListener("submit", this.createComment.bind(this));
 
     const userAvatar = htmlUtilities.createHTML(
       "img",

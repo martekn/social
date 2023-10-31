@@ -61,9 +61,9 @@ export class PostModal extends HTMLElement {
     });
 
     if (this.isEdit) {
-      form.addEventListener("submit", this.postUpdateHandler);
+      form.addEventListener("submit", this.postUpdateHandler.bind(this));
     } else {
-      form.addEventListener("submit", this.postCreationHandler);
+      form.addEventListener("submit", this.postCreationHandler.bind(this));
     }
 
     cancelButton.addEventListener("click", (e) => {
@@ -84,7 +84,7 @@ export class PostModal extends HTMLElement {
    *
    * @param {SubmitEvent} e - The form submission event.
    */
-  postUpdateHandler = async (e) => {
+  async postUpdateHandler(e) {
     e.preventDefault();
     const loader = new AppLoader(true);
     const button = this.querySelector(`#${this.dialogId}-send`);
@@ -123,14 +123,14 @@ export class PostModal extends HTMLElement {
     } finally {
       loader.remove();
     }
-  };
+  }
 
   /**
    * Handles the submission of a create post form.
    *
    * @param {SubmitEvent} e - The form submission event.
    */
-  postCreationHandler = async (e) => {
+  async postCreationHandler(e) {
     e.preventDefault();
     const loader = new AppLoader(true);
     const button = this.querySelector(`#${this.dialogId}-send`);
@@ -192,7 +192,7 @@ export class PostModal extends HTMLElement {
     } finally {
       loader.remove();
     }
-  };
+  }
 
   render() {
     const dialog = htmlUtilities.createHTML("dialog", null, null, {

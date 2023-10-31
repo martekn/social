@@ -30,7 +30,7 @@ export class PostFooter extends HTMLElement {
     this.render();
   }
 
-  reactionHandler = async () => {
+  async reactionHandler() {
     try {
       const response = await reactToPost(this.id);
       const reactionCounterContainer = this.querySelector(
@@ -51,7 +51,7 @@ export class PostFooter extends HTMLElement {
         "error",
       );
     }
-  };
+  }
 
   render() {
     const footer = htmlUtilities.createHTML("footer", "space-y-2");
@@ -134,7 +134,7 @@ export class PostFooter extends HTMLElement {
       "action-heart",
       this.id,
     );
-    reactionButton.addEventListener("click", this.reactionHandler);
+    reactionButton.addEventListener("click", this.reactionHandler.bind(this));
 
     const commentButton = new PostActionButton(
       "Comment",
