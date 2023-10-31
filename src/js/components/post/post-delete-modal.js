@@ -34,7 +34,7 @@ export class PostDeleteModal extends HTMLElement {
     });
   }
 
-  deletePostHandler = async () => {
+  async deletePostHandler() {
     try {
       const response = await deletePost(this.postId);
 
@@ -64,7 +64,7 @@ export class PostDeleteModal extends HTMLElement {
       container.prepend(errorMessage);
       container.classList.add("pt-5");
     }
-  };
+  }
 
   render() {
     const deleteModal = htmlUtilities.createHTML(
@@ -119,7 +119,7 @@ export class PostDeleteModal extends HTMLElement {
       { id: `delete-modal-${this.postId}_delete` },
     );
 
-    deleteButton.addEventListener("click", this.deletePostHandler);
+    deleteButton.addEventListener("click", this.deletePostHandler.bind(this));
 
     actionContainer.append(...[cancelButton, deleteButton]);
     container.append(...[textContainer, actionContainer]);

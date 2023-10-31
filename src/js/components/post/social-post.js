@@ -77,23 +77,26 @@ export class SocialPost extends HTMLElement {
     const commentButton = this.querySelector(`#comment-counter-${this.postId}`);
 
     if (commentButton) {
-      commentButton.addEventListener("click", this.showComments);
+      commentButton.addEventListener("click", this.showComments.bind(this));
     }
 
-    commentAction.addEventListener("click", this.showCommentWithFocus);
+    commentAction.addEventListener(
+      "click",
+      this.showCommentWithFocus.bind(this),
+    );
   }
 
-  showCommentWithFocus = () => {
+  showCommentWithFocus() {
     this.showComments();
     const input = this.querySelector(`#comment-form-0-${this.postId} textarea`);
     input.focus();
-  };
+  }
 
-  showComments = (e) => {
+  showComments(e) {
     const actionBar = this.querySelector("footer [data-comments-visible]");
     actionBar.setAttribute("data-comments-visible", "true");
     this.querySelector("#comment-section").classList.remove("hidden");
-  };
+  }
 
   /**
    * Recursively finds the root comment (the initial comment to which a given comment is replying).

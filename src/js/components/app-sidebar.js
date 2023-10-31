@@ -59,7 +59,7 @@ class AppSidebar extends HTMLElement {
    * @param {Promise} posts - A Promise representing the user's posts data.
    * @param {Promise} user - A Promise representing the currently logged-in user's information.
    */
-  setup = (posts, user) => {
+  setup(posts, user) {
     if (posts.status === "fulfilled") {
       this.renderTags(getPopularTags(posts.value));
     } else {
@@ -73,7 +73,7 @@ class AppSidebar extends HTMLElement {
     } else {
       this.querySelector("#following-section").remove();
     }
-  };
+  }
 
   updateFollowing(following) {
     if (following.length > 0) {

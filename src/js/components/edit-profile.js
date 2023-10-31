@@ -39,7 +39,7 @@ export class EditProfile extends HTMLElement {
     const form = this.querySelector("form");
     const modal = this.querySelector("dialog");
 
-    form.addEventListener("submit", this.userEditHandler);
+    form.addEventListener("submit", this.userEditHandler.bind(this));
 
     this.addEventListener("click", (e) => {
       if (e.target == modal) {
@@ -56,7 +56,7 @@ export class EditProfile extends HTMLElement {
    * Handles user profile editing and updates the user information.
    * @param {SubmitEvent} e - The event object, typically from a form submission.
    */
-  userEditHandler = async (e) => {
+  async userEditHandler(e) {
     const loader = new AppLoader(true);
     const button = this.querySelector(`#${this.dialogId}-save`);
     button.prepend(loader);
@@ -79,7 +79,7 @@ export class EditProfile extends HTMLElement {
     } finally {
       loader.remove();
     }
-  };
+  }
 
   render() {
     const dialog = htmlUtilities.createHTML("dialog", null, null, {
