@@ -154,7 +154,7 @@ export class AuthForm extends HTMLElement {
     const text = htmlUtilities.createHTML("span", null, this.authToggleText);
     const link = htmlUtilities.createHTML(
       "a",
-      "link link-primary ml-1 p-0 font-semibold",
+      "link link-primary ml-1 p-0",
       this.authToggleLink,
       { href: this.authToggleHref },
     );
