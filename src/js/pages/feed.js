@@ -6,6 +6,7 @@ import { userById } from "../helper/api/request-object/user-by-id.js";
 import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
+import { deduplicateObjectArrays } from "../helper/deduplicate-object-arrays.js";
 import Storage from "../helper/storage/index.js";
 
 const sidebar = document.querySelector("app-sidebar");
@@ -33,13 +34,16 @@ const renderFeedPage = async () => {
       if (feedPosts.value.length > 0) {
         const userPostsArray =
           userPosts.status === "fulfilled" ? userPosts.value : [];
-        const feedPostsArray =
-          feedPosts.status === "fulfilled" ? feedPosts.value : [];
 
-        const posts = [...feedPostsArray, ...userPostsArray].sort(
-          (a, b) => a.created < b.created,
+        const posts = deduplicateObjectArrays(
+          "id",
+          feedPosts.value,
+          userPostsArray,
+          allPosts.value,
         );
-        renderPosts(posts, postList, user.value);
+
+        const sortedPosts = posts.sort((a, b) => a.created < b.created);
+        renderPosts(sortedPosts, postList, user.value);
       } else {
         renderPosts(sortPopularPosts(allPosts.value), postList, user.value);
       }
