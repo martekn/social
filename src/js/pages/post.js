@@ -6,8 +6,10 @@ import { userById } from "../helper/api/request-object/user-by-id.js";
 import { postById } from "../helper/api/request-object/post-by-id.js";
 import Storage from "../helper/storage/index.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
+import Jwt from "../helper/jwt/index.js";
 
-const username = Storage.get("username");
+const username = Jwt.getPayloadValue(Storage.get("accessToken"), "name");
+
 const postId = new URLSearchParams(window.location.search).get("id");
 
 if (!postId) {

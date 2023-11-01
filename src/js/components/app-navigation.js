@@ -6,6 +6,7 @@ import { mdQuery } from "../const/queries.js";
 import { stringToBoolean } from "../helper/string-to-boolean.js";
 import Storage from "../helper/storage/index.js";
 import Modal from "../helper/modal/index.js";
+import Jwt from "../helper/jwt/index.js";
 
 /**
  * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
@@ -53,7 +54,6 @@ class AppNavigation extends HTMLElement {
 
   userLogout() {
     Storage.remove("accessToken");
-    Storage.remove("username");
     window.location.href = "/";
   }
 
@@ -178,7 +178,8 @@ class AppNavigation extends HTMLElement {
     let iconClass = icon.default;
 
     const searchQuery = new URLSearchParams(window.location.search);
-    const user = Storage.get("username");
+    const token = Storage.get("accessToken");
+    const user = Jwt.getPayloadValue(token, "name");
     const currentProfile = searchQuery?.get("u") ?? user;
 
     const isPersonalProfile = href === "/profile/" && user === currentProfile;

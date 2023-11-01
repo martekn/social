@@ -8,9 +8,11 @@ import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
 import { deduplicateObjectArrays } from "../helper/deduplicate-object-arrays.js";
 import Storage from "../helper/storage/index.js";
+import Jwt from "../helper/jwt/index.js";
 
 const sidebar = document.querySelector("app-sidebar");
-const username = Storage.get("username");
+const username = Jwt.getPayloadValue(Storage.get("accessToken"), "name");
+
 const requests = [
   allPosts(),
   followingPosts(),

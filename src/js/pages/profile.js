@@ -9,9 +9,14 @@ import { requestAll } from "../helper/api/request-all.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import Storage from "../helper/storage/index.js";
 import Modal from "../helper/modal/index.js";
+import Jwt from "../helper/jwt/index.js";
 
 const main = document.querySelector("main");
-const loggedInUsername = Storage.get("username");
+const loggedInUsername = Jwt.getPayloadValue(
+  Storage.get("accessToken"),
+  "name",
+);
+
 const usernameQuery = new URLSearchParams(window.location.search).get("u");
 const isNotLoggedInUser =
   loggedInUsername !== usernameQuery && usernameQuery !== null;
