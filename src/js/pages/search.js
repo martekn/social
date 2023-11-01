@@ -312,9 +312,9 @@ const setupSearch = async () => {
     }
   } catch (error) {
     console.log(error);
-    document
-      .querySelector("main")
-      .append(new DialogAlert(error, "search-error", "error"));
+    const alert = new DialogAlert(error, "search-error", "error");
+    const list = document.querySelector("#search-list");
+    document.querySelector("main").insertBefore(alert, list);
   }
 };
 

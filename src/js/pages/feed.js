@@ -47,7 +47,8 @@ const renderFeedPage = async () => {
       const errorMessage =
         "Sorry, we couldn't load the feed at the moment. Please check your internet connection and try again. If the problem persists, please contact our support team for assistance.";
       const error = new DialogAlert(errorMessage, "feed-error", "error");
-      document.querySelector("main").append(error);
+      const list = document.querySelector("#posts-list");
+      document.querySelector("main").insertBefore(error, list);
     }
   } catch (error) {
     console.log(error);
