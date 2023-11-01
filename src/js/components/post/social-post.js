@@ -5,6 +5,7 @@ import { PostFooter } from "./post-footer.js";
 import "./post-comment-form.js";
 import { PostCommentSection } from "./post-comment-section.js";
 import { PostComment } from "./post-comment.js";
+import { stringToBoolean } from "../../helper/string-to-boolean.js";
 
 /**
  * The `SocialPost` class represents the main post component that combines and integrates various subcomponents related to a post, such as the header, main content, footer and comments,
@@ -87,13 +88,33 @@ export class SocialPost extends HTMLElement {
   }
 
   showCommentWithFocus() {
+    const actionBar = this.querySelector("footer [data-comments-visible]");
+    const isCommentsVisible = stringToBoolean(
+      actionBar.getAttribute("data-comments-visible"),
+    );
+
     this.showComments();
-    const input = this.querySelector(`#comment-form-0-${this.postId} textarea`);
-    input.focus();
+
+    if (!isCommentsVisible) {
+      const input = this.querySelector(
+        `#comment-form-0-${this.postId} textarea`,
+      );
+      input.focus();
+    }
   }
 
   showComments(e) {
     const actionBar = this.querySelector("footer [data-comments-visible]");
+    const isCommentsVisible = stringToBoolean(
+      actionBar.getAttribute("data-comments-visible"),
+    );
+
+    if (isCommentsVisible) {
+      actionBar.setAttribute("data-comments-visible", "false");
+      this.querySelector("#comment-section").classList.add("hidden");
+      return;
+    }
+
     actionBar.setAttribute("data-comments-visible", "true");
     this.querySelector("#comment-section").classList.remove("hidden");
   }

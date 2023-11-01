@@ -1,17 +1,22 @@
 import { renderPosts } from "../helper/render-posts.js";
 import { ProfileModal } from "../components/profile/profile-modal.js";
-import { EditProfile } from "../components/edit-profile.js";
+import { EditProfile } from "../components/profile/edit-profile.js";
 import { ProfileCard } from "../components/profile/profile-card.js";
-import Storage from "../helper/storage/index.js";
 import { userById } from "../helper/api/request-object/user-by-id.js";
 import { userPosts } from "../helper/api/request-object/user-posts.js";
 import { allPosts } from "../helper/api/request-object/all-posts.js";
 import { requestAll } from "../helper/api/request-all.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
+import Storage from "../helper/storage/index.js";
 import Modal from "../helper/modal/index.js";
+import Jwt from "../helper/jwt/index.js";
 
 const main = document.querySelector("main");
-const loggedInUsername = Storage.get("username");
+const loggedInUsername = Jwt.getPayloadValue(
+  Storage.get("accessToken"),
+  "name",
+);
+
 const usernameQuery = new URLSearchParams(window.location.search).get("u");
 const isNotLoggedInUser =
   loggedInUsername !== usernameQuery && usernameQuery !== null;

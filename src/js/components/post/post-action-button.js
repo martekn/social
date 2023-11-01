@@ -22,7 +22,7 @@ export class PostActionButton extends HTMLElement {
     this.iconClasses = iconClasses ?? "";
     this.type = type ?? "button";
     this.href = href ?? "#";
-    this.id = `${buttonId}-${postId}`;
+    this.buttonId = `${buttonId}-${postId}`;
   }
 
   connectedCallback() {
@@ -37,11 +37,11 @@ export class PostActionButton extends HTMLElement {
     if (this.type === "link") {
       action = htmlUtilities.createHTML("a", actionClasses, null, {
         href: this.href,
-        id: this.id,
+        id: this.buttonId,
       });
     } else {
       action = htmlUtilities.createHTML("button", actionClasses, null, {
-        id: this.id,
+        id: this.buttonId,
       });
     }
     const icon = htmlUtilities.createHTML("i", this.iconClasses);

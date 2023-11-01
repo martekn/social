@@ -2,6 +2,7 @@ import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import Storage from "../../helper/storage/index.js";
 import Modal from "../../helper/modal/index.js";
+import Jwt from "../../helper/jwt/index.js";
 
 /**
  * Represents a `ProfileCard` class that displays details about a user on the profile page, including their image, banner, username, and stats.
@@ -28,7 +29,7 @@ export class ProfileCard extends HTMLElement {
     this.followers = followers;
     this.following = following;
     this.count = _count;
-    this.loggedInUser = Storage.get("username");
+    this.loggedInUser = Jwt.getPayloadValue(Storage.get("accessToken"), "name");
     this.isLoggedInUser = this.name === this.loggedInUser;
     this.isFollowing = this.followers.some(
       (user) => user.name === this.loggedInUser,

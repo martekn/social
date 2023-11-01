@@ -9,10 +9,12 @@ import { renderFilterButtons } from "../helper/render-filter-buttons.js";
 import { sortPopularPosts } from "../helper/sort-popular-posts.js";
 import { DialogAlert } from "../components/alerts/dialog-alert.js";
 import { renderUserSearch } from "../helper/render-user-search.js";
+import Jwt from "../helper/jwt/index.js";
 
 const sidebar = document.querySelector("app-sidebar");
 const searchList = document.querySelector("#search-list");
-const username = Storage.get("username");
+const username = Jwt.getPayloadValue(Storage.get("accessToken"), "name");
+
 const searchParams = new URLSearchParams(window.location.search);
 const searchQuery = searchParams.get("search") ?? "";
 let actionQuery = searchParams.get("action")?.toLowerCase() ?? "latest";
@@ -312,9 +314,9 @@ const setupSearch = async () => {
     }
   } catch (error) {
     console.log(error);
-    document
-      .querySelector("main")
-      .append(new DialogAlert(error, "search-error", "error"));
+    const alert = new DialogAlert(error, "search-error", "error");
+    const list = document.querySelector("#search-list");
+    document.querySelector("main").insertBefore(alert, list);
   }
 };
 
