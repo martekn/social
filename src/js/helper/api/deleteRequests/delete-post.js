@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Deletes a social media post by its ID.
@@ -10,7 +11,7 @@ import { request } from "../request.js";
  */
 export const deletePost = async (id) => {
   const response = await request(
-    `/api/v1/social/posts/${id}`,
+    `${baseApiPath}/posts/${id}`,
     null,
     true,
     "DELETE",

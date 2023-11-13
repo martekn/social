@@ -1,4 +1,5 @@
 import { createObject } from "./create-request-object.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Creates a request object for retrieving all users.
@@ -7,7 +8,7 @@ import { createObject } from "./create-request-object.js";
  */
 export const allUsers = () => {
   return createObject(
-    `/api/v1/social/profiles`,
+    `${baseApiPath}/profiles`,
     { _following: "true", _followers: "true" },
     true,
     "GET",

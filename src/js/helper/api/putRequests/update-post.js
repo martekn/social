@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Updates a social media post by its ID.
@@ -21,7 +22,7 @@ export const updatePost = async (id, body) => {
   }
 
   const response = await request(
-    `/api/v1/social/posts/${id}`,
+    `${baseApiPath}/posts/${id}`,
     null,
     true,
     "PUT",

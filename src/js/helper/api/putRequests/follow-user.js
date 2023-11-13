@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Follow a user by sending a PUT request to the server.
@@ -8,7 +9,7 @@ import { request } from "../request.js";
  */
 export const followUser = async (user) => {
   const response = request(
-    `/api/v1/social/profiles/${user}/follow`,
+    `${baseApiPath}/profiles/${user}/follow`,
     null,
     true,
     "PUT",

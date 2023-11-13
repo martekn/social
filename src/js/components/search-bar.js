@@ -37,7 +37,12 @@ export class SearchBar extends HTMLElement {
   }
 
   search(value) {
-    location.href = `/search/?search=${value}&action=${this.actionQuery}`;
+    const url = new URL("/search/", location.href);
+    const searchParams = new URLSearchParams();
+    searchParams.set("search", value);
+    searchParams.set("action", this.actionQuery);
+    url.search = searchParams.toString();
+    location.href = url.href;
   }
 
   render() {

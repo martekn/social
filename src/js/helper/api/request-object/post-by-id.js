@@ -1,4 +1,5 @@
 import { createObject } from "./create-request-object.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Creates a request object for retrieving a post by its ID.
@@ -8,7 +9,7 @@ import { createObject } from "./create-request-object.js";
  */
 export const postById = (id) => {
   return createObject(
-    `/api/v1/social/posts/${id}`,
+    `${baseApiPath}/posts/${id}`,
     { _author: "true", _comments: "true", _reactions: "true" },
     true,
     "GET",

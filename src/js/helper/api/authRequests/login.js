@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 import Storage from "../../storage/index.js";
 
 /**
@@ -18,7 +19,7 @@ import Storage from "../../storage/index.js";
 export const login = async (body, redirect = "/profile/") => {
   try {
     const response = await request(
-      "/api/v1/social/auth/login",
+      `${baseApiPath}/auth/login`,
       null,
       null,
       "POST",

@@ -1,4 +1,5 @@
 import { createObject } from "./create-request-object.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Creates a request object for retrieving all posts.
@@ -7,7 +8,7 @@ import { createObject } from "./create-request-object.js";
  */
 export const allPosts = () => {
   return createObject(
-    "/api/v1/social/posts",
+    `${baseApiPath}/posts`,
     { _author: "true", _comments: "true", _reactions: "true" },
     true,
     "GET",

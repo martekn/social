@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * React to a post by sending a PUT request to the server.
@@ -8,7 +9,7 @@ import { request } from "../request.js";
  */
 export const reactToPost = async (id) => {
   const response = await request(
-    `/api/v1/social/posts/${id}/react/🧡`,
+    `${baseApiPath}/posts/${id}/react/🧡`,
     null,
     true,
     "PUT",

@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Posts a comment to a social media post.
@@ -9,7 +10,7 @@ import { request } from "../request.js";
  */
 export const postComment = async (body, id) => {
   const response = await request(
-    `/api/v1/social/posts/${id}/comment`,
+    `${baseApiPath}/posts/${id}/comment`,
     null,
     true,
     "POST",
