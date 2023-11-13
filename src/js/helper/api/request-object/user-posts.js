@@ -7,8 +7,8 @@ import { baseApiPath } from "../../../const/base-url.js";
  * @param {string} username - The username of the user.
  * @returns {object} A request object for retrieving a user's posts.
  */
-export const userPosts = (username) => {
-  return createObject(
+export const userPosts = (username) =>
+  createObject(
     `${baseApiPath}/profiles/${username}/posts`,
     {
       _comments: "true",
@@ -19,4 +19,3 @@ export const userPosts = (username) => {
     "GET",
     null,
   );
-};

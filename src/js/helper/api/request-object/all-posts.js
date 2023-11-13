@@ -6,12 +6,11 @@ import { baseApiPath } from "../../../const/base-url.js";
  *
  * @returns {object} A request object for retrieving all posts.
  */
-export const allPosts = () => {
-  return createObject(
+export const allPosts = () =>
+  createObject(
     `${baseApiPath}/posts`,
     { _author: "true", _comments: "true", _reactions: "true" },
     true,
     "GET",
     null,
   );
-};

@@ -8,13 +8,5 @@ import { baseApiPath } from "../../../const/base-url.js";
  * @param {number} id - The unique identifier of the post to which the comment will be added.
  * @returns {Promise} A Promise that resolves to the response from the server after posting the comment.
  */
-export const postComment = async (body, id) => {
-  const response = await request(
-    `${baseApiPath}/posts/${id}/comment`,
-    null,
-    true,
-    "POST",
-    body,
-  );
-  return response;
-};
+export const postComment = (body, id) =>
+  request(`${baseApiPath}/posts/${id}/comment`, null, true, "POST", body);

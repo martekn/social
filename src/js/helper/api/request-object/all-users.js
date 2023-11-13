@@ -6,12 +6,11 @@ import { baseApiPath } from "../../../const/base-url.js";
  *
  * @returns {object} A request object for retrieving all users.
  */
-export const allUsers = () => {
-  return createObject(
+export const allUsers = () =>
+  createObject(
     `${baseApiPath}/profiles`,
     { _following: "true", _followers: "true" },
     true,
     "GET",
     null,
   );
-};
