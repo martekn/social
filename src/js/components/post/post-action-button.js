@@ -82,7 +82,7 @@ export class ReactionButton extends PostActionButton {
 
   animateHeart() {
     const icon = this.querySelector("i");
-    icon.classList.add(..."relative bi-heart-fill".split(" "));
+    icon.classList.add("relative", "bi-heart-fill");
     icon.classList.remove("bi-heart");
 
     const reactionIcon = htmlUtilities.createHTML(

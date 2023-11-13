@@ -17,6 +17,6 @@ export const renderUserSearch = (users, parent, loggedInUser) => {
     allUsers.push(li);
   }
 
-  parent.classList.add(..."divide-y divide-light-450 space-y-0".split(" "));
+  parent.classList.add("divide-y", "divide-light-450", "space-y-0");
   parent.append(...allUsers);
 };

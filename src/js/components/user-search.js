@@ -38,7 +38,12 @@ export class UserSearch extends HTMLElement {
 
   render() {
     this.classList.add(
-      ..."flex xs:items-center gap-3 px-6 xs:px-0 py-8".split(" "),
+      "flex",
+      "xs:items-center",
+      "gap-3",
+      "px-6",
+      "xs:px-0",
+      "py-8",
     );
     const avatarLink = htmlUtilities.createHTML(
       "a",

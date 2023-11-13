@@ -177,7 +177,7 @@ export class PostModal extends HTMLElement {
 
         post
           .querySelector("article")
-          .classList.add(..."border-2 border-primary-200".split(" "));
+          .classList.add("border-2", "border-primary-200");
       }
       e.target.reset();
     } catch (error) {

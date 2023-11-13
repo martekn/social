@@ -68,7 +68,11 @@ export class AuthForm extends HTMLElement {
 
   render() {
     this.classList.add(
-      ..."grid min-h-full flex-1 place-items-center p-5".split(" "),
+      "grid",
+      "min-h-full",
+      "flex-1",
+      "place-items-center",
+      "p-5",
     );
     const form = htmlUtilities.createHTML(
       "form",

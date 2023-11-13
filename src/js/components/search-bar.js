@@ -50,7 +50,7 @@ export class SearchBar extends HTMLElement {
     if (this.type === "sidebar-search") {
       searchbar.classList.add("mb-4");
     } else {
-      searchbar.classList.add(..."mx-6 xs:mx-0".split(" "));
+      searchbar.classList.add("mx-6", "xs:mx-0");
     }
 
     const input = htmlUtilities.createHTML("input", null, null, {
