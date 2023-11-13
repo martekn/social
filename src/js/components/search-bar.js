@@ -37,7 +37,12 @@ export class SearchBar extends HTMLElement {
   }
 
   search(value) {
-    location.href = `/search/?search=${value}&action=${this.actionQuery}`;
+    const url = new URL("/search/", location.href);
+    const searchParams = new URLSearchParams();
+    searchParams.set("search", value);
+    searchParams.set("action", this.actionQuery);
+    url.search = searchParams.toString();
+    location.href = url.href;
   }
 
   render() {
@@ -45,7 +50,7 @@ export class SearchBar extends HTMLElement {
     if (this.type === "sidebar-search") {
       searchbar.classList.add("mb-4");
     } else {
-      searchbar.classList.add(..."mx-6 xs:mx-0".split(" "));
+      searchbar.classList.add("mx-6", "xs:mx-0");
     }
 
     const input = htmlUtilities.createHTML("input", null, null, {

@@ -1,3 +1,4 @@
+import { baseApiPath } from "../../../const/base-url.js";
 import { request } from "../request.js";
 import { login } from "./login.js";
 
@@ -15,7 +16,7 @@ import { login } from "./login.js";
  */
 export const register = async (body) => {
   try {
-    await request("/api/v1/social/auth/register", null, null, "POST", body);
+    await request(`${baseApiPath}/auth/register`, null, null, "POST", body);
 
     await login(
       { email: body.email, password: body.password },

@@ -38,34 +38,41 @@ export class AuthForm extends HTMLElement {
 
     const form = this.querySelector("form");
 
-    form.addEventListener("submit", async (e) => {
-      const loader = new AppLoader(true);
-      const button = this.querySelector(`button`);
-      button.prepend(loader);
-      try {
-        e.preventDefault();
-        const user = getFormData(e);
-        if (this.isRegisterForm) {
-          await register(user);
-        } else {
-          await login(user);
-        }
-      } catch (error) {
-        let errorMessage = this.querySelector("#auth-error");
-        if (errorMessage) {
-          errorMessage.remove();
-        }
-        errorMessage = new DialogAlert(error, "auth-error", "error");
-        form.insertBefore(errorMessage, this.querySelector("#container"));
-      } finally {
-        loader.remove();
+    form.addEventListener("submit", AuthForm.onSubmit);
+  }
+
+  static async onSubmit(e) {
+    e.preventDefault();
+
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`button`);
+    button.prepend(loader);
+    try {
+      const user = getFormData(e);
+      if (this.isRegisterForm) {
+        await register(user);
+      } else {
+        await login(user);
       }
-    });
+    } catch (error) {
+      let errorMessage = this.querySelector("#auth-error");
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+      errorMessage = new DialogAlert(error, "auth-error", "error");
+      this.insertBefore(errorMessage, this.querySelector("#container"));
+    } finally {
+      loader.remove();
+    }
   }
 
   render() {
     this.classList.add(
-      ..."grid min-h-full flex-1 place-items-center p-5".split(" "),
+      "grid",
+      "min-h-full",
+      "flex-1",
+      "place-items-center",
+      "p-5",
     );
     const form = htmlUtilities.createHTML(
       "form",

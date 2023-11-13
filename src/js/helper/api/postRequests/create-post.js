@@ -1,4 +1,5 @@
 import { request } from "../request.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Creates a new social media post.
@@ -22,7 +23,7 @@ export const createPost = async (body) => {
   }
 
   const response = await request(
-    "/api/v1/social/posts",
+    `${baseApiPath}/posts`,
     { _author: "true", _reactions: "true", _comments: "true" },
     true,
     "POST",

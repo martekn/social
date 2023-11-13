@@ -1,4 +1,5 @@
 import { createObject } from "./create-request-object.js";
+import { baseApiPath } from "../../../const/base-url.js";
 
 /**
  * Creates a request object for retrieving a user's posts.
@@ -6,9 +7,9 @@ import { createObject } from "./create-request-object.js";
  * @param {string} username - The username of the user.
  * @returns {object} A request object for retrieving a user's posts.
  */
-export const userPosts = (username) => {
-  return createObject(
-    `/api/v1/social/profiles/${username}/posts`,
+export const userPosts = (username) =>
+  createObject(
+    `${baseApiPath}/profiles/${username}/posts`,
     {
       _comments: "true",
       _reactions: "true",
@@ -18,4 +19,3 @@ export const userPosts = (username) => {
     "GET",
     null,
   );
-};
