@@ -38,29 +38,37 @@ export class AuthForm extends HTMLElement {
 
     const form = this.querySelector("form");
 
-    form.addEventListener("submit", AuthForm.onSubmit);
+    form.addEventListener("submit", (e) => {
+      AuthForm.onSubmit(e, this.isRegisterForm);
+    });
   }
-
-  static async onSubmit(e) {
+  /**
+   * Handles the form submission.
+   *
+   * @param {Event} e - The submit event.
+   * @param {boolean} isRegisterForm - Indicates whether the form is for registration.
+   * @throws {Error} If there's an error during the submission process.
+   */
+  static async onSubmit(e, isRegisterForm) {
     e.preventDefault();
-
+    const form = e.target;
     const loader = new AppLoader(true);
-    const button = this.querySelector(`button`);
+    const button = form.querySelector(`button`);
     button.prepend(loader);
     try {
       const user = getFormData(e);
-      if (this.isRegisterForm) {
+      if (isRegisterForm) {
         await register(user);
       } else {
         await login(user);
       }
     } catch (error) {
-      let errorMessage = this.querySelector("#auth-error");
+      let errorMessage = form.querySelector("#auth-error");
       if (errorMessage) {
         errorMessage.remove();
       }
       errorMessage = new DialogAlert(error, "auth-error", "error");
-      this.insertBefore(errorMessage, this.querySelector("#container"));
+      form.insertBefore(errorMessage, form.querySelector("#container"));
     } finally {
       loader.remove();
     }
