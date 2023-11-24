@@ -50,6 +50,21 @@ export class PostCommentForm extends HTMLElement {
     });
   }
 
+  updateCommentCounter() {
+    const post = document.querySelector(`#post-${this.postId}`);
+    const commentCounterContainer = post.querySelector(
+      `#comment-counter-${this.postId}`,
+    );
+    const commentCount = commentCounterContainer.querySelector(
+      `#comment-count-${this.postId}`,
+    );
+    const currentCount = Number(commentCount.innerText);
+    commentCount.innerText = currentCount + 1;
+    if (commentCounterContainer.classList.contains("hidden")) {
+      commentCounterContainer.classList.remove("hidden");
+    }
+  }
+
   async createComment(e) {
     e.preventDefault();
     const loader = new AppLoader(true);
@@ -70,6 +85,8 @@ export class PostCommentForm extends HTMLElement {
         this.postId,
         { name: this.name, avatar: this.avatar },
       );
+
+      this.updateCommentCounter();
 
       const rootParentId = response.replyToId;
       const li = htmlUtilities.createHTML("li", null, null, {
