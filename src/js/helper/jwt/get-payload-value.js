@@ -6,7 +6,11 @@
  * @returns {*} The value associated with the specified key in the payload, or undefined if the key is not found.
  */
 export const getPayloadValue = (token, key) => {
-  const [header, payload] = token.split(".");
-  const parsedPayload = JSON.parse(atob(payload));
-  return parsedPayload[key];
+  try {
+    const [header, payload] = token.split(".");
+    const parsedPayload = JSON.parse(atob(payload));
+    return parsedPayload[key];
+  } catch (error) {
+    window.location.href = "/?auth=login&error=token";
+  }
 };
