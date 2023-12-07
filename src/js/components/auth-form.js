@@ -5,6 +5,7 @@ import { login } from "../helper/api/authRequests/login.js";
 import { register } from "../helper/api/authRequests/register.js";
 import { DialogAlert } from "./alerts/dialog-alert.js";
 import { AppLoader } from "./app-loader.js";
+import Storage from "../helper/storage/index.js";
 
 /**
  * Represents an `AuthForm` class that creates a form for user registration or login based on the query of the site.
@@ -31,6 +32,10 @@ export class AuthForm extends HTMLElement {
       ? "/?auth=login"
       : "/?auth=register";
     this.authToggleLink = this.isRegisterForm ? "Log in" : "Sign up";
+    this.searchParams = new URLSearchParams(window.location.search);
+    this.error = this.searchParams.get("error") ?? "";
+    this.tokenErrorMessage =
+      "Oops! Something went wrong with your login. Please try again, and if the issue persists, contact support for assistance.";
   }
 
   connectedCallback() {
@@ -41,6 +46,20 @@ export class AuthForm extends HTMLElement {
     form.addEventListener("submit", (e) => {
       AuthForm.onSubmit(e, this.isRegisterForm);
     });
+
+    if (this.error === "token") {
+      Storage.remove("accessToken");
+      let errorMessage = form.querySelector("#auth-error");
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+      errorMessage = new DialogAlert(
+        this.tokenErrorMessage,
+        "auth-error",
+        "error",
+      );
+      form.insertBefore(errorMessage, form.querySelector("#container"));
+    }
   }
   /**
    * Handles the form submission.

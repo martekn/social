@@ -13,30 +13,34 @@ export const validate = (token, requiredHeaderKeys, requiredPayloadKeys) => {
     return false;
   }
 
-  const tokenArray = token.split(".");
-  if (tokenArray.length < 3) {
-    return false;
+  try {
+    const tokenArray = token.split(".");
+    if (tokenArray.length < 3) {
+      return false;
+    }
+
+    const [header, payload] = tokenArray;
+    const parsedHeader = JSON.parse(atob(header));
+
+    if (!parsedHeader) {
+      return false;
+    } else if (!validateObjectKeys(parsedHeader, requiredHeaderKeys)) {
+      return false;
+    }
+
+    const parsedPayload = JSON.parse(atob(payload));
+
+    if (!parsedPayload) {
+      return false;
+    } else if (
+      !validateObjectKeys(parsedPayload, requiredPayloadKeys) ||
+      !parsedPayload.name
+    ) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    window.location.href = "/?auth=login&error=token";
   }
-
-  const [header, payload] = tokenArray;
-  const parsedHeader = JSON.parse(atob(header));
-
-  if (!parsedHeader) {
-    return false;
-  } else if (!validateObjectKeys(parsedHeader, requiredHeaderKeys)) {
-    return false;
-  }
-
-  const parsedPayload = JSON.parse(atob(payload));
-
-  if (!parsedPayload) {
-    return false;
-  } else if (
-    !validateObjectKeys(parsedPayload, requiredPayloadKeys) ||
-    !parsedPayload.name
-  ) {
-    return false;
-  }
-
-  return true;
 };
