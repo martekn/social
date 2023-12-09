@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./feed/**/*.{html,js}",
@@ -8,14 +9,19 @@ module.exports = {
     "./index.html",
   ],
   theme: {
+    screens: {
+      xs: "430px",
+      ...defaultTheme.screens,
+    },
+
     extend: {
       colors: {
         transparent: "transparent",
         primary: {
+          200: "#AACAD8",
           300: "#3F88A7",
-          400: "#126D94",
-          500: "#0D516E",
-          600: "#073649",
+          400: "#065074",
+          500: "#053c57",
         },
         dark: {
           200: "#808093",
@@ -31,18 +37,19 @@ module.exports = {
           500: "#dce0ec",
         },
       },
-    },
-    keyframes: {
-      slide: {
-        "0%": { transform: "translateX(130%)" },
-        "100%": {
-          transform: "translateX(0)",
+      keyframes: {
+        slide: {
+          "0%": { transform: "translateX(130%)" },
+          "100%": {
+            transform: "translateX(0)",
+          },
         },
       },
+      animation: {
+        slide: "slide 0.3s ease-in-out",
+      },
     },
-    animation: {
-      slide: "slide 0.3s ease-in-out",
-    },
+
     container: {
       center: true,
     },
@@ -71,5 +78,5 @@ module.exports = {
       ],
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animated")],
 };

@@ -26,6 +26,7 @@ export class UserBadge extends HTMLElement {
   }
 
   render() {
+    this.setAttribute("data-badge", this.name);
     const username = htmlUtilities.createHTML(
       "a",
       "flex items-center link link-secondary gap-2 py-1",
@@ -37,11 +38,13 @@ export class UserBadge extends HTMLElement {
 
     const avatar = htmlUtilities.createHTML(
       "img",
-      "aspect-square w-11 rounded-full object-cover",
+      "aspect-square w-11 bg-light-400 rounded-full object-cover",
       null,
       {
         src: this.avatar,
         alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
       },
     );
 

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "postcss src/css/styles.css -o dist/styles.css",
-    "watch": "postcss --watch src/css/styles.css -o dist/styles.css & live-server --port=54525"
+    "watch": "postcss --watch src/css/styles.css -o dist/styles.css & live-server --port=54525",
+    "docs": "jsdoc -c ./jsdoc.config.json -r"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,11 @@
   "homepage": "https://github.com//martekn/social#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.16",
+    "jsdoc": "^4.0.2",
     "live-server": "^1.2.2",
     "postcss-cli": "^10.1.0",
     "prettier-plugin-tailwindcss": "^0.5.4",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "tailwindcss-animated": "^1.0.1"
   }
 }

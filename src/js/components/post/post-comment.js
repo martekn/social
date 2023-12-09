@@ -1,6 +1,7 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 import { PostCommentForm } from "./post-comment-form.js";
+import { stringToBoolean } from "../../helper/string-to-boolean.js";
 
 /**
  * Represents a comment in a post's comment section.
@@ -40,12 +41,14 @@ export class PostComment extends HTMLElement {
     this.isRootComment = isRootComment;
     this.postId = postId;
     this.loggedInUser = loggedInUser;
+    this.article = document.querySelector(`#post-${this.postId}`);
   }
 
   connectedCallback() {
     this.render();
 
     const replyButton = this.querySelector("button");
+
     replyButton.addEventListener("click", (e) => {
       const container = this.querySelector("#comment-container");
       const footer = container.querySelector("footer");
@@ -55,17 +58,26 @@ export class PostComment extends HTMLElement {
 
       if (!form) {
         form = new PostCommentForm(
-          `comment-reply-${this.id}`,
           this.id,
           this.postId,
           this.loggedInUser,
+          this.replyToId,
         );
-
         footer.insertAdjacentElement("afterend", form);
       }
+
       const textarea = form.querySelector("textarea");
+
+      if (this.replyToId) {
+        const isReplyingToRootComment = stringToBoolean(
+          this.article
+            .querySelector(`#comment-li-${this.replyToId}`)
+            .getAttribute("data-root"),
+        );
+
+        textarea.value = isReplyingToRootComment ? `@${this.name} ` : "";
+      }
       textarea.focus();
-      textarea.value = `@${this.name} `;
     });
   }
 
@@ -76,15 +88,20 @@ export class PostComment extends HTMLElement {
 
     const avatarWrapper = htmlUtilities.createHTML(
       "a",
-      "h-11 w-11 flex-none",
+      "h-8 xs:h-11 w-8 xs:w-11 flex-none",
       null,
       { href: `/profile/?u=${this.name}` },
     );
     const avatar = htmlUtilities.createHTML(
       "img",
-      "h-full w-full rounded-full object-cover",
+      "h-full w-full bg-light-400 rounded-full object-cover",
       null,
-      { src: this.avatar, alt: this.name },
+      {
+        src: this.avatar,
+        alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
+      },
     );
     const avatarText = htmlUtilities.createHTML("span", "sr-only", this.name);
     avatarWrapper.append(...[avatar, avatarText]);

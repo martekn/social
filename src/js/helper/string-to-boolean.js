@@ -1,8 +1,9 @@
 /**
- * Returns a string as a boolean value.
+ * Converts a string to a boolean value.
  *
- * @param {"true"|"false"} input - A string containing "false" or "true."
- * @returns {Boolean} - The converted boolean value.
+ * @param {string} input - The input string to be converted to a boolean.
+ * @returns {boolean|null} The boolean value if the input is 'true' (case-insensitive),
+ * or null if the input is falsy.
  *
  * @example
  * ```js
@@ -11,6 +12,9 @@
  * ```
  */
 export const stringToBoolean = (input) => {
+  if (!input) {
+    return input;
+  }
   input = input.toLowerCase() == "true";
   return input;
 };

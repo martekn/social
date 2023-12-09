@@ -1,5 +1,6 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { UserBadge } from "../user-badge.js";
+import Modal from "../../helper/modal/index.js";
 
 /**
  * Represents a `ProfileModal` class that displays a modal for listing users who are either followers or followed by the current user.
@@ -16,7 +17,7 @@ export class ProfileModal extends HTMLElement {
   constructor(modalType, title, users) {
     super();
     this.modalType = modalType;
-    this.title = title;
+    this.postTitle = title;
     this.users = users;
   }
 
@@ -26,7 +27,7 @@ export class ProfileModal extends HTMLElement {
     this.addEventListener("click", (e) => {
       const modal = this.querySelector(`#${this.modalType}-modal`);
       if (e.target == modal) {
-        modal.close();
+        Modal.close(modal);
       }
     });
   }
@@ -54,7 +55,7 @@ export class ProfileModal extends HTMLElement {
       "div",
       "flex items-center justify-between border-b border-light-450 px-6 py-2",
     );
-    const heading = htmlUtilities.createHTML("h2", null, this.title);
+    const heading = htmlUtilities.createHTML("h2", null, this.postTitle);
 
     const closeButton = htmlUtilities.createHTML(
       "button",
@@ -66,12 +67,11 @@ export class ProfileModal extends HTMLElement {
     const buttonText = htmlUtilities.createHTML(
       "span",
       "sr-only",
-      `Close ${this.title} modal`,
+      `Close ${this.postTitle} modal`,
     );
 
     closeButton.addEventListener("click", (e) => {
-      const modal = document.querySelector(`#${this.modalType}-modal`);
-      modal.close();
+      Modal.close(document.querySelector(`#${this.modalType}-modal`));
     });
 
     closeButton.append(...[buttonIcon, buttonText]);

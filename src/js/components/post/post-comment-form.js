@@ -1,5 +1,11 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { debounce } from "../../helper/debounce.js";
+import { postComment } from "../../helper/api/postRequests/post-comment.js";
+import { getFormData } from "../../helper/get-form-data.js";
+import { PostComment } from "./post-comment.js";
+import { stringToBoolean } from "../../helper/string-to-boolean.js";
+import { renderToast } from "../../helper/render-toast.js";
+import { AppLoader } from "../app-loader.js";
 
 /**
  * Represents a comment form for a post, allowing users to write comments.
@@ -9,22 +15,22 @@ export class PostCommentForm extends HTMLElement {
   /**
    * Create a new PostCommentForm instance.
    * @constructor
-   * @param {String} inputName - The value to be added to the name attribute of the input.
-   * @param {String} inputId - The value to be added to the id attribute of the input.
+   * @param {String} replyToId - The id of the comment the form will reply to.
    * @param {String} postId - The ID of the post to which the comment form is associated.
    * @param {Object} loggedInUser - Information about the logged-in user.
    * @param {String} loggedInUser.name - The name of the logged-in user.
    * @param {String} loggedInUser.avatar - The image of the logged-in user (avatar).
    */
-  constructor(inputName, inputId, postId, loggedInUser) {
+  constructor(replyToId, postId, loggedInUser) {
     super();
-    this.inputName = inputName;
-    this.inputId = inputId || "0";
-    this.id = `${inputId}-${postId}`;
+    this.replyToId = replyToId === "0" ? null : replyToId;
+    this.postId = postId;
+    this.id = `${replyToId}-${this.postId}`;
     this.formId = `comment-form-${this.id}`;
-    this.inputId = this.id;
     this.name = loggedInUser.name;
-    this.avatar = loggedInUser.avatar;
+    this.avatar =
+      loggedInUser.avatar || "/assets/images/avatar-placeholder.jpg";
+    this.article = document.querySelector(`#post-${this.postId}`);
   }
 
   connectedCallback() {
@@ -44,9 +50,85 @@ export class PostCommentForm extends HTMLElement {
     });
   }
 
-  postComment() {
-    // If post request successful
-    //   window.removeEventListener("resize", this.resizeTextareaHandler)
+  updateCommentCounter() {
+    const post = document.querySelector(`#post-${this.postId}`);
+    const commentCounterContainer = post.querySelector(
+      `#comment-counter-${this.postId}`,
+    );
+    const commentCount = commentCounterContainer.querySelector(
+      `#comment-count-${this.postId}`,
+    );
+    const currentCount = Number(commentCount.innerText);
+    commentCount.innerText = currentCount + 1;
+    if (commentCounterContainer.classList.contains("hidden")) {
+      commentCounterContainer.classList.remove("hidden");
+    }
+  }
+
+  async createComment(e) {
+    e.preventDefault();
+    const loader = new AppLoader(true);
+    const button = this.querySelector(`button`);
+    button.prepend(loader);
+    try {
+      const body = getFormData(e);
+      if (this.replyToId) {
+        body.replyToId = Number(this.replyToId);
+      }
+
+      const response = await postComment(body, this.postId);
+      window.removeEventListener("resize", this.resizeTextareaHandler);
+
+      const comment = new PostComment(
+        response,
+        response.replyToId === null,
+        this.postId,
+        { name: this.name, avatar: this.avatar },
+      );
+
+      this.updateCommentCounter();
+
+      const rootParentId = response.replyToId;
+      const li = htmlUtilities.createHTML("li", null, null, {
+        "data-parent": rootParentId,
+        id: `comment-li-${response.id}`,
+      });
+      li.append(comment);
+
+      if (response.replyToId) {
+        const isReplyingToRootComment = stringToBoolean(
+          this.article
+            .querySelector(`#comment-li-${response.replyToId}`)
+            .getAttribute("data-root"),
+        );
+        let list = "";
+        if (isReplyingToRootComment) {
+          list = this.article.querySelector(
+            `#comment-${response.replyToId} ul`,
+          );
+        } else {
+          list = this.article
+            .querySelector(`#comment-${response.replyToId}`)
+            .closest("ul");
+        }
+        list.append(li);
+      } else {
+        li.setAttribute("data-root", "true");
+        this.article.querySelector("#comments-list").prepend(li);
+
+        this.querySelector("form").reset();
+        this.querySelector("textarea").style.height = "2.75rem";
+      }
+
+      if (this.id !== `comment-form-0-${this.postId}`) {
+        this.remove();
+      }
+    } catch (error) {
+      console.log(error);
+      renderToast(error, "comment-error", "error");
+    } finally {
+      loader.remove();
+    }
   }
 
   /**
@@ -63,12 +145,18 @@ export class PostCommentForm extends HTMLElement {
     this.id = this.formId;
     this.classList.add("comment-form");
     const form = htmlUtilities.createHTML("form", "flex gap-2 mb-4", null);
+    form.addEventListener("submit", this.createComment.bind(this));
 
     const userAvatar = htmlUtilities.createHTML(
       "img",
-      "h-11 w-11 flex-none rounded-full hidden sm:block object-cover",
+      "h-11 w-11 flex-none bg-light-400 rounded-full hidden sm:block object-cover",
       null,
-      { src: this.avatar, alt: this.name },
+      {
+        src: this.avatar,
+        alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
+      },
     );
 
     const formContent = htmlUtilities.createHTML("div", "w-full");
@@ -77,7 +165,7 @@ export class PostCommentForm extends HTMLElement {
       "label",
       "sr-only",
       "Write a comment",
-      { for: this.inputId },
+      { for: this.replyToId },
     );
 
     const textarea = htmlUtilities.createHTML(
@@ -85,15 +173,15 @@ export class PostCommentForm extends HTMLElement {
       "peer resize-none p-2 h-11",
       null,
       {
-        name: this.inputName,
-        id: this.inputId,
+        name: "body",
+        id: this.replyToId,
         placeholder: "Write a comment",
       },
     );
 
     const button = htmlUtilities.createHTML(
       "button",
-      "button button-primary mt-2 peer-placeholder-shown:hidden",
+      "button button-primary flex gap-2 mt-2 peer-placeholder-shown:hidden",
       "Post",
     );
 

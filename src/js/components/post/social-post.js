@@ -5,6 +5,7 @@ import { PostFooter } from "./post-footer.js";
 import "./post-comment-form.js";
 import { PostCommentSection } from "./post-comment-section.js";
 import { PostComment } from "./post-comment.js";
+import { stringToBoolean } from "../../helper/string-to-boolean.js";
 
 /**
  * The `SocialPost` class represents the main post component that combines and integrates various subcomponents related to a post, such as the header, main content, footer and comments,
@@ -18,6 +19,7 @@ export class SocialPost extends HTMLElement {
    * @param {String|Number} postData.id - The ID of the post.
    * @param {String} postData.title - The title of the post.
    * @param {String} postData.body - The body text of the post.
+   * @param {String[]} postData.tags - An array of tags associated with the post.
    * @param {String} postData.media - The URL to the media content (image or video) associated with the post.
    * @param {Date} postData.created - The timestamp when the post was created (e.g., '2023-10-03T12:40:04.628Z').
    * @param {Date} postData.updated - The timestamp when the post was last updated (e.g., '2023-10-03T12:40:04.628Z').
@@ -43,13 +45,14 @@ export class SocialPost extends HTMLElement {
       author: { name, avatar },
       comments,
       _count,
+      reactions,
     },
     profile,
   ) {
     super();
-
-    this.id = id ?? "";
-    this.title = title ?? "";
+    this.postId = id ?? "";
+    this.id = `post-${this.postId}`;
+    this.postTitle = title ?? "";
     this.body = body ?? "";
     this.tags = tags ?? [];
     this.media = media ?? "";
@@ -58,35 +61,63 @@ export class SocialPost extends HTMLElement {
     this.name = name ?? "";
     this.avatar = avatar || "/assets/images/avatar-placeholder.jpg";
     this.comments = comments ?? [];
-    this.count = _count ?? { reactions: 0, comments: 0 };
+    this.commentCount = _count?.comments ?? 0;
     this.loggedInUser = profile;
+    this.reactionCount = reactions.reduce(
+      (totalReactions, currentReaction) =>
+        totalReactions + currentReaction.count,
+      0,
+    );
   }
 
   connectedCallback() {
     this.render();
     this.displayComments();
 
-    const commentAction = this.querySelector(`#action-comment-${this.id}`);
-    const commentButton = this.querySelector(`#comment-counter-${this.id}`);
+    const commentAction = this.querySelector(`#action-comment-${this.postId}`);
+    const commentButton = this.querySelector(`#comment-counter-${this.postId}`);
 
     if (commentButton) {
-      commentButton.addEventListener("click", this.showComments);
+      commentButton.addEventListener("click", this.showComments.bind(this));
     }
 
-    commentAction.addEventListener("click", this.showCommentWithFocus);
+    commentAction.addEventListener(
+      "click",
+      this.showCommentWithFocus.bind(this),
+    );
   }
 
-  showCommentWithFocus = () => {
-    this.showComments();
-    const input = this.querySelector(`#comment-form-0-${this.id} textarea`);
-    input.focus();
-  };
-
-  showComments = (e) => {
+  showCommentWithFocus() {
     const actionBar = this.querySelector("footer [data-comments-visible]");
+    const isCommentsVisible = stringToBoolean(
+      actionBar.getAttribute("data-comments-visible"),
+    );
+
+    this.showComments();
+
+    if (!isCommentsVisible) {
+      const input = this.querySelector(
+        `#comment-form-0-${this.postId} textarea`,
+      );
+      input.focus();
+    }
+  }
+
+  showComments(e) {
+    const actionBar = this.querySelector("footer [data-comments-visible]");
+    const isCommentsVisible = stringToBoolean(
+      actionBar.getAttribute("data-comments-visible"),
+    );
+
+    if (isCommentsVisible) {
+      actionBar.setAttribute("data-comments-visible", "false");
+      this.querySelector("#comment-section").classList.add("hidden");
+      return;
+    }
+
     actionBar.setAttribute("data-comments-visible", "true");
     this.querySelector("#comment-section").classList.remove("hidden");
-  };
+  }
 
   /**
    * Recursively finds the root comment (the initial comment to which a given comment is replying).
@@ -120,28 +151,29 @@ export class SocialPost extends HTMLElement {
     for (const comment of rootComments) {
       const li = htmlUtilities.createHTML("li", null, null, {
         id: `comment-li-${comment.id}`,
+        "data-root": "true",
       });
       const postComment = new PostComment(
         comment,
         true,
-        this.id,
+        this.postId,
         this.loggedInUser,
       );
       li.append(postComment);
-      list.append(li);
+      list.prepend(li);
     }
 
     for (const comment of nestedComments) {
-      const list = this.querySelector(
-        `#comment-${this.findRootComment(comment)} ul`,
-      );
+      const rootParentId = this.findRootComment(comment, this.comments);
+      const list = this.querySelector(`#comment-${rootParentId} ul`);
       const li = htmlUtilities.createHTML("li", null, null, {
         id: `comment-li-${comment.id}`,
+        "data-parent": rootParentId,
       });
       const postComment = new PostComment(
         comment,
         false,
-        this.id,
+        this.postId,
         this.loggedInUser,
       );
       li.append(postComment);
@@ -149,29 +181,72 @@ export class SocialPost extends HTMLElement {
     }
   }
 
+  updateContent(updatedDate, title, media, tags, body) {
+    const post = this.querySelector("article");
+    post.innerHTML = "";
+
+    const header = new PostHeader(
+      this.postId,
+      this.created,
+      updatedDate,
+      this.name,
+      this.avatar,
+      title,
+      media,
+      tags,
+      body,
+      this.loggedInUser,
+    );
+
+    const main = new PostMain(title, body, media);
+
+    const footer = new PostFooter(
+      this.postId,
+      tags,
+      this.commentCount,
+      this.reactionCount,
+    );
+
+    const commentSection = new PostCommentSection(
+      this.postId,
+      this.loggedInUser,
+    );
+
+    post.append(...[header, main, footer, commentSection]);
+  }
+
   render() {
     const article = htmlUtilities.createHTML(
       "article",
-      "rounded-md bg-light-200 grid gap-4 px-6 pt-6 pb-1 shadow-sm",
+      "xs:rounded-md bg-light-200 grid gap-4 px-6 pt-6 pb-1 shadow-sm",
     );
 
     const header = new PostHeader(
-      this.id,
+      this.postId,
       this.created,
       this.updated,
       this.name,
       this.avatar,
-      this.title,
+      this.postTitle,
       this.media,
       this.tags,
       this.body,
       this.loggedInUser,
     );
-    const main = new PostMain(this.title, this.body, this.media);
 
-    const footer = new PostFooter(this.id, this.tags, this.count);
+    const main = new PostMain(this.postTitle, this.body, this.media);
 
-    const commentSection = new PostCommentSection(this.id, this.loggedInUser);
+    const footer = new PostFooter(
+      this.postId,
+      this.tags,
+      this.commentCount,
+      this.reactionCount,
+    );
+
+    const commentSection = new PostCommentSection(
+      this.postId,
+      this.loggedInUser,
+    );
 
     article.append(...[header, main, footer, commentSection]);
     this.append(article);

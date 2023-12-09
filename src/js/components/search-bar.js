@@ -13,6 +13,10 @@ export class SearchBar extends HTMLElement {
   constructor(type) {
     super();
     this.type = type || this.getAttribute("type") || "";
+
+    this.searchParams = new URLSearchParams(window.location.search);
+    this.searchQuery = this.searchParams.get("search") ?? "";
+    this.actionQuery = this.searchParams.get("action") ?? "latest";
   }
 
   connectedCallback() {
@@ -21,7 +25,7 @@ export class SearchBar extends HTMLElement {
     const input = this.querySelector("input");
     const button = this.querySelector("button");
 
-    input.addEventListener("keypress", function (e) {
+    input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         this.search(input.value);
       }
@@ -33,19 +37,27 @@ export class SearchBar extends HTMLElement {
   }
 
   search(value) {
-    location.href = `/search/?search=${value}`;
+    const url = new URL("/search/", location.href);
+    const searchParams = new URLSearchParams();
+    searchParams.set("search", value);
+    searchParams.set("action", this.actionQuery);
+    url.search = searchParams.toString();
+    location.href = url.href;
   }
 
   render() {
     const searchbar = htmlUtilities.createHTML("div", "relative text-dark-200");
     if (this.type === "sidebar-search") {
       searchbar.classList.add("mb-4");
+    } else {
+      searchbar.classList.add("mx-6", "xs:mx-0");
     }
 
     const input = htmlUtilities.createHTML("input", null, null, {
       placeholder: "Search",
       type: "search",
       name: "search",
+      value: this.searchQuery,
     });
 
     const buttonClasses =

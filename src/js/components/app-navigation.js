@@ -2,6 +2,11 @@ import htmlUtilities from "../helper/html-utilities/index.js";
 import { handleFocusTrap } from "../helper/handle-focus-trap.js";
 import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { navigation } from "../const/navigation.js";
+import { mdQuery } from "../const/queries.js";
+import { stringToBoolean } from "../helper/string-to-boolean.js";
+import Storage from "../helper/storage/index.js";
+import Modal from "../helper/modal/index.js";
+import Jwt from "../helper/jwt/index.js";
 
 /**
  * Represents an `AppNavigation` class that creates a navigation component based on an imported constant configuration.
@@ -18,6 +23,7 @@ class AppNavigation extends HTMLElement {
     this.render();
     const navClose = document.querySelector("#nav-close");
     const navButton = document.querySelector("#nav-button");
+    const nav = this.querySelector("nav");
 
     navButton.addEventListener("click", (e) => {
       mobileMenuToggle(navButton);
@@ -25,10 +31,30 @@ class AppNavigation extends HTMLElement {
     });
 
     navClose.addEventListener("click", this.closeNav);
+
+    mdQuery.addEventListener("change", (e) => {
+      if (
+        mdQuery.matches &&
+        stringToBoolean(nav.getAttribute("data-mobile-visible"))
+      ) {
+        this.closeNav();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        nav.getAttribute("data-mobile-visible") === "true" &&
+        e.target.closest("nav") !== nav &&
+        e.target.closest("button") !== navButton
+      ) {
+        this.closeNav(e);
+      }
+    });
   }
 
   userLogout() {
-    // Logic for logging the user out
+    Storage.remove("accessToken");
+    window.location.href = "/";
   }
 
   /**
@@ -36,8 +62,11 @@ class AppNavigation extends HTMLElement {
    * @param {MouseEvent} e - Event from click.
    */
   closeNav(e) {
+    const navButton = document.querySelector("#nav-button");
     document.removeEventListener("keydown", this.handleFocusNav);
-    mobileMenuToggle(document.querySelector("#nav-button"));
+    mobileMenuToggle(navButton);
+    navButton.focus();
+    document.body.classList.remove("overflow-hidden");
   }
 
   /**
@@ -62,7 +91,7 @@ class AppNavigation extends HTMLElement {
   createTopbar() {
     const topbar = htmlUtilities.createHTML(
       "div",
-      "flex items-center gap-3 border-b border-light-500 px-7 py-2 md:px-0 md:pt-0",
+      "flex items-center gap-3 border-b border-light-500 px-6 xs:px-7 py-2 md:px-0 md:pt-0",
     );
 
     const logo = htmlUtilities.createHTML(
@@ -74,6 +103,7 @@ class AppNavigation extends HTMLElement {
 
     const searchButtonClasses =
       "link link-secondary bottom-5 right-5 z-10 aspect-square w-12 text-lg md:fixed md:rounded-full md:bg-primary-400 md:px-2 md:text-light-200 md:shadow-sm md:hover:bg-primary-500 md:hover:text-light-200 lg:hidden";
+
     const searchButtonAttributes = {
       "aria-controls": "sidebar",
       "aria-expanded": "false",
@@ -134,7 +164,7 @@ class AppNavigation extends HTMLElement {
       navItem = htmlUtilities.createHTML("button", classes, null, { id: id });
       if (id === "create-post") {
         navItem.addEventListener("click", (e) => {
-          document.querySelector("#modal_post-creation").showModal();
+          Modal.open(document.querySelector("#modal_post-creation"));
         });
       } else if (id === "logout") {
         navItem.addEventListener("click", this.userLogout);
@@ -147,7 +177,17 @@ class AppNavigation extends HTMLElement {
 
     let iconClass = icon.default;
 
-    if (this.currentPage === href) {
+    const searchQuery = new URLSearchParams(window.location.search);
+    const token = Storage.get("accessToken");
+    const user = Jwt.getPayloadValue(token, "name");
+    const currentProfile = searchQuery?.get("u") ?? user;
+
+    const isPersonalProfile = href === "/profile/" && user === currentProfile;
+
+    if (
+      this.currentPage === href &&
+      (href !== "/profile/" || isPersonalProfile)
+    ) {
       navItem.setAttribute("aria-current", "page");
       navItem.classList.add("font-medium");
       navItem.classList.remove("font-light");
@@ -181,7 +221,7 @@ class AppNavigation extends HTMLElement {
    */
   createNav() {
     const navClasses =
-      "inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static";
+      "inset-y-0 right-0 z-50 hidden w-full max-w-md flex-col bg-light-200 px-6 xs:px-7 py-2 shadow-xl data-[mobile-visible='true']:absolute data-[mobile-visible='true']:flex data-[mobile-visible='true']:animate-slide md:block md:bg-light-400 md:px-0 md:shadow-none md:data-[mobile-visible='true']:static";
 
     const nav = htmlUtilities.createHTML("nav", navClasses, null, {
       id: "primary-navigation",
@@ -214,10 +254,24 @@ class AppNavigation extends HTMLElement {
 
   render() {
     const header = htmlUtilities.createHTML("header");
+
+    const skipClasses =
+      "sr-only bg-primary-400 top-0 font-accent font-medium text-light-200 focus:not-sr-only focus:absolute focus:rounded-b-md focus:rounded-t-none focus:px-3 focus:py-3 focus:ring-0";
+    const skipToMain = htmlUtilities.createHTML(
+      "a",
+      skipClasses,
+      "Skip to main content",
+      { href: "#main" },
+    );
+
     const topbar = this.createTopbar();
     const nav = this.createNav();
-
-    header.append(...[topbar, nav]);
+    this.classList.add(
+      ..."md:sticky md:top-0 md:overflow-hidden md:h-screen md:max-h-screen".split(
+        " ",
+      ),
+    );
+    header.append(...[skipToMain, topbar, nav]);
     this.append(header);
   }
 }

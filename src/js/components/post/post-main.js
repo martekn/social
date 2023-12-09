@@ -15,9 +15,9 @@ export class PostMain extends HTMLElement {
   constructor(title, body, media) {
     super();
 
-    this.title = title;
-    this.body = body;
-    this.media = media;
+    this.postTitle = title ?? "";
+    this.body = body ?? "";
+    this.media = media ?? "";
   }
 
   connectedCallback() {
@@ -35,20 +35,26 @@ export class PostMain extends HTMLElement {
         {
           src: this.media,
           alt: "",
+          onerror:
+            "this.onerror=null;this.src='/assets/images/img-placeholder.jpg';",
         },
       );
       main.append(postImage);
     }
 
-    if (this.title) {
-      const postTitle = htmlUtilities.createHTML("h2", "break-all", this.title);
+    if (this.postTitle) {
+      const postTitle = htmlUtilities.createHTML(
+        "h2",
+        "overflow-wrap-anywhere",
+        this.postTitle,
+      );
       main.append(postTitle);
     }
 
     if (this.body) {
       const postBody = htmlUtilities.createHTML(
         "p",
-        "text-dark-400 break-all",
+        "text-dark-400 overflow-wrap-anywhere",
         this.body,
       );
       main.append(postBody);

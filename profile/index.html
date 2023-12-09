@@ -1,12 +1,12 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Username - Social</title>
+    <title>Profile - Social</title>
     <meta
       name="description"
-      content="Explore [Username]'s profile on Social. Connect and discover their posts and updates."
+      content="Explore profiles on Social. Connect and discover posts and updates."
     />
 
     <!-- Fonts -->
@@ -27,6 +27,7 @@
     <link href="/dist/styles.css" rel="stylesheet" />
 
     <!-- JavaScript -->
+    <script src="/src/js/hotjar.js"></script>
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/pages/profile.js"></script>
   </head>
@@ -41,8 +42,11 @@
 
       <!-- Main -->
       <main
-        class="space-y-6 border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+        id="main"
+        class="space-y-6 border-light-500 xs:p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
       >
+        <app-loader></app-loader>
+
         <h2 class="sr-only">Posts</h2>
         <ul id="posts-list" class="space-y-6"></ul>
       </main>
@@ -50,5 +54,6 @@
     </div>
 
     <post-modal></post-modal>
+    <ul id="toasts-list" class="pointer-events-none fixed inset-0 z-50"></ul>
   </body>
 </html>

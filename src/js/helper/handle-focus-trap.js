@@ -1,5 +1,5 @@
 /**
- * Traps focus within a specified container until keys other than Shift, Tab, or Enter are pressed.
+ * Traps focus within a specified container until keys other than Shift, Tab, or Enter are pressed. Also sets focus to the first element when added as event handler.
  *
  * @param {HTMLElement} focusContainer - The HTML element containing focusable elements.
  * @param {String} focusableElements - A CSS selector for the focusable elements within the container.
@@ -31,10 +31,24 @@ export const handleFocusTrap = (
   if (focusContainer) {
     let firstFocusElement;
     let lastFocusElement;
+    let focusElements;
+    let isFocusableElement = false;
+
     if ((focusContainer, focusableElements)) {
-      const focusElements = focusContainer.querySelectorAll(focusableElements);
+      focusElements = focusContainer.querySelectorAll(focusableElements);
       firstFocusElement = focusElements[0];
       lastFocusElement = focusElements[focusElements.length - 1];
+    }
+
+    for (const element of focusElements) {
+      if (document.activeElement === element) {
+        isFocusableElement = true;
+        break;
+      }
+    }
+
+    if (!isFocusableElement) {
+      firstFocusElement.focus();
     }
 
     const isTabPressed = e.key === "Tab";
