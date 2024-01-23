@@ -3,6 +3,7 @@ import { stringToBoolean } from "../../helper/string-to-boolean.js";
 import { handleFocusTrap } from "../../helper/handle-focus-trap.js";
 import { PostModal } from "../post-modal.js";
 import { PostDeleteModal } from "./post-delete-modal.js";
+import Modal from "../../helper/modal/index.js";
 
 /**
  * Represents an extra options dropdown for a post, typically containing options to delete or edit the post.
@@ -41,12 +42,6 @@ export class PostDropdown extends HTMLElement {
       let state = stringToBoolean(dropdownButton.getAttribute("aria-expanded"));
       state = !state;
 
-      dropdownButton.setAttribute("aria-expanded", state);
-
-      const list = this.querySelector(`#dropdown-${this.postId}_list`);
-      list.setAttribute("aria-expanded", state);
-      list.setAttribute("data-dropdown-open", state);
-
       if (state) {
         this.openDropdown();
       } else {
@@ -55,33 +50,74 @@ export class PostDropdown extends HTMLElement {
     });
   }
 
+  /**
+   * Update the state of a dropdown component.
+   *
+   * @param {boolean} state - The new state of the dropdown (true for open, false for closed).
+   */
+  updateDropdownState(state) {
+    const dropdownButton = this.querySelector(
+      `#dropdown-${this.postId}_button`,
+    );
+
+    dropdownButton.setAttribute("aria-expanded", state);
+
+    const list = this.querySelector(`#dropdown-${this.postId}_list`);
+    list.setAttribute("aria-expanded", state);
+    list.setAttribute("data-dropdown-open", state);
+  }
+
+  handleClickOutsideDropdown(e) {
+    const elements = Array.from(this.querySelectorAll("*"));
+    if (!elements.find((element) => element === e.target)) {
+      this.closeDropdown();
+    }
+  }
+
   setDropdownFocus(e) {
     const dropdown = this.querySelector(`#dropdown-${this.postId}`);
     handleFocusTrap(dropdown, "button", this.closeDropdown, e);
   }
 
   openDropdown() {
-    this.addEventListener("keydown", this.setDropdownFocus);
+    this.addEventListener("keydown", this.setDropdownFocus.bind(this));
+    window.addEventListener(
+      "click",
+      this.handleClickOutsideDropdown.bind(this),
+    );
+
+    this.updateDropdownState(true);
   }
 
-  closeDropdown = () => {
-    this.removeEventListener("keydown", this.setDropdownFocus);
-  };
+  closeDropdown() {
+    this.removeEventListener("keydown", this.setDropdownFocus.bind(this));
+    window.removeEventListener(
+      "click",
+      this.handleClickOutsideDropdown.bind(this),
+    );
+    const dropdownButton = this.querySelector(
+      `#dropdown-${this.postId}_button`,
+    );
+    dropdownButton.focus();
+    this.updateDropdownState(false);
+  }
 
-  renderEditModal = () => {
+  renderEditModal() {
     const main = document.querySelector("main");
     const modal = new PostModal(this.post);
 
     main.append(modal);
-    modal.querySelector("dialog").showModal();
-  };
+    Modal.open(modal.querySelector("dialog"));
+    this.closeDropdown();
+  }
 
-  renderDeleteModal = () => {
+  renderDeleteModal() {
     const main = document.querySelector("main");
     const modal = new PostDeleteModal(this.postId);
     main.append(modal);
-    modal.querySelector("dialog").showModal();
-  };
+    Modal.open(modal.querySelector("dialog"));
+    this.closeDropdown();
+  }
 
   render() {
     this.classList.add("ml-auto");
@@ -91,7 +127,7 @@ export class PostDropdown extends HTMLElement {
     });
     const dropdownButton = htmlUtilities.createHTML(
       "button",
-      "aspect-square h-8 rounded-md text-dark-300 hover:bg-light-400",
+      "aspect-square h-8 rounded-md text-dark-300 hover:bg-light-400 active:bg-light-450 transition-all",
       null,
       {
         id: `dropdown-${this.postId}_button`,
@@ -116,7 +152,7 @@ export class PostDropdown extends HTMLElement {
 
     const dropdownList = htmlUtilities.createHTML(
       "ul",
-      "absolute font-accent divide-y divide-light-500 font-medium right-0 top-9 hidden w-40 rounded-md bg-light-400 p-1 shadow-sm data-[dropdown-open='true']:block",
+      "absolute font-accent divide-y divide-light-500 border border-light-500 font-medium right-0 top-9 hidden w-40 rounded-md bg-light-300 shadow-sm data-[dropdown-open='true']:block animate-once animate-fade animate-duration-100 animate-ease-in",
       null,
       {
         "data-open": "false",
@@ -124,10 +160,14 @@ export class PostDropdown extends HTMLElement {
         "aria-expanded": "false",
       },
     );
+
+    const buttonClasses =
+      "button w-full flex items-center rounded-none gap-2 p-3 transition-all hover:bg-light-400 active:bg-light-450";
     const editButton = htmlUtilities.createHTML(
       "button",
-      "flex w-full font-accent font-medium items-center gap-2 rounded-sm p-3 hover:bg-light-300",
+      `${buttonClasses} rounded-t-md`,
     );
+
     const editIcon = htmlUtilities.createHTML(
       "i",
       "bi bi-pencil-square",
@@ -139,18 +179,18 @@ export class PostDropdown extends HTMLElement {
     const editText = htmlUtilities.createHTML("span", null, "Edit post");
     editButton.append(...[editIcon, editText]);
 
-    editButton.addEventListener("click", this.renderEditModal);
+    editButton.addEventListener("click", this.renderEditModal.bind(this));
 
     const deleteButton = htmlUtilities.createHTML(
       "button",
-      "flex w-full items-center gap-2 rounded-sm p-3 text-red-800 hover:bg-light-300",
+      `${buttonClasses} rounded-b-md text-red-800`,
     );
     const deleteIcon = htmlUtilities.createHTML("i", "bi bi-trash3", null, {
       "aria-hidden": "true",
     });
     const deleteText = htmlUtilities.createHTML("span", null, "Delete post");
     deleteButton.append(...[deleteIcon, deleteText]);
-    deleteButton.addEventListener("click", this.renderDeleteModal);
+    deleteButton.addEventListener("click", this.renderDeleteModal.bind(this));
 
     dropdownList.append(...[editButton, deleteButton]);
     dropdown.append(dropdownButton, dropdownList);

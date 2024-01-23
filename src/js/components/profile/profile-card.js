@@ -1,4 +1,8 @@
+import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 import htmlUtilities from "../../helper/html-utilities/index.js";
+import Storage from "../../helper/storage/index.js";
+import Modal from "../../helper/modal/index.js";
+import Jwt from "../../helper/jwt/index.js";
 
 /**
  * Represents a `ProfileCard` class that displays details about a user on the profile page, including their image, banner, username, and stats.
@@ -25,31 +29,45 @@ export class ProfileCard extends HTMLElement {
     this.followers = followers;
     this.following = following;
     this.count = _count;
+    this.loggedInUser = Jwt.getPayloadValue(Storage.get("accessToken"), "name");
+    this.isLoggedInUser = this.name === this.loggedInUser;
+    this.isFollowing = this.followers.some(
+      (user) => user.name === this.loggedInUser,
+    );
+    this.followUnfollowText = this.isFollowing ? "Unfollow" : "Follow";
+    this.cardButtonText = this.isLoggedInUser
+      ? "Edit"
+      : this.followUnfollowText;
   }
 
   connectedCallback() {
     this.render();
-  }
 
-  openModal = (type) => {
-    const modal = document.querySelector(`#${type}-modal`);
-    modal.showModal();
-  };
+    const cardButton = this.querySelector("#card-button");
+
+    if (this.isLoggedInUser) {
+      cardButton.addEventListener("click", (e) => {
+        Modal.open(document.querySelector("#edit-modal"));
+      });
+    }
+  }
 
   render() {
     const profile = htmlUtilities.createHTML(
       "div",
-      "rounded-md bg-light-200 shadow-sm",
+      "xs:rounded-md bg-light-200 shadow-sm",
     );
 
     const bannerImg = htmlUtilities.createHTML(
       "img",
-      "aspect-[5/2] w-full rounded-t-md object-cover",
+      "aspect-[5/2] bg-light-400 w-full xs:rounded-t-md object-cover",
       null,
       {
         src: this.banner
           ? this.banner
           : "/assets/images/banner-placeholder.jpg",
+        onerror:
+          "this.onerror=null;this.src='/assets/images/banner-placeholder.jpg';",
         alt: "",
       },
     );
@@ -65,13 +83,15 @@ export class ProfileCard extends HTMLElement {
     );
     const avatarImg = htmlUtilities.createHTML(
       "img",
-      "absolute bottom-0 aspect-square w-full object-cover rounded-full border-4 border-light-200 sm:-bottom-12",
+      "absolute bg-light-400 bottom-0 bg-light-400 aspect-square w-full object-cover rounded-full border-4 border-light-200 sm:-bottom-12",
       null,
       {
         src: this.avatar
           ? this.avatar
           : "/assets/images/avatar-placeholder.jpg",
         alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
       },
     );
     avatarWrapper.append(avatarImg);
@@ -90,30 +110,33 @@ export class ProfileCard extends HTMLElement {
     const userStats = htmlUtilities.createHTML("div", "flex gap-4");
     const followerButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
+      null,
     );
     followerButton.addEventListener("click", (e) => {
-      this.openModal("follower");
+      Modal.open(document.querySelector("#follower-modal"));
     });
 
     const followerCount = htmlUtilities.createHTML(
       "span",
       "font-medium",
       `${this.count.followers}`,
+      { id: "follower-count" },
     );
     const followerText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Followers",
     );
     followerButton.append(...[followerCount, followerText]);
 
     const followingButton = htmlUtilities.createHTML(
       "button",
-      "border-b space-x-1 border-light-200 font-accent text-sm hover:border-dark-500",
+      "border-b space-x-1 border-light-200 transition-all font-accent text-sm hover:border-dark-500",
     );
+
     followingButton.addEventListener("click", (e) => {
-      this.openModal("following");
+      Modal.open(document.querySelector("#following-modal"));
     });
 
     const followingCount = htmlUtilities.createHTML(
@@ -123,21 +146,30 @@ export class ProfileCard extends HTMLElement {
     );
     const followingText = htmlUtilities.createHTML(
       "span",
-      "text-dark-300",
+      "text-dark-300 hover:text-dark-500 transition-all",
       "Following",
     );
     followingButton.append(...[followingCount, followingText]);
 
     userStats.append(...[followerButton, followingButton]);
 
-    const followButton = htmlUtilities.createHTML(
+    const cardButton = htmlUtilities.createHTML(
       "button",
       "button button-primary w-fit sm:self-start",
-      "Follow",
+      this.cardButtonText,
+      {
+        id: "card-button",
+        "data-user": this.name,
+        "data-following": this.isFollowing.toString(),
+      },
     );
 
+    if (!this.isLoggedInUser) {
+      cardButton.addEventListener("click", followUnfollowHandler);
+    }
+
     userDetail.append(...[username, userStats]);
-    userDetailWrapper.append(...[userDetail, followButton]);
+    userDetailWrapper.append(...[userDetail, cardButton]);
     profileContent.append(...[avatarWrapper, userDetailWrapper]);
     profile.append(...[bannerImg, profileContent]);
     this.append(profile);

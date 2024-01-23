@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,6 +27,7 @@
     <link href="/dist/styles.css" rel="stylesheet" />
 
     <!-- JavaScript -->
+    <script src="/src/js/hotjar.js"></script>
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/pages/search.js"></script>
   </head>
@@ -41,22 +42,23 @@
 
       <!-- Main -->
       <main
-        class="space-y-5 border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+        id="main"
+        class="grid auto-rows-[auto_auto_1fr] gap-5 border-light-500 py-7 xs:px-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
       >
         <h1 class="sr-only">Search</h1>
         <search-bar></search-bar>
-        <div class="flex justify-evenly">
-          <filter-button text="Latest" is-current="true"></filter-button>
-          <filter-button text="Popular"></filter-button>
-          <filter-button text="Tags"></filter-button>
-          <filter-button text="People"></filter-button>
-          <filter-button text="Media"></filter-button>
-        </div>
-        <ul id="search-list" class="space-y-6"></ul>
+        <ul
+          class="scrollbar scrollbar-transparent flex w-screen overflow-x-auto scroll-smooth pb-0.5 xs:w-full xs:justify-evenly"
+          id="filter-list"
+        ></ul>
+        <ul id="search-list" class="space-y-6">
+          <app-loader></app-loader>
+        </ul>
       </main>
       <!-- Main end -->
     </div>
 
     <post-modal></post-modal>
+    <ul id="toasts-list" class="pointer-events-none fixed inset-0 z-50"></ul>
   </body>
 </html>

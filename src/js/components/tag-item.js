@@ -22,8 +22,8 @@ export class TagItem extends HTMLElement {
   }
 
   render() {
-    const tag = htmlUtilities.createHTML("a", "py-1 w-full", null, {
-      href: `/search/?tag=${this.tag.replace("#", "")}`,
+    const tag = htmlUtilities.createHTML("a", "link py-1", null, {
+      href: `/search/?search=${this.tag.replace("#", "")}&action=tags`,
     });
 
     if (this.tagStyle === "primary") {

@@ -1,6 +1,7 @@
 import htmlUtilities from "../../helper/html-utilities/index.js";
 import { getTimeSince } from "../../helper/get-time-since.js";
 import { PostDropdown } from "./post-dropdown.js";
+import { followUnfollowHandler } from "../../helper/follow-unfollow-handler.js";
 
 /**
  * Represents the header component of a post, displaying the post's author information, creation and update dates, and options like the follow button or a dropdown menu.
@@ -42,7 +43,7 @@ export class PostHeader extends HTMLElement {
     this.updated = updated;
     this.name = name;
     this.avatar = avatar;
-    this.title = title;
+    this.postTitle = title;
     this.media = media;
     this.tags = tags;
     this.body = body;
@@ -74,11 +75,13 @@ export class PostHeader extends HTMLElement {
 
     const img = htmlUtilities.createHTML(
       "img",
-      "object-cover rounded-full w-full h-full",
+      "object-cover bg-light-400 rounded-full w-full h-full",
       null,
       {
         src: this?.avatar,
         alt: this.name,
+        onerror:
+          "this.onerror=null;this.src='/assets/images/avatar-placeholder.jpg';",
       },
     );
     const imgSrOnly = htmlUtilities.createHTML("span", "sr-only", this.name);
@@ -95,13 +98,19 @@ export class PostHeader extends HTMLElement {
     );
     userDetails.append(username);
 
-    if (!this.isFollowing && !this.isLoggedInUser) {
+    if (!this.isLoggedInUser) {
       const follow = htmlUtilities.createHTML(
         "button",
-        "before:w-1 before:rounded-full before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
+        "before:w-1 before:rounded-full data-[following='true']:hidden before:h-1 p-0 gap-3 align-middle flex before:block before:bg-dark-300 before:self-center link link-primary",
         "Follow",
+        {
+          "data-user": this.name,
+          "data-following": this.isFollowing.toString(),
+        },
       );
       userDetails.append(follow);
+
+      follow.addEventListener("click", followUnfollowHandler);
     }
 
     const timeDetails = htmlUtilities.createHTML(
@@ -132,7 +141,7 @@ export class PostHeader extends HTMLElement {
     if (this.isLoggedInUser) {
       const dropdown = new PostDropdown(
         this.id,
-        this.title,
+        this.postTitle,
         this.media,
         this.tags,
         this.body,

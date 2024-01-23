@@ -4,6 +4,10 @@ import { mobileMenuToggle } from "../helper/mobile-menu-toggle.js";
 import { TagItem } from "./tag-item.js";
 import { UserBadge } from "./user-badge.js";
 import { SearchBar } from "./search-bar.js";
+import { getPopularTags } from "../helper/get-popular-tags.js";
+import { renderUserSuggestions } from "../helper/render-user-suggestions.js";
+import { lgQuery } from "../const/queries.js";
+import { stringToBoolean } from "../helper/string-to-boolean.js";
 
 const sidebarButton = document.querySelector("#sidebar-button");
 
@@ -13,10 +17,6 @@ const sidebarButton = document.querySelector("#sidebar-button");
  */
 // * Add the class 'sidebar' to the sidebar where its used in the html to avoid the layout from shifting
 class AppSidebar extends HTMLElement {
-  static get observedAttributes() {
-    return ["tags-loaded", "following-loaded"];
-  }
-
   constructor() {
     super();
     this.isSearchpage = window.location.pathname === "/search/";
@@ -32,6 +32,53 @@ class AppSidebar extends HTMLElement {
     });
 
     sidebarClose.addEventListener("click", this.closeSidebar);
+
+    lgQuery.addEventListener("change", (e) => {
+      if (
+        lgQuery.matches &&
+        stringToBoolean(this.getAttribute("data-mobile-visible"))
+      ) {
+        this.closeSidebar();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        this.getAttribute("data-mobile-visible") === "true" &&
+        e.target.closest("app-sidebar") !== this &&
+        e.target.closest("button") !== sidebarButton
+      ) {
+        this.closeSidebar(e);
+      }
+    });
+  }
+
+  /**
+   * Set up the app sidebar with tags and user suggestions based on provided data.
+   *
+   * @param {Promise} posts - A Promise representing the user's posts data.
+   * @param {Promise} user - A Promise representing the currently logged-in user's information.
+   */
+  setup(posts, user) {
+    if (posts.status === "fulfilled") {
+      this.renderTags(getPopularTags(posts.value));
+    } else {
+      this.querySelector("#tags-section").remove();
+    }
+
+    if (user.status === "fulfilled" && user.value.following.length > 0) {
+      this.renderFollowing(user.value.following);
+    } else if (user.status === "fulfilled") {
+      renderUserSuggestions();
+    } else {
+      this.querySelector("#following-section").remove();
+    }
+  }
+
+  updateFollowing(following) {
+    if (following.length > 0) {
+      this.renderFollowing(following);
+    }
   }
 
   /**
@@ -40,7 +87,9 @@ class AppSidebar extends HTMLElement {
    */
   closeSidebar(e) {
     mobileMenuToggle(sidebarButton);
+    sidebarButton.focus();
     document.removeEventListener("keydown", this.handleFocusSidebar);
+    document.body.classList.remove("overflow-hidden");
   }
 
   /**
@@ -69,8 +118,10 @@ class AppSidebar extends HTMLElement {
    * @param {String} listId - ID for the list element.
    * @returns {HTMLElement} - Section element containing heading and ul.
    */
-  renderSection(text, listId) {
-    const section = htmlUtilities.createHTML("section", "py-4");
+  renderSection(text, listId, id) {
+    const section = htmlUtilities.createHTML("section", "py-4", null, {
+      id: id,
+    });
     const heading = htmlUtilities.createHTML(
       "h2",
       "font-light text-dark-300",
@@ -92,11 +143,13 @@ class AppSidebar extends HTMLElement {
   }
 
   renderFollowing(following) {
+    const list = document.querySelector("#following-list");
+    list.innerHTML = "";
     for (const user of following) {
       const li = htmlUtilities.createHTML("li");
       const username = new UserBadge(user);
       li.append(username);
-      document.querySelector("#following-list").append(li);
+      list.append(li);
     }
   }
 
@@ -135,12 +188,20 @@ class AppSidebar extends HTMLElement {
       "div",
       "divide-y divide-light-500",
     );
-    const tagsSection = this.renderSection("Popular tags", "tags-list");
+    const tagsSection = this.renderSection(
+      "Popular tags",
+      "tags-list",
+      "tags-section",
+    );
     if (this.isSearchpage) {
       tagsSection.classList.add("border-t-0");
     }
 
-    const followingSection = this.renderSection("Following", "following-list");
+    const followingSection = this.renderSection(
+      "Following",
+      "following-list",
+      "following-section",
+    );
 
     const footer = htmlUtilities.createHTML(
       "footer",

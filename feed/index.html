@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,6 +27,7 @@
     <link href="/dist/styles.css" rel="stylesheet" />
 
     <!-- JavaScript -->
+    <script src="/src/js/hotjar.js"></script>
     <script type="module" src="/src/js/main.js"></script>
     <script type="module" src="/src/js/pages/feed.js"></script>
   </head>
@@ -42,21 +43,25 @@
 
       <!-- Main -->
       <main
-        class="space-y-2 border-light-500 p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
+        id="main"
+        class="flex flex-col space-y-4 border-light-500 py-7 xs:p-7 md:col-span-8 md:border-l md:px-10 lg:col-span-6 lg:border-x"
       >
         <button
-          class="item-cmainr link link-secondary flex gap-2"
+          class="link link-secondary flex gap-2 px-6 xs:px-0"
           id="create-button"
         >
           <i class="bi bi-plus-square"></i> <span>Create post</span>
         </button>
 
         <h1 class="sr-only">Posts in feed</h1>
-        <ul id="posts-list" class="space-y-6"></ul>
+        <ul id="posts-list" class="flex-1 space-y-6">
+          <app-loader></app-loader>
+        </ul>
       </main>
       <!-- Main end -->
     </div>
 
     <post-modal></post-modal>
+    <ul id="toasts-list" class="pointer-events-none fixed inset-0 z-50"></ul>
   </body>
 </html>
